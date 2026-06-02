@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN Exercices</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Heebo, sans-serif; background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        h1 { color: #0038B8; text-align: center; margin-bottom: 10px; font-size: 32px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .section { margin-bottom: 20px; }
+        .label { font-size: 12px; color: #0038B8; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .btn { padding: 12px 20px; border: 2px solid #0038B8; background: white; color: #0038B8; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn.active { background: #0038B8; color: white; }
+        .start-btn { width: 100%; padding: 16px; background: #0038B8; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .start-btn:hover { background: #002D7A; }
+        .loading { text-align: center; color: #0038B8; margin-top: 20px; font-size: 14px; }
+        .exercise-screen { display: none; }
+        .exercise-screen.active { display: block; }
+        .question { font-size: 26px; text-align: center; background: #F5F5F5; padding: 25px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #0038B8; direction: rtl; }
+        .input-box { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #DDD; border-radius: 8px; margin: 15px 0; }
+        .input-box:focus { outline: none; border-color: #0038B8; }
+        .validate-btn { width: 100%; padding: 14px; background: #0038B8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .validate-btn:hover { background: #002D7A; }
+        .result { padding: 15px; background: #E8F5E9; border-left: 4px solid #4CAF50; margin-top: 15px; border-radius: 8px; display: none; }
+        .result.show { display: block; }
+        .result.wrong { background: #FFEBEE; border-color: #f44336; }
+        .progress { width: 100%; height: 6px; background: #DDD; border-radius: 3px; margin: 15px 0; }
+        .progress-bar { height: 100%; background: #0038B8; border-radius: 3px; transition: width 0.3s; }
+        .stats { text-align: center; color: #666; margin-top: 20px; font-size: 14px; }
+        .nav-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .nav-buttons button { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .modify-btn { background: #FFC107; color: #333; }
+        .next-btn { background: #0038B8; color: white; }
+        .final-screen { display: none; }
+        .final-screen.active { display: block; text-align: center; }
+        .score { font-size: 48px; color: #0038B8; font-weight: bold; margin: 20px 0; }
+        .setup-screen { display: none; }
+        .setup-screen.active { display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <!-- ÉCRAN SETUP -->
+        <div class="setup-screen active" id="setupScreen">
+            <h1>🇮🇱 MIZOULPAN - Exercices</h1>
+            <p class="subtitle">Dictées intelligentes avec IA</p>
+            
+            <div class="section">
+                <div class="label">Sens de traduction</div>
+                <div class="grid">
+                    <button class="btn active" onclick="selectSens('fr-he')">🇫🇷 → 🇮🇱<br>Français → Hébreu</button>
+                    <button class="btn" onclick="selectSens('he-fr')">🇮🇱 → 🇫🇷<br>Hébreu → Français</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="label">Niveau de difficulté</div>
+                <div class="grid">
+                    <button class="btn active" onclick="selectLevel('simple')">✅ Simple</button>
+                    <button class="btn" onclick="selectLevel('complexe')">⭐ Complexe</button>
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="startExercises()">→ Commencer</button>
+            <div class="loading" id="loadingMsg"></div>
+        </div>
+        
+        <!-- ÉCRAN EXERCICE -->
+        <div class="exercise-screen" id="exerciseScreen">
+            <div style="text-align: right; margin-bottom: 20px;">
+                <button onclick="backHome()" style="background: none; border: none; color: #0038B8; cursor: pointer; font-weight: bold;">← Retour</button>
+            </div>
+            
+            <h1>Phrase <span id="phraseNum">1</span> / 20</h1>
+            <div class="progress"><div class="progress-bar" id="progBar"></div></div>
+            
+            <div class="question" id="phraseDisplay"></div>
+            
+            <input type="text" class="input-box" id="answerInput" placeholder="Tape ta réponse...">
+            <button class="validate-btn" onclick="validateAnswer()">✓ Valider</button>
+            
+            <div class="result" id="resultBox"></div>
+            
+            <div class="nav-buttons" id="navButtons" style="display: none;">
+                <button class="modify-btn" onclick="modifyAnswer()">← Modifier</button>
+                <button class="next-btn" onclick="nextPhrase()">Suivante →</button>
+            </div>
+            
+            <div class="stats">⭐ <span id="scoreText">0</span> / <span id="totalText">20</span></div>
+        </div>
+        
+        <!-- ÉCRAN RÉSUMÉ -->
+        <div class="final-screen" id="finalScreen">
+            <h1>🎉 Bravo!</h1>
+            <p class="subtitle">Tu as terminé les exercices</p>
+            <div class="score" id="finalScore">0/20</div>
+            <p id="correctMsg" style="font-size: 16px; color: #666; margin-bottom: 20px;"></p>
+            <button class="start-btn" onclick="backHome()">← Recommencer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const GITHUB_URL = 'https://raw.githubusercontent.com/MUXOIK/mizoulpan-quiz/main/vocabulaire.xlsx';
+let state = { sens: 'fr-he', level: 'simple' };
+let phrases = [];
+let currentIdx = 0;
+let answers = [];
+
+function selectSens(sens) {
+    state.sens = sens;
+    document.querySelectorAll('.grid')[0].querySelectorAll('.btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && sens === 'fr-he') || (i === 1 && sens === 'he-fr'));
+    });
+}
+
+function selectLevel(level) {
+    state.level = level;
+    document.querySelectorAll('.grid')[1].querySelectorAll('.btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && level === 'simple') || (i === 1 && level === 'complexe'));
+    });
+}
+
+async function startExercises() {
+    document.getElementById('loadingMsg').innerHTML = '⏳ Chargement...';
+    
+    try {
+        const response = await fetch(GITHUB_URL + '?t=' + Date.now());
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+        
+        let dictText = "DICTIONNAIRE:\n\n";
+        const sheets = ['verbes', 'liaison', 'adjectif', 'vocabulaire', 'vétement'];
+        
+        for (const sheetName of sheets) {
+            const ws = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+            dictText += `${sheetName.toUpperCase()}:\n`;
+            for (let i = 1; i < Math.min(15, rows.length); i++) {
+                if (rows[i][0] && rows[i][1]) {
+                    dictText += `  ${rows[i][0]} = ${rows[i][1]}\n`;
+                }
+            }
+            dictText += "\n";
+        }
+        
+        document.getElementById('loadingMsg').innerHTML = '🤖 Claude génère les phrases...';
+        
+        const difficulty = state.level === 'simple' ? "courtes (3-5 mots)" : "longues (8-10 mots)";
+        const prompt = `Génère 20 phrases en français ${difficulty}, avec du SENS, utilisant uniquement ces mots:\n\n${dictText}\n\nRETOURNE UNIQUEMENT JSON: [{"fr":"phrase","he":"תרגום"}]`;
+        
+        const apiRes = await fetch("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "claude-sonnet-4-20250514",
+                max_tokens: 2000,
+                messages: [{ role: "user", content: prompt }]
+            })
+        });
+        
+        const data = await apiRes.json();
+        const text = data.content[0].text;
+        const json = JSON.parse(text.match(/\[[\s\S]*\]/)[0]);
+        
+        phrases = json.slice(0, 20);
+        currentIdx = 0;
+        answers = Array(20).fill(null);
+        
+        document.getElementById('setupScreen').classList.remove('active');
+        document.getElementById('exerciseScreen').classList.add('active');
+        displayPhrase();
+        
+    } catch (error) {
+        document.getElementById('loadingMsg').innerHTML = `❌ ${error.message}`;
+    }
+}
+
+function displayPhrase() {
+    const phrase = phrases[currentIdx];
+    const text = state.sens === 'fr-he' ? phrase.fr : phrase.he;
+    
+    document.getElementById('phraseDisplay').textContent = text;
+    document.getElementById('phraseNum').textContent = currentIdx + 1;
+    document.getElementById('answerInput').value = '';
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('navButtons').style.display = 'none';
+    document.getElementById('progBar').style.width = ((currentIdx / 20) * 100) + '%';
+    document.getElementById('scoreText').textContent = answers.filter(a => a && a.correct).length;
+}
+
+function validateAnswer() {
+    const userAns = document.getElementById('answerInput').value.trim();
+    const phrase = phrases[currentIdx];
+    const correctAns = state.sens === 'fr-he' ? phrase.he : phrase.fr;
+    const isCorrect = userAns.toLowerCase() === correctAns.toLowerCase();
+    
+    answers[currentIdx] = { correct: isCorrect };
+    
+    const resultBox = document.getElementById('resultBox');
+    resultBox.textContent = isCorrect ? '✅ Bonne réponse!' : `Réponse: ${correctAns}`;
+    resultBox.classList.add('show');
+    resultBox.classList.toggle('wrong', !isCorrect);
+    
+    document.getElementById('navButtons').style.display = 'flex';
+}
+
+function modifyAnswer() {
+    document.getElementById('answerInput').focus();
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('navButtons').style.display = 'none';
+}
+
+function nextPhrase() {
+    currentIdx++;
+    if (currentIdx < 20) {
+        displayPhrase();
+    } else {
+        showFinal();
+    }
+}
+
+function showFinal() {
+    const correct = answers.filter(a => a && a.correct).length;
+    document.getElementById('exerciseScreen').classList.remove('active');
+    document.getElementById('finalScreen').classList.add('active');
+    document.getElementById('finalScore').textContent = `${correct}/20`;
+    document.getElementById('correctMsg').textContent = `${correct} bonnes réponses`;
+}
+
+function backHome() {
+    document.getElementById('setupScreen').classList.add('active');
+    document.getElementById('exerciseScreen').classList.remove('active');
+    document.getElementById('finalScreen').classList.remove('active');
+    document.getElementById('loadingMsg').innerHTML = '';
+}
+</script>
+</body>
+</html>
