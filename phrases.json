@@ -1,0 +1,406 @@
+{
+  "simple": [
+    {
+      "fr": "J'accepte ta réponse",
+      "he": "אני מקבל את התשובה שלך"
+    },
+    {
+      "fr": "Elle achète un livre",
+      "he": "היא קונה ספר"
+    },
+    {
+      "fr": "Il aide son ami",
+      "he": "הוא עוזר לחברו"
+    },
+    {
+      "fr": "Nous aimons la musique",
+      "he": "אנחנו אוהבים מוזיקה"
+    },
+    {
+      "fr": "Tu vas à l'école",
+      "he": "אתה הולך לבית ספר"
+    },
+    {
+      "fr": "Elle allume la lampe",
+      "he": "היא מדליקה את הנורה"
+    },
+    {
+      "fr": "Je vais apprendre l'hébreu",
+      "he": "אני הולך ללמוד עברית"
+    },
+    {
+      "fr": "Il arrête le moteur",
+      "he": "הוא מפסיק את המנוע"
+    },
+    {
+      "fr": "Elle brise le verre",
+      "he": "היא שוברת את הכוס"
+    },
+    {
+      "fr": "Nous cachons le trésor",
+      "he": "אנחנו מחביאים את האוצר"
+    },
+    {
+      "fr": "Tu changes ton avis",
+      "he": "אתה משנה את הדעה שלך"
+    },
+    {
+      "fr": "Elle chante une chanson",
+      "he": "היא שרה שיר"
+    },
+    {
+      "fr": "Je cherche mes clés",
+      "he": "אני מחפש את המפתחות שלי"
+    },
+    {
+      "fr": "Il choisit le rouge",
+      "he": "הוא בוחר באדום"
+    },
+    {
+      "fr": "Nous commençons maintenant",
+      "he": "אנחנו מתחילים עכשיו"
+    },
+    {
+      "fr": "Tu comprends la leçon",
+      "he": "אתה מבין את השיעור"
+    },
+    {
+      "fr": "Elle connaît la réponse",
+      "he": "היא יודעת את התשובה"
+    },
+    {
+      "fr": "Je construis une maison",
+      "he": "אני בונה בית"
+    },
+    {
+      "fr": "Il court très vite",
+      "he": "הוא רץ מהר מאוד"
+    },
+    {
+      "fr": "Nous croyons en toi",
+      "he": "אנחנו מאמינים בך"
+    },
+    {
+      "fr": "Tu danses bien",
+      "he": "אתה רוקד טוב"
+    },
+    {
+      "fr": "Elle décide rapidement",
+      "he": "היא מחליטה בחיפזון"
+    },
+    {
+      "fr": "Je demande de l'aide",
+      "he": "אני מבקש עזרה"
+    },
+    {
+      "fr": "Il dépense son argent",
+      "he": "הוא מוציא את הכסף שלו"
+    },
+    {
+      "fr": "Nous descendons l'escalier",
+      "he": "אנחנו יורדים במדרגות"
+    },
+    {
+      "fr": "Tu désires un gâteau",
+      "he": "אתה רוצה עוגה"
+    },
+    {
+      "fr": "Elle dessine un chat",
+      "he": "היא מצייירת חתול"
+    },
+    {
+      "fr": "Je déteste les mensonges",
+      "he": "אני שונא שקרים"
+    },
+    {
+      "fr": "Il développe le projet",
+      "he": "הוא מפתח את הפרויקט"
+    },
+    {
+      "fr": "Nous devons partir",
+      "he": "אנחנו חייבים ללכת"
+    },
+    {
+      "fr": "Tu dis la vérité",
+      "he": "אתה אומר את האמת"
+    },
+    {
+      "fr": "Elle discute avec lui",
+      "he": "היא מדברת איתו"
+    },
+    {
+      "fr": "Je distribue les livres",
+      "he": "אני מחלק את הספרים"
+    },
+    {
+      "fr": "Il divise le gâteau",
+      "he": "הוא מחלק את העוגה"
+    },
+    {
+      "fr": "Nous donnons notre temps",
+      "he": "אנחנו נותנים את הזמן שלנו"
+    },
+    {
+      "fr": "Tu doutes de moi",
+      "he": "אתה מפקפק בי"
+    },
+    {
+      "fr": "Elle dresse la table",
+      "he": "היא מסדרת את השולחן"
+    },
+    {
+      "fr": "Je dépasse le limite",
+      "he": "אני חוצה את הגבול"
+    },
+    {
+      "fr": "Il échoue son examen",
+      "he": "הוא נכשל בבחינה"
+    },
+    {
+      "fr": "Nous écoutons la musique",
+      "he": "אנחנו מקשיבים למוזיקה"
+    },
+    {
+      "fr": "Tu écris une lettre",
+      "he": "אתה כותב מכתב"
+    },
+    {
+      "fr": "Elle éduque les enfants",
+      "he": "היא חינכה ילדים"
+    },
+    {
+      "fr": "Je effectue le travail",
+      "he": "אני ביצעתי את העבודה"
+    },
+    {
+      "fr": "Il égale le record",
+      "he": "הוא משווה את השיא"
+    },
+    {
+      "fr": "Nous élargissons la route",
+      "he": "אנחנו מרחיבים את הדרך"
+    },
+    {
+      "fr": "Tu élèves ta voix",
+      "he": "אתה מעלה את הקול שלך"
+    },
+    {
+      "fr": "Elle émeut mon cœur",
+      "he": "היא מרגשת את הלב שלי"
+    },
+    {
+      "fr": "Je empêche le désastre",
+      "he": "אני מונע את הדיזסטר"
+    },
+    {
+      "fr": "Il emploie les ouvriers",
+      "he": "הוא מעסיק עובדים"
+    },
+    {
+      "fr": "Nous empruntons de l'argent",
+      "he": "אנחנו שואלים כסף"
+    }
+  ],
+  "complexe": [
+    {
+      "fr": "Après le travail, j'accepte ton invitation pour prendre un café ensemble",
+      "he": "אחרי העבודה, אני מקבל את ההприглашение שלך לקחת קפה ביחד"
+    },
+    {
+      "fr": "Elle achète des vêtements neufs au magasin pour la fête demain",
+      "he": "היא קונה ביגוד חדש בחנות לפסח מחר"
+    },
+    {
+      "fr": "Il aide son ami à préparer la maison pour la grande réunion",
+      "he": "הוא עוזר לחברו להכין את הבית לפגישה הגדולה"
+    },
+    {
+      "fr": "Nous aimons passer du temps ensemble dans le parc naturel",
+      "he": "אנחנו אוהבים לבלות זמן ביחד בפארק הטבע"
+    },
+    {
+      "fr": "Tu vas à l'école avec tes frères et sœurs chaque matin",
+      "he": "אתה הולך לבית ספר עם האחים והאחיות שלך כל בוקר"
+    },
+    {
+      "fr": "Elle allume les bougies et les lumières pour créer une ambiance spéciale",
+      "he": "היא מדליקה נרות ואורות כדי ליצור אווירה מיוחדת"
+    },
+    {
+      "fr": "Je vais apprendre l'hébreu avec mon professeur particulier chaque semaine",
+      "he": "אני הולך ללמוד עברית עם המורה הפרטי שלי כל שבוע"
+    },
+    {
+      "fr": "Il arrête le moteur et descend de la voiture rapidement",
+      "he": "הוא מפסיק את המנוע ויורד מהמכונית במהירות"
+    },
+    {
+      "fr": "Elle brise le verre accidentellement et le nettoie immédiatement",
+      "he": "היא שוברת את הכוס בטעות ומנקה אותו מיד"
+    },
+    {
+      "fr": "Nous cachons le trésor dans le jardin pour que les enfants le cherchent",
+      "he": "אנחנו מחביאים את האוצר בגן כדי שהילדים יחפשו אותו"
+    },
+    {
+      "fr": "Tu changes ton avis après écouter les arguments de ton ami",
+      "he": "אתה משנה את הדעה שלך אחרי שמעת את הטיעונים של החברה"
+    },
+    {
+      "fr": "Elle chante une chanson très belle avec sa meilleure amie",
+      "he": "היא שרה שיר יפה מאוד עם החברה הטובה שלה"
+    },
+    {
+      "fr": "Je cherche mes clés dans toute la maison car je ne les trouve pas",
+      "he": "אני מחפש את המפתחות שלי בכל הבית כי אני לא מוצא אותם"
+    },
+    {
+      "fr": "Il choisit le rouge car c'est sa couleur préférée pour peindre",
+      "he": "הוא בוחר באדום כי זו הצבע המועדף שלו לצביעה"
+    },
+    {
+      "fr": "Nous commençons maintenant car nous avons peu de temps disponible",
+      "he": "אנחנו מתחילים עכשיו כי יש לנו מעט זמן זמין"
+    },
+    {
+      "fr": "Tu comprends la leçon complètement et tu peux expliquer à d'autres",
+      "he": "אתה מבין את השיעור לחלוטין ויכול להסביר לאחרים"
+    },
+    {
+      "fr": "Elle connaît la réponse correcte mais elle garde le secret pour vous",
+      "he": "היא יודעת את התשובה הנכונה אבל היא שומרת על הסוד בשבילך"
+    },
+    {
+      "fr": "Je construis une maison grande et spacieuse avec mon équipe",
+      "he": "אני בונה בית גדול ומרווח עם הצוות שלי"
+    },
+    {
+      "fr": "Il court très vite dans le stade lors de la compétition importante",
+      "he": "הוא רץ מהר מאוד בסטדיום בתחרות חשובה"
+    },
+    {
+      "fr": "Nous croyons en toi complètement et nous te supporterons toujours",
+      "he": "אנחנו מאמינים בך לחלוטין ואנחנו תמיד נתמוך בך"
+    },
+    {
+      "fr": "Tu danses bien et les gens admirent ton talent naturel",
+      "he": "אתה רוקד טוב והאנשים מעריצים את הכישרון הטבעי שלך"
+    },
+    {
+      "fr": "Elle décide rapidement malgré la situation compliquée et confuse",
+      "he": "היא מחליטה בחיפזון למרות המצב המסובך והבלבול"
+    },
+    {
+      "fr": "Je demande de l'aide à mes amis car je ne peux pas le faire seul",
+      "he": "אני מבקש עזרה מחברים שלי כי אני לא יכול לעשות זאת לבד"
+    },
+    {
+      "fr": "Il dépense son argent sagement pour acheter les choses nécessaires",
+      "he": "הוא מוציא את הכסף שלו בחוכמה לקנות דברים הכרחיים"
+    },
+    {
+      "fr": "Nous descendons l'escalier lentement pour ne pas tomber ni glisser",
+      "he": "אנחנו יורדים במדרגות לאט כדי לא ליפול או להחליק"
+    },
+    {
+      "fr": "Tu désires un gâteau au chocolat comme récompense pour ton travail",
+      "he": "אתה רוצה עוגת שוקולד כפרס על העבודה שלך"
+    },
+    {
+      "fr": "Elle dessine un chat mignon avec beaucoup de détails et de couleurs",
+      "he": "היא מצייירת חתול חמוד עם הרבה פרטים וצבעים"
+    },
+    {
+      "fr": "Je déteste les mensonges et je préfère toujours la vérité claire",
+      "he": "אני שונא שקרים ואני מעדיף תמיד את האמת הברורה"
+    },
+    {
+      "fr": "Il développe le projet créatif avec son équipe talentueuse et dévouée",
+      "he": "הוא מפתח את הפרויקט היצירתי עם הצוות המוכשר והמסור שלו"
+    },
+    {
+      "fr": "Nous devons partir maintenant car le train ne nous attendra pas longtemps",
+      "he": "אנחנו חייבים ללכת עכשיו כי הרכבת לא תחכה לנו זמן רב"
+    },
+    {
+      "fr": "Tu dis la vérité toujours même si c'est difficile et inconfortable",
+      "he": "אתה אומר את האמת תמיד גם אם זה קשה ובלתי נוח"
+    },
+    {
+      "fr": "Elle discute avec lui sur des sujets importants et intéressants",
+      "he": "היא מדברת איתו על נושאים חשובים ומעניינים"
+    },
+    {
+      "fr": "Je distribue les livres aux enfants pour qu'ils apprennent et lisent",
+      "he": "אני מחלק את הספרים לילדים כדי שהם ילמדו ויקראו"
+    },
+    {
+      "fr": "Il divise le gâteau en portions égales pour tous les participants",
+      "he": "הוא מחלק את העוגה לחלקים שווים לכל המשתתפים"
+    },
+    {
+      "fr": "Nous donnons notre temps et notre énergie pour aider les autres",
+      "he": "אנחנו נותנים את הזמן והאנרגיה שלנו כדי לעזור לאחרים"
+    },
+    {
+      "fr": "Tu doutes de moi mais je te prouverai que tu te trompes",
+      "he": "אתה מפקפק בי אבל אני אוכיח לך שאתה טועה"
+    },
+    {
+      "fr": "Elle dresse la table avec élégance en préparation pour le dîner",
+      "he": "היא מסדרת את השולחן בחן בהכנה לארוחת הערב"
+    },
+    {
+      "fr": "Je dépasse la limite de vitesse et un policier m'arrête",
+      "he": "אני חוצה את מגבלת המהירות והשוטר עוצר אותי"
+    },
+    {
+      "fr": "Il échoue son examen car il n'a pas étudié suffisamment",
+      "he": "הוא נכשל בבחינה כי הוא לא חקר מספיק"
+    },
+    {
+      "fr": "Nous écoutons la musique ensemble dans le café confortable",
+      "he": "אנחנו מקשיבים למוזיקה ביחד בקפה הנוח"
+    },
+    {
+      "fr": "Tu écris une lettre à ton ami pour partager tes sentiments profonds",
+      "he": "אתה כותב מכתב לחברא שלך כדי לשתף את הרגשות העמוקים שלך"
+    },
+    {
+      "fr": "Elle éduque les enfants avec patience et amour dans la classe",
+      "he": "היא חינכה ילדים בסבלנות ובאהבה בכיתה"
+    },
+    {
+      "fr": "Je effectue le travail très bien et je reçois des félicitations",
+      "he": "אני ביצעתי את העבודה טוב מאוד ואני קיבלתי ברכות"
+    },
+    {
+      "fr": "Il égale le record mondial avec un effort extraordinaire et incroyable",
+      "he": "הוא משווה את השיא העולמי בעמל חריג ובלתי סביר"
+    },
+    {
+      "fr": "Nous élargissons la route pour que plus de voitures puissent passer",
+      "he": "אנחנו מרחיבים את הדרך כדי שיותר מכונות יוכלו לעבור"
+    },
+    {
+      "fr": "Tu élèves ta voix pour que tout le monde puisse t'entendre clairement",
+      "he": "אתה מעלה את הקול שלך כדי שכולם יוכלו לשמוע אותך בבירור"
+    },
+    {
+      "fr": "Elle émeut mon cœur profondément avec son histoire touchante",
+      "he": "היא מרגשת את הלב שלי עמוקות עם הסיפור המחמם שלה"
+    },
+    {
+      "fr": "Je empêche le désastre en agissant rapidement et intelligemment",
+      "he": "אני מונע את הדיזסטר בפעולה מהירה וחכמה"
+    },
+    {
+      "fr": "Il emploie les ouvriers compétents pour construire la nouvelle usine",
+      "he": "הוא מעסיק עובדים מיומנים לבנות את הפברקה החדשה"
+    },
+    {
+      "fr": "Nous empruntons de l'argent à la banque pour financer notre projet",
+      "he": "אנחנו שואלים כסף מהבנק כדי לממן את הפרויקט שלנו"
+    }
+  ]
+}
