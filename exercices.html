@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN Exercices</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Heebo, sans-serif; background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        h1 { color: #0038B8; text-align: center; margin-bottom: 10px; font-size: 32px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .section { margin-bottom: 20px; }
+        .label { font-size: 12px; color: #0038B8; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .btn { padding: 12px 20px; border: 2px solid #0038B8; background: white; color: #0038B8; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn.active { background: #0038B8; color: white; }
+        .start-btn { width: 100%; padding: 16px; background: #0038B8; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .start-btn:hover { background: #002D7A; }
+        .loading { text-align: center; color: #0038B8; margin-top: 20px; font-size: 14px; }
+        .exercise-screen { display: none; }
+        .exercise-screen.active { display: block; }
+        .question { font-size: 26px; text-align: center; background: #F5F5F5; padding: 25px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #0038B8; direction: rtl; word-wrap: break-word; }
+        .audio-buttons { display: flex; gap: 15px; justify-content: center; margin: 15px 0; }
+        .audio-btn { background: none; border: none; font-size: 32px; cursor: pointer; padding: 10px; transition: transform 0.2s; }
+        .audio-btn:hover { transform: scale(1.3); }
+        .input-box { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #DDD; border-radius: 8px; margin: 15px 0; }
+        .input-box:focus { outline: none; border-color: #0038B8; }
+        .button-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .validate-btn { padding: 14px; background: #0038B8; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        .validate-btn:hover { background: #002D7A; }
+        .modify-btn { padding: 14px; background: #FFC107; color: #333; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; display: none; }
+        .modify-btn:hover { background: #FFB300; }
+        .next-btn { padding: 14px; background: #4CAF50; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; display: none; }
+        .next-btn:hover { background: #45a049; }
+        .result { padding: 15px; border-left: 4px solid; margin: 15px 0; border-radius: 8px; display: none; font-weight: bold; }
+        .result.show { display: block; }
+        .result.correct { background: #E8F5E9; border-color: #4CAF50; color: #2E7D32; }
+        .result.partial { background: #FFF3E0; border-color: #FF9800; color: #E65100; }
+        .result.wrong { background: #FFEBEE; border-color: #f44336; color: #C62828; }
+        .progress { width: 100%; height: 6px; background: #DDD; border-radius: 3px; margin: 15px 0; }
+        .progress-bar { height: 100%; background: #0038B8; border-radius: 3px; transition: width 0.3s; }
+        .stats { text-align: center; color: #666; margin-top: 20px; font-size: 14px; }
+        .final-screen { display: none; }
+        .final-screen.active { display: block; text-align: center; }
+        .score { font-size: 48px; color: #0038B8; font-weight: bold; margin: 20px 0; }
+        .setup-screen { display: none; }
+        .setup-screen.active { display: block; }
+        .back-btn { background: none; border: none; color: #0038B8; cursor: pointer; font-weight: bold; font-size: 16px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <!-- ÉCRAN SETUP -->
+        <div class="setup-screen active" id="setupScreen">
+            <h1>🇮🇱 MIZOULPAN - Exercices</h1>
+            <p class="subtitle">Dictées intelligentes avec IA</p>
+            
+            <div class="section">
+                <div class="label">Sens de traduction</div>
+                <div class="grid">
+                    <button class="btn active" onclick="selectSens('fr-he')">🇫🇷 → 🇮🇱<br>Français → Hébreu</button>
+                    <button class="btn" onclick="selectSens('he-fr')">🇮🇱 → 🇫🇷<br>Hébreu → Français</button>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="label">Niveau de difficulté</div>
+                <div class="grid">
+                    <button class="btn active" onclick="selectLevel('simple')">✅ Simple</button>
+                    <button class="btn" onclick="selectLevel('complexe')">⭐ Complexe</button>
+                </div>
+            </div>
+            
+            <button class="start-btn" onclick="startExercises()">→ Commencer</button>
+            <div class="loading" id="loadingMsg"></div>
+        </div>
+        
+        <!-- ÉCRAN EXERCICE -->
+        <div class="exercise-screen" id="exerciseScreen">
+            <button class="back-btn" onclick="backHome()">← Retour</button>
+            
+            <h1>Phrase <span id="phraseNum">1</span> / <span id="totalText">50</span></h1>
+            <div class="progress"><div class="progress-bar" id="progBar"></div></div>
+            
+            <div class="question" id="phraseDisplay"></div>
+            
+            <div class="audio-buttons">
+                <button class="audio-btn" onclick="playAudio()" title="Écouter">🔊</button>
+                <button class="audio-btn" onclick="startMicrophone()" title="Parler">🎤</button>
+            </div>
+            
+            <input type="text" class="input-box" id="answerInput" placeholder="Tape ta réponse...">
+            
+            <div class="button-group">
+                <button class="validate-btn" id="validateBtn" onclick="validateAnswer()">✓ Valider</button>
+                <button class="modify-btn" id="modifyBtn" onclick="modifyAnswer()">← Modifier</button>
+                <button class="next-btn" id="nextBtn" onclick="nextPhrase()">Phrase Suivante →</button>
+            </div>
+            
+            <div class="result" id="resultBox"></div>
+            <div class="stats">⭐ <span id="scoreText">0</span> / <span id="totalText">50</span></div>
+        </div>
+        
+        <!-- ÉCRAN RÉSUMÉ -->
+        <div class="final-screen" id="finalScreen">
+            <h1>🎉 Bravo!</h1>
+            <p class="subtitle">Tu as terminé les exercices</p>
+            <div class="score" id="finalScore">0/50</div>
+            <p id="correctMsg" style="font-size: 16px; color: #666; margin-bottom: 20px;"></p>
+            <button class="start-btn" onclick="backHome()">← Recommencer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const GITHUB_URL = 'https://raw.githubusercontent.com/MUXOIK/mizoulpan-quiz/main/phrases.json';
+let state = { sens: 'fr-he', level: 'simple' };
+let phrases = [];
+let currentIdx = 0;
+let answers = [];
+let isAnswered = false;
+
+function selectSens(sens) {
+    state.sens = sens;
+    document.querySelectorAll('.grid')[0].querySelectorAll('.btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && sens === 'fr-he') || (i === 1 && sens === 'he-fr'));
+    });
+}
+
+function selectLevel(level) {
+    state.level = level;
+    document.querySelectorAll('.grid')[1].querySelectorAll('.btn').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && level === 'simple') || (i === 1 && level === 'complexe'));
+    });
+}
+
+function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+async function startExercises() {
+    document.getElementById('loadingMsg').innerHTML = '⏳ Chargement...';
+    
+    try {
+        const response = await fetch(GITHUB_URL + '?t=' + Date.now());
+        const data = await response.json();
+        
+        phrases = state.level === 'simple' ? data.simple : data.complexe;
+        phrases = shuffle(phrases);
+        currentIdx = 0;
+        answers = Array(phrases.length).fill(null);
+        isAnswered = false;
+        
+        document.getElementById('setupScreen').classList.remove('active');
+        document.getElementById('exerciseScreen').classList.add('active');
+        document.getElementById('totalText').textContent = phrases.length;
+        displayPhrase();
+        
+    } catch (error) {
+        document.getElementById('loadingMsg').innerHTML = `❌ ${error.message}`;
+    }
+}
+
+function displayPhrase() {
+    const phrase = phrases[currentIdx];
+    const text = state.sens === 'fr-he' ? phrase.fr : phrase.he;
+    
+    document.getElementById('phraseDisplay').textContent = text;
+    document.getElementById('phraseNum').textContent = currentIdx + 1;
+    document.getElementById('answerInput').value = '';
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('progBar').style.width = ((currentIdx / phrases.length) * 100) + '%';
+    document.getElementById('scoreText').textContent = answers.filter(a => a && a.correct === 'correct').length;
+    
+    isAnswered = false;
+    document.getElementById('validateBtn').style.display = 'block';
+    document.getElementById('modifyBtn').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'none';
+}
+
+function playAudio() {
+    const phrase = phrases[currentIdx];
+    const text = state.sens === 'fr-he' ? phrase.fr : phrase.he;
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = state.sens === 'fr-he' ? 'fr-FR' : 'he-IL';
+    window.speechSynthesis.speak(utterance);
+}
+
+function startMicrophone() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        alert('Votre navigateur ne supporte pas la reconnaissance vocale');
+        return;
+    }
+    
+    try {
+        const recognition = new SpeechRecognition();
+        recognition.lang = state.sens === 'fr-he' ? 'fr-FR' : 'he-IL';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = () => {
+            document.getElementById('answerInput').placeholder = 'En écoute...';
+        };
+        
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            if (transcript) {
+                document.getElementById('answerInput').value = transcript;
+            }
+            document.getElementById('answerInput').placeholder = 'Tape ta réponse...';
+        };
+        
+        recognition.onerror = (event) => {
+            document.getElementById('answerInput').placeholder = 'Erreur: ' + event.error;
+            setTimeout(() => {
+                document.getElementById('answerInput').placeholder = 'Tape ta réponse...';
+            }, 2000);
+        };
+        
+        recognition.start();
+    } catch (e) {
+        alert('Erreur micro: ' + e.message);
+    }
+}
+
+function similarity(s1, s2) {
+    const a = s1.toLowerCase().trim();
+    const b = s2.toLowerCase().trim();
+    
+    if (a === b) return 100;
+    
+    const longer = a.length > b.length ? a : b;
+    const shorter = a.length > b.length ? b : a;
+    
+    const editDistance = levenshtein(longer, shorter);
+    return ((longer.length - editDistance) / longer.length) * 100;
+}
+
+function levenshtein(a, b) {
+    const arr = [];
+    for (let i = 0; i <= b.length; i++) {
+        arr[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+        arr[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            arr[i][j] = Math.min(
+                arr[i][j-1] + 1,
+                arr[i-1][j] + 1,
+                arr[i-1][j-1] + (a[j-1] !== b[i-1] ? 1 : 0)
+            );
+        }
+    }
+    return arr[b.length][a.length];
+}
+
+function validateAnswer() {
+    const userAns = document.getElementById('answerInput').value.trim();
+    if (!userAns) {
+        alert('Veuillez taper une réponse!');
+        return;
+    }
+    
+    const phrase = phrases[currentIdx];
+    const correctAns = state.sens === 'fr-he' ? phrase.he : phrase.fr;
+    
+    const sim = similarity(userAns, correctAns);
+    let resultType = 'wrong';
+    let resultText = '';
+    
+    if (sim >= 95) {
+        resultType = 'correct';
+        resultText = '✅ Bonne réponse!';
+        answers[currentIdx] = { correct: 'correct' };
+    } else if (sim >= 70) {
+        resultType = 'partial';
+        resultText = `⚠️ Presque bon! Réponse: ${correctAns}`;
+        answers[currentIdx] = { correct: 'partial' };
+    } else {
+        resultType = 'wrong';
+        resultText = `❌ Réponse: ${correctAns}`;
+        answers[currentIdx] = { correct: 'wrong' };
+    }
+    
+    isAnswered = true;
+    const resultBox = document.getElementById('resultBox');
+    resultBox.textContent = resultText;
+    resultBox.classList.remove('correct', 'partial', 'wrong');
+    resultBox.classList.add('show', resultType);
+    
+    document.getElementById('validateBtn').style.display = 'none';
+    document.getElementById('modifyBtn').style.display = 'block';
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('scoreText').textContent = answers.filter(a => a && a.correct === 'correct').length;
+}
+
+function modifyAnswer() {
+    document.getElementById('answerInput').focus();
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('validateBtn').style.display = 'block';
+    document.getElementById('modifyBtn').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'none';
+    isAnswered = false;
+}
+
+function nextPhrase() {
+    currentIdx++;
+    if (currentIdx < phrases.length) {
+        displayPhrase();
+    } else {
+        showFinal();
+    }
+}
+
+function showFinal() {
+    const correct = answers.filter(a => a && a.correct === 'correct').length;
+    const partial = answers.filter(a => a && a.correct === 'partial').length;
+    document.getElementById('exerciseScreen').classList.remove('active');
+    document.getElementById('finalScreen').classList.add('active');
+    document.getElementById('finalScore').textContent = `${correct}/${phrases.length}`;
+    document.getElementById('correctMsg').textContent = `${correct} bonnes réponses, ${partial} presque bonnes`;
+}
+
+function backHome() {
+    document.getElementById('setupScreen').classList.add('active');
+    document.getElementById('exerciseScreen').classList.remove('active');
+    document.getElementById('finalScreen').classList.remove('active');
+    document.getElementById('loadingMsg').innerHTML = '';
+}
+</script>
+</body>
+</html>
