@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN - Exercices</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+        }
+
+        .header h1 {
+            color: #0038B8;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .flag {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+
+        .screen {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            padding: 16px;
+            background: linear-gradient(135deg, #0038B8 0%, #002D7A 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(21, 101, 192, 0.4);
+        }
+
+        .category-btn:active {
+            transform: scale(0.98);
+        }
+
+        .level-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .level-btn {
+            flex: 1;
+            padding: 20px;
+            background: white;
+            border: 2px solid #0038B8;
+            color: #0038B8;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .level-btn:hover {
+            background: #e3f2fd;
+            transform: scale(1.05);
+        }
+
+        .level-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #0038B8;
+        }
+
+        .progress-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0038B8, #002D7A);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .phrase-container {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            animation: slideUp 0.5s ease;
+            border-left: 4px solid #0038B8;
+        }
+
+        .phrase-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0038B8;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .phrase-text {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .phrase-text.french {
+            direction: ltr;
+            text-align: left;
+        }
+
+        .audio-btn {
+            background: #0038B8;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: #002D7A;
+            transform: scale(1.05);
+        }
+
+        .input-container {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #0038B8;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 14px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: #0038B8;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+
+        #userInput.correct {
+            border-color: #4caf50;
+            background: #f1f8e9;
+        }
+
+        #userInput.partial {
+            border-color: #ff9800;
+            background: #fff3e0;
+        }
+
+        #userInput.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .mic-btn {
+            padding: 14px 20px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mic-btn:hover {
+            border-color: #0038B8;
+            background: #e3f2fd;
+        }
+
+        .mic-btn.listening {
+            background: #f44336;
+            border-color: #f44336;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-verify {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #0038B8 0%, #002D7A 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-verify:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.4);
+        }
+
+        .btn-verify:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-show {
+            padding: 14px 20px;
+            background: white;
+            border: 2px solid #0038B8;
+            color: #0038B8;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-show:hover {
+            background: #e3f2fd;
+        }
+
+        .feedback {
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            animation: slideUp 0.4s ease;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #f1f8e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .feedback.partial {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #e65100;
+        }
+
+        .feedback.wrong {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+        }
+
+        .btn-nav {
+            padding: 10px 16px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-nav:hover {
+            border-color: #0038B8;
+            background: #e3f2fd;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .congratulations {
+            text-align: center;
+            padding: 40px 20px;
+            animation: bounce 0.8s ease;
+        }
+
+        .congratulations-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+        }
+
+        .congratulations h2 {
+            color: #0038B8;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .score-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #0038B8 0%, #002D7A 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.4);
+        }
+
+        .encouragement {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(21, 101, 192, 0.3);
+            border-radius: 50%;
+            border-top-color: #0038B8;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .screen {
+                padding: 20px;
+            }
+
+            .level-buttons {
+                flex-direction: column;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error-message {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #c62828;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><span class="flag">🇮🇱</span>MIZOULPAN - Exercices</h1>
+            <p>Traduis les phrases pour maîtriser l'hébreu!</p>
+        </div>
+
+        <div class="screen">
+            <!-- ÉCRAN CATÉGORIES -->
+            <div id="categoriesScreen">
+                <h2 style="color: #0038B8; margin-bottom: 20px; text-align: center;">Choisir une catégorie</h2>
+                <div class="categories-grid" id="categoriesGrid"></div>
+            </div>
+
+            <!-- ÉCRAN NIVEAUX -->
+            <div id="levelsScreen" class="hidden">
+                <h2 style="color: #0038B8; margin-bottom: 20px; text-align: center;">
+                    <span id="selectedCategoryName"></span>
+                </h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px;">Choisir le niveau de difficulté</p>
+                <div class="level-buttons">
+                    <button class="level-btn" onclick="startExercises('simple')">
+                        🟢 Niveau Simple<br><span style="font-size: 12px; font-weight: normal;">Sujet + Verbe + Objet</span>
+                    </button>
+                    <button class="level-btn" onclick="startExercises('complex')">
+                        🔴 Niveau Complexe<br><span style="font-size: 12px; font-weight: normal;">Phrases plus longues</span>
+                    </button>
+                </div>
+                <button onclick="goBackCategories()" style="display: block; margin: 20px auto; padding: 10px 20px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer;">← Retour</button>
+            </div>
+
+            <!-- ÉCRAN EXERCICES -->
+            <div id="exerciseScreen" class="hidden">
+                <div id="errorMsg"></div>
+                <div class="exercise-header">
+                    <div>
+                        <div class="progress-info">Exercice <span id="currentExercise">1</span> / <span id="totalExercises">20</span></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <button onclick="goBackLevels()" style="background: none; border: none; font-size: 20px; cursor: pointer; padding: 0;">✕</button>
+                </div>
+
+                <div class="encouragement" id="encouragement"></div>
+
+                <div class="phrase-container">
+                    <div class="phrase-label" id="phraseLanguage">Traduis en hébreu</div>
+                    <div class="phrase-text" id="phraseText">...</div>
+                    <button class="audio-btn" onclick="speakPhrase()">
+                        <span>🔊</span> Écouter
+                    </button>
+                </div>
+
+                <div class="input-container">
+                    <label class="input-label">Ta traduction</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="userInput" placeholder="Écris ta réponse..." spellcheck="false">
+                        <button class="mic-btn" onclick="toggleMicrophone()" title="Utiliser le micro">🎤</button>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-verify" onclick="verifyAnswer()" id="verifyBtn">Vérifier</button>
+                    <button class="btn-show" onclick="showSolution()" id="showBtn">Voir la solution</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav" onclick="previousExercise()" id="prevBtn">← Précédent</button>
+                    <button class="btn-nav" onclick="nextExercise()" id="nextBtn">Suivant →</button>
+                </div>
+            </div>
+
+            <!-- ÉCRAN FÉLICITATIONS -->
+            <div id="congratulationsScreen" class="hidden">
+                <div class="congratulations">
+                    <div class="congratulations-icon">🎉</div>
+                    <h2>Bravo!</h2>
+                    <p style="color: #666; margin-bottom: 16px;">Tu as complété tous les exercices!</p>
+                    <div class="score-badge" id="finalScore">0/20</div>
+                    <div style="margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 12px;">
+                        <p style="color: #666; font-size: 14px; margin-bottom: 10px;">Phrases à retravailler:</p>
+                        <div id="reviewList" style="text-align: left; max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                    <button onclick="goBackCategories()" style="margin-top: 30px; padding: 12px 24px; background: linear-gradient(135deg, #0038B8 0%, #002D7A 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Retour aux catégories</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration du backend Render
+        const BACKEND_URL = 'https://mizoulpan-backend.onrender.com';
+
+        const GITHUB_URL = 'https://raw.githubusercontent.com/MUXOIK/mizoulpan-quiz/main/vocabulaire.xlsx';
+
+        let state = {
+            currentScreen: 'categories',
+            categories: [],
+            selectedCategory: null,
+            selectedLevel: null,
+            exercises: [],
+            currentIndex: 0,
+            answers: [],
+            vocabulary: {},
+            isListening: false
+        };
+
+        const encouragements = [
+            "Tu peux le faire! 💪",
+            "Excellent effort! 🌟",
+            "Continue comme ça! 🚀",
+            "Presque là! 🎯",
+            "À toi de jouer! 🎪",
+            "Vas-y, tu vas réussir! 🔥",
+            "Penses en hébreu! 🧠",
+            "Bravo pour ta ténacité! 💯"
+        ];
+
+        function showEncouragement() {
+            const msg = encouragements[Math.floor(Math.random() * encouragements.length)];
+            document.getElementById('encouragement').textContent = msg;
+        }
+
+        async function loadVocabulary() {
+            // Attendre que XLSX soit chargé
+            let attempts = 0;
+            while (typeof XLSX === 'undefined' && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+            
+            if (typeof XLSX === 'undefined') {
+                console.error('XLSX library failed to load');
+                alert('Erreur: Impossible de charger la bibliothèque SheetJS');
+                return;
+            }
+            
+            try {
+                console.log('Chargement du vocabulaire depuis:', GITHUB_URL);
+                const response = await fetch(GITHUB_URL + '?t=' + Date.now());
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const arrayBuffer = await response.arrayBuffer();
+                const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+                
+                console.log('Onglets trouvés:', workbook.SheetNames);
+                
+                state.categories = workbook.SheetNames.filter(name => 
+                    name !== 'Résumé' && name !== 'resume'
+                );
+                
+                console.log('Catégories après filtrage:', state.categories);
+                
+                if (state.categories.length === 0) {
+                    throw new Error('Aucune catégorie trouvée dans le fichier Excel');
+                }
+                
+                state.categories.forEach(name => {
+                    state.vocabulary[name] = XLSX.utils.sheet_to_json(workbook.Sheets[name]);
+                });
+
+                console.log('Vocabulaire chargé avec succès');
+                displayCategories();
+            } catch (error) {
+                console.error('Erreur chargement vocabulaire:', error);
+                alert('Erreur: ' + error.message);
+            }
+        }
+
+        function displayCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+            
+            state.categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'category-btn';
+                btn.textContent = cat;
+                btn.onclick = () => selectCategory(cat);
+                grid.appendChild(btn);
+            });
+        }
+
+        function selectCategory(category) {
+            state.selectedCategory = category;
+            document.getElementById('selectedCategoryName').textContent = category;
+            showScreen('levels');
+        }
+
+        async function generatePhrases(level) {
+            const vocab = state.vocabulary[state.selectedCategory];
+            const vocabList = vocab.map(v => {
+                return Object.values(v).filter(val => val && val.trim()).slice(0, 3).join(' / ');
+            }).join(', ');
+
+            // Désactiver les boutons
+            const buttons = document.querySelectorAll('.level-btn');
+            buttons.forEach(btn => btn.disabled = true);
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/generate-phrases`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        vocabulary: vocabList,
+                        level: level
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur serveur: ${response.status}`);
+                }
+
+                const data = await response.json();
+                state.exercises = data.phrases;
+                state.answers = new Array(data.phrases.length).fill(null);
+                startExerciseView();
+
+            } catch (error) {
+                console.error('Erreur génération:', error);
+                showError('Erreur: impossible de générer les phrases. Vérifiez que le backend est actif.');
+                buttons.forEach(btn => btn.disabled = false);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMsg');
+            errorDiv.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+
+        async function startExercises(level) {
+            state.selectedLevel = level;
+            await generatePhrases(level);
+        }
+
+        function startExerciseView() {
+            state.currentIndex = 0;
+            showScreen('exercise');
+            displayExercise();
+        }
+
+        function displayExercise() {
+            const exercise = state.exercises[state.currentIndex];
+            const isFrench = Math.random() > 0.5;
+
+            const phraseElement = document.getElementById('phraseText');
+            phraseElement.textContent = isFrench ? exercise.french : exercise.hebrew;
+            phraseElement.classList.toggle('french', isFrench);
+
+            document.getElementById('phraseLanguage').textContent = 
+                isFrench ? 'Traduis en hébreu' : 'Traduis en français';
+
+            const input = document.getElementById('userInput');
+            input.value = '';
+            input.classList.remove('correct', 'partial', 'wrong');
+            input.disabled = false;
+            input.placeholder = isFrench ? 'Écris la traduction...' : 'Write the translation...';
+
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('show', 'correct', 'partial', 'wrong');
+
+            document.getElementById('prevBtn').disabled = state.currentIndex === 0;
+            document.getElementById('nextBtn').disabled = state.currentIndex === state.exercises.length - 1;
+            document.getElementById('verifyBtn').disabled = false;
+            document.getElementById('showBtn').textContent = 'Voir la solution';
+
+            document.getElementById('currentExercise').textContent = state.currentIndex + 1;
+            document.getElementById('totalExercises').textContent = state.exercises.length;
+            const progress = ((state.currentIndex + 1) / state.exercises.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            showEncouragement();
+            document.getElementById('userInput').focus();
+        }
+
+        function speakPhrase() {
+            const exercise = state.exercises[state.currentIndex];
+            const phraseText = document.getElementById('phraseText');
+            const isHebrew = phraseText.textContent === exercise.hebrew;
+
+            const utterance = new SpeechSynthesisUtterance(
+                isHebrew ? exercise.hebrew : exercise.french
+            );
+
+            utterance.lang = isHebrew ? 'he-IL' : 'fr-FR';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function toggleMicrophone() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert('La reconnaissance vocale n\'est pas supportée');
+                return;
+            }
+
+            if (state.isListening) {
+                state.isListening = false;
+                document.querySelector('.mic-btn').classList.remove('listening');
+                return;
+            }
+
+            state.isListening = true;
+            document.querySelector('.mic-btn').classList.add('listening');
+
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = document.getElementById('phraseLanguage').textContent.includes('hébreu') ? 'he-IL' : 'fr-FR';
+
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('userInput').value = transcript;
+                state.isListening = false;
+                document.querySelector('.mic-btn').classList.remove('listening');
+            };
+
+            recognition.onerror = () => {
+                state.isListening = false;
+                document.querySelector('.mic-btn').classList.remove('listening');
+            };
+
+            recognition.start();
+        }
+
+        async function verifyAnswer() {
+            const userAnswer = document.getElementById('userInput').value.trim();
+            if (!userAnswer) {
+                alert('Veuillez entrer une réponse');
+                return;
+            }
+
+            const exercise = state.exercises[state.currentIndex];
+            const phraseText = document.getElementById('phraseText').textContent;
+            const isTranslatingToHebrew = phraseText === exercise.french;
+            const expectedAnswer = isTranslatingToHebrew ? exercise.hebrew : exercise.french;
+
+            document.getElementById('verifyBtn').disabled = true;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/validate-answer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userAnswer: userAnswer,
+                        expectedAnswer: expectedAnswer,
+                        isTranslatingToHebrew: isTranslatingToHebrew
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur serveur: ${response.status}`);
+                }
+
+                const data = await response.json();
+                showFeedback(data.status, data.explanation);
+                state.answers[state.currentIndex] = data.status;
+                state.exercises[state.currentIndex].userAnswer = userAnswer;
+
+            } catch (error) {
+                console.error('Erreur validation:', error);
+                showError('Erreur lors de la validation. Réessayez.');
+                document.getElementById('verifyBtn').disabled = false;
+            }
+        }
+
+        function showFeedback(status, explanation) {
+            const input = document.getElementById('userInput');
+            const feedback = document.getElementById('feedback');
+
+            input.classList.remove('correct', 'partial', 'wrong');
+            feedback.classList.remove('correct', 'partial', 'wrong');
+
+            if (status === 'correct') {
+                input.classList.add('correct');
+                feedback.classList.add('correct', 'show');
+                feedback.innerHTML = `<div class="feedback-title">✓ Correct!</div><div style="font-size: 14px;">${explanation}</div>`;
+            } else if (status === 'partial') {
+                input.classList.add('partial');
+                feedback.classList.add('partial', 'show');
+                feedback.innerHTML = `<div class="feedback-title">⚠ Presque correct!</div><div style="font-size: 14px;">${explanation}</div>`;
+            } else {
+                input.classList.add('wrong');
+                feedback.classList.add('wrong', 'show');
+                feedback.innerHTML = `<div class="feedback-title">✗ Incorrect</div><div style="font-size: 14px;">${explanation}</div>`;
+            }
+
+            document.getElementById('userInput').disabled = true;
+            document.getElementById('verifyBtn').disabled = true;
+        }
+
+        function showSolution() {
+            const exercise = state.exercises[state.currentIndex];
+            const btn = document.getElementById('showBtn');
+
+            if (btn.textContent === 'Voir la solution') {
+                const input = document.getElementById('userInput');
+                const isTranslatingToHebrew = document.getElementById('phraseLanguage').textContent.includes('hébreu');
+                const solution = isTranslatingToHebrew ? exercise.hebrew : exercise.french;
+
+                input.value = solution;
+                input.disabled = true;
+                btn.textContent = 'Solution affichée';
+            }
+        }
+
+        function nextExercise() {
+            if (state.currentIndex < state.exercises.length - 1) {
+                state.currentIndex++;
+                displayExercise();
+            } else {
+                showCongratulations();
+            }
+        }
+
+        function previousExercise() {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                displayExercise();
+            }
+        }
+
+        function showCongratulations() {
+            const correct = state.answers.filter(a => a === 'correct').length;
+            document.getElementById('finalScore').textContent = `${correct}/${state.exercises.length}`;
+
+            const reviewList = document.getElementById('reviewList');
+            reviewList.innerHTML = '';
+
+            state.exercises.forEach((ex, i) => {
+                if (state.answers[i] !== 'correct') {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'padding: 8px; background: white; margin: 8px 0; border-radius: 4px; font-size: 13px;';
+                    div.innerHTML = `<strong>${ex.french}</strong><br><em>${ex.hebrew}</em>`;
+                    reviewList.appendChild(div);
+                }
+            });
+
+            showScreen('congratulations');
+        }
+
+        function showScreen(screen) {
+            document.getElementById('categoriesScreen').classList.toggle('hidden', screen !== 'categories');
+            document.getElementById('levelsScreen').classList.toggle('hidden', screen !== 'levels');
+            document.getElementById('exerciseScreen').classList.toggle('hidden', screen !== 'exercise');
+            document.getElementById('congratulationsScreen').classList.toggle('hidden', screen !== 'congratulations');
+            state.currentScreen = screen;
+        }
+
+        function goBackCategories() {
+            showScreen('categories');
+        }
+
+        function goBackLevels() {
+            showScreen('levels');
+        }
+
+        window.addEventListener('load', loadVocabulary);
+    </script>
+</body>
+</html>
