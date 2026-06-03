@@ -1,0 +1,1186 @@
+{
+  "simple": [
+    {
+      "id": 1,
+      "he": "בישראל סוף שבוע הוא יום שישי ושבת.",
+      "fr": "En Israël, le weekend est vendredi et samedi."
+    },
+    {
+      "id": 2,
+      "he": "הרבה ישראלים עובדים ביום שישי.",
+      "fr": "Beaucoup d'Israéliens travaillent le vendredi."
+    },
+    {
+      "id": 3,
+      "he": "ולא עובדים בשבת.",
+      "fr": "Et ne travaillent pas le samedi."
+    },
+    {
+      "id": 4,
+      "he": "השראלים אוכלים פלאפל וחומוס.",
+      "fr": "Les Israéliens mangent du falafel et du houmous."
+    },
+    {
+      "id": 5,
+      "he": "הם אוהבים את הסלט.",
+      "fr": "Ils aiment la salade."
+    },
+    {
+      "id": 6,
+      "he": "בישראל יש קונצרטים וטיולים.",
+      "fr": "En Israël, il y a des concerts et des promenades."
+    },
+    {
+      "id": 7,
+      "he": "בעיר יש מוזיאון ויצירות אומנות.",
+      "fr": "En ville, il y a un musée et des œuvres d'art."
+    },
+    {
+      "id": 8,
+      "he": "הם הולכים לטיולים ביום שישי.",
+      "fr": "Ils vont en excursion le vendredi."
+    },
+    {
+      "id": 9,
+      "he": "בקיבוץ יש בתים וחוות.",
+      "fr": "Au kiboutz, il y a des maisons et des fermes."
+    },
+    {
+      "id": 10,
+      "he": "בישראל יש קולות צפויים ופרחים יפים.",
+      "fr": "En Israël, il y a des sons familiers et de belles fleurs."
+    },
+    {
+      "id": 11,
+      "he": "השראלים חובבי אומנות ותרבות.",
+      "fr": "Les Israéliens sont amateurs d'art et de culture."
+    },
+    {
+      "id": 12,
+      "he": "הם מעריכים את הערכים החינוכיים.",
+      "fr": "Ils apprécient les valeurs éducatives."
+    },
+    {
+      "id": 13,
+      "he": "בקיבוץ עובדים בשדה.",
+      "fr": "Au kiboutz, on travaille aux champs."
+    },
+    {
+      "id": 14,
+      "he": "בקיבוץ גדלים פרחים וירקות.",
+      "fr": "Au kiboutz, on cultive des fleurs et des légumes."
+    },
+    {
+      "id": 15,
+      "he": "לילדים יש שעות למידה קבועות.",
+      "fr": "Les enfants ont des heures d'étude régulières."
+    },
+    {
+      "id": 16,
+      "he": "הם לומדים בכיתה.",
+      "fr": "Ils étudient en classe."
+    },
+    {
+      "id": 17,
+      "he": "בישראל חובה ללמוד שנה אחת.",
+      "fr": "En Israël, il est obligatoire d'étudier une année."
+    },
+    {
+      "id": 18,
+      "he": "השראלים מדברים עברית.",
+      "fr": "Les Israéliens parlent hébreu."
+    },
+    {
+      "id": 19,
+      "he": "יש להם שפות אחרות גם.",
+      "fr": "Ils ont aussi d'autres langues."
+    },
+    {
+      "id": 20,
+      "he": "בית הספר הוא מקום חשוב.",
+      "fr": "L'école est un endroit important."
+    },
+    {
+      "id": 21,
+      "he": "בישראל יש חומוס טוב.",
+      "fr": "En Israël, il y a un bon houmous."
+    },
+    {
+      "id": 22,
+      "he": "השראלים אוכלים פלאפל.",
+      "fr": "Les Israéliens mangent du falafel."
+    },
+    {
+      "id": 23,
+      "he": "בקיבוץ גדלים פרחים.",
+      "fr": "Au kiboutz, on cultive des fleurs."
+    },
+    {
+      "id": 24,
+      "he": "בקיבוץ גדלים ירקות.",
+      "fr": "Au kiboutz, on cultive des légumes."
+    },
+    {
+      "id": 25,
+      "he": "לקיבוץ יש מפעל.",
+      "fr": "Le kiboutz a une usine."
+    },
+    {
+      "id": 26,
+      "he": "בישראל חובה ללמוד.",
+      "fr": "En Israël, il est obligatoire d'étudier."
+    },
+    {
+      "id": 27,
+      "he": "המורה מלמדת את הילדים.",
+      "fr": "La maîtresse enseigne aux enfants."
+    },
+    {
+      "id": 28,
+      "he": "בישראל יש מוזיאון.",
+      "fr": "En Israël, il y a un musée."
+    },
+    {
+      "id": 29,
+      "he": "בעיר יש גלריות אומנות.",
+      "fr": "En ville, il y a des galeries d'art."
+    },
+    {
+      "id": 30,
+      "he": "בישראל יש קונצרטים.",
+      "fr": "En Israël, il y a des concerts."
+    },
+    {
+      "id": 31,
+      "he": "בישראל יש תיאטרון.",
+      "fr": "En Israël, il y a un théâtre."
+    },
+    {
+      "id": 32,
+      "he": "הם אוהבים מוזיקה.",
+      "fr": "Ils aiment la musique."
+    },
+    {
+      "id": 33,
+      "he": "המשפחה אוכלת ביחד.",
+      "fr": "La famille mange ensemble."
+    },
+    {
+      "id": 34,
+      "he": "האב עובד בעיר.",
+      "fr": "Le père travaille en ville."
+    },
+    {
+      "id": 35,
+      "he": "האם עובדת בבית.",
+      "fr": "La mère travaille à la maison."
+    },
+    {
+      "id": 36,
+      "he": "הילדים הולכים לבית ספר.",
+      "fr": "Les enfants vont à l'école."
+    },
+    {
+      "id": 37,
+      "he": "הגברים עובדים קשה.",
+      "fr": "Les hommes travaillent dur."
+    },
+    {
+      "id": 38,
+      "he": "בישראל יש ערים גדולות.",
+      "fr": "En Israël, il y a de grandes villes."
+    },
+    {
+      "id": 39,
+      "he": "ירושלים היא עיר עתיקה.",
+      "fr": "Jérusalem est une vieille ville."
+    },
+    {
+      "id": 40,
+      "he": "תל אביב היא עיר מודרנית.",
+      "fr": "Tel-Aviv est une ville moderne."
+    },
+    {
+      "id": 41,
+      "he": "בישראל יש ים.",
+      "fr": "En Israël, il y a une mer."
+    },
+    {
+      "id": 42,
+      "he": "בישראל יש הרים.",
+      "fr": "En Israël, il y a des montagnes."
+    },
+    {
+      "id": 43,
+      "he": "החומוס טוב מאוד.",
+      "fr": "Le houmous est très bon."
+    },
+    {
+      "id": 44,
+      "he": "הפלאפל חריף.",
+      "fr": "Le falafel est piquant."
+    },
+    {
+      "id": 45,
+      "he": "הלחם טרי.",
+      "fr": "Le pain est frais."
+    },
+    {
+      "id": 46,
+      "he": "הגבינה יקרה.",
+      "fr": "Le fromage est cher."
+    },
+    {
+      "id": 47,
+      "he": "הבשר טעים.",
+      "fr": "La viande est savoureuse."
+    },
+    {
+      "id": 48,
+      "he": "בקיץ חם מאוד.",
+      "fr": "En été, il fait très chaud."
+    },
+    {
+      "id": 49,
+      "he": "בחורף קר.",
+      "fr": "En hiver, il fait froid."
+    },
+    {
+      "id": 50,
+      "he": "בארץ ישראל יש שמש הרבה.",
+      "fr": "En terre d'Israël, il y a beaucoup de soleil."
+    },
+    {
+      "id": 51,
+      "he": "בישראל יורד גשם בחורף.",
+      "fr": "En Israël, il pleut en hiver."
+    },
+    {
+      "id": 52,
+      "he": "הם נוסעים באוטובוס.",
+      "fr": "Ils voyagent en bus."
+    },
+    {
+      "id": 53,
+      "he": "הם נוסעים במכונית.",
+      "fr": "Ils voyagent en voiture."
+    },
+    {
+      "id": 54,
+      "he": "הם הולכים ברגל.",
+      "fr": "Ils marchent à pied."
+    },
+    {
+      "id": 55,
+      "he": "בישראל יש תחבורה ציבורית.",
+      "fr": "En Israël, il y a les transports en commun."
+    },
+    {
+      "id": 56,
+      "he": "הישראלים חובבי אומנות.",
+      "fr": "Les Israéliens aiment l'art."
+    },
+    {
+      "id": 57,
+      "he": "החינוך חשוב בישראל.",
+      "fr": "L'éducation est importante en Israël."
+    },
+    {
+      "id": 58,
+      "he": "הערכים משפחתיים חשובים.",
+      "fr": "Les valeurs familiales sont importantes."
+    },
+    {
+      "id": 59,
+      "he": "הם מכבדים את ההיסטוריה.",
+      "fr": "Ils respectent l'histoire."
+    },
+    {
+      "id": 60,
+      "he": "הקהילה חשובה מאוד.",
+      "fr": "La communauté est très importante."
+    },
+    {
+      "id": 61,
+      "he": "הדרך יפה ומיוחדת.",
+      "fr": "La route est belle et spéciale."
+    },
+    {
+      "id": 62,
+      "he": "המדבר גדול.",
+      "fr": "Le désert est grand."
+    },
+    {
+      "id": 63,
+      "he": "אין בתים.",
+      "fr": "Il n'y a pas de maisons."
+    },
+    {
+      "id": 64,
+      "he": "אתה לא רואה אנשים.",
+      "fr": "Tu ne vois pas de gens."
+    },
+    {
+      "id": 65,
+      "he": "יש רק שקט.",
+      "fr": "Il n'y a que du silence."
+    },
+    {
+      "id": 66,
+      "he": "יש מעיינות של מים חמים.",
+      "fr": "Il y a des sources d'eau chaude."
+    },
+    {
+      "id": 67,
+      "he": "הם באים בחורף.",
+      "fr": "Ils viennent en hiver."
+    },
+    {
+      "id": 68,
+      "he": "יש במים הרבה מינרלים.",
+      "fr": "Il y a beaucoup de minéraux dans l'eau."
+    },
+    {
+      "id": 69,
+      "he": "יש במדבר שמש טובה.",
+      "fr": "Il y a un bon soleil dans le désert."
+    },
+    {
+      "id": 70,
+      "he": "הם גרים במלונות.",
+      "fr": "Ils logent dans des hôtels."
+    },
+    {
+      "id": 71,
+      "he": "הם רואים את ההרים המיוחדים.",
+      "fr": "Ils voient les montagnes particulières."
+    },
+    {
+      "id": 72,
+      "he": "הם רואים את הים הכחול.",
+      "fr": "Ils voient la mer bleue."
+    },
+    {
+      "id": 73,
+      "he": "הם רואים את השמים היפים.",
+      "fr": "Ils voient le beau ciel."
+    },
+    {
+      "id": 74,
+      "he": "הם רואים את המדבר.",
+      "fr": "Ils voient le désert."
+    },
+    {
+      "id": 75,
+      "he": "הם שומעים את השקט.",
+      "fr": "Ils entendent le silence."
+    },
+    {
+      "id": 76,
+      "he": "בנגב יש עיר של בדווים.",
+      "fr": "Dans le Néguev, il y a une ville de Bédouins."
+    },
+    {
+      "id": 77,
+      "he": "במוזאון יש אוהל גדול.",
+      "fr": "Dans le musée, il y a une grande tente."
+    },
+    {
+      "id": 78,
+      "he": "יש שם שטיחים גדולים ויפים.",
+      "fr": "Il y a là-bas de grands et beaux tapis."
+    },
+    {
+      "id": 79,
+      "he": "השטיחים הם המיטות.",
+      "fr": "Les tapis sont les lits."
+    },
+    {
+      "id": 80,
+      "he": "הכיסאות והשולחנות.",
+      "fr": "Les chaises et les tables."
+    },
+    {
+      "id": 81,
+      "he": "באוהל יש שני חדרים.",
+      "fr": "Dans la tente, il y a deux pièces."
+    },
+    {
+      "id": 82,
+      "he": "הגברים יושבים בחדר אחד.",
+      "fr": "Les hommes sont assis dans une pièce."
+    },
+    {
+      "id": 83,
+      "he": "הנשים יושבות עם הילדים בחדר אחר.",
+      "fr": "Les femmes sont assises avec les enfants dans une autre pièce."
+    },
+    {
+      "id": 84,
+      "he": "ליד המוזאון יש קפטריה עם אוכל בדווי.",
+      "fr": "Près du musée, il y a une cafétéria avec de la nourriture bédouine."
+    },
+    {
+      "id": 85,
+      "he": "הפיתות מיוחדות.",
+      "fr": "Les pitas sont particulières."
+    },
+    {
+      "id": 86,
+      "he": "הקפה טוב.",
+      "fr": "Le café est bon."
+    },
+    {
+      "id": 87,
+      "he": "יש קיבוץ קטן ומיוחד.",
+      "fr": "Il y a un petit kibboutz particulier."
+    },
+    {
+      "id": 88,
+      "he": "קיבוץ הדרוף.",
+      "fr": "Le kibboutz Hardouf."
+    },
+    {
+      "id": 89,
+      "he": "האנשים בקיבוץ אוהבים את הטבע.",
+      "fr": "Les gens du kibboutz aiment la nature."
+    },
+    {
+      "id": 90,
+      "he": "הם אוהבים את האדם.",
+      "fr": "Ils aiment l'être humain."
+    },
+    {
+      "id": 91,
+      "he": "הם לא רוצים מיקרוגל בבית.",
+      "fr": "Ils ne veulent pas de micro-ondes à la maison."
+    },
+    {
+      "id": 92,
+      "he": "הם לא רוצים טלוויזיה.",
+      "fr": "Ils ne veulent pas de télévision."
+    },
+    {
+      "id": 93,
+      "he": "גם לא מחשב.",
+      "fr": "Ni ordinateur non plus."
+    },
+    {
+      "id": 94,
+      "he": "החברים בקיבוץ עובדים בחקלאות אורגנית.",
+      "fr": "Les membres du kibboutz travaillent dans l'agriculture biologique."
+    },
+    {
+      "id": 95,
+      "he": "הם יושבים ביחד.",
+      "fr": "Ils s'assoient ensemble."
+    },
+    {
+      "id": 96,
+      "he": "הם עושים מדיטציה ויוגה.",
+      "fr": "Ils font de la méditation et du yoga."
+    },
+    {
+      "id": 97,
+      "he": "הם שרים.",
+      "fr": "Ils chantent."
+    },
+    {
+      "id": 98,
+      "he": "הם רוקדים.",
+      "fr": "Ils dansent."
+    },
+    {
+      "id": 99,
+      "he": "הם מדברים על הטבע ועל החיים.",
+      "fr": "Ils parlent de la nature et de la vie."
+    },
+    {
+      "id": 100,
+      "he": "בקיבוץ יש חנות קטנה.",
+      "fr": "Dans le kibboutz, il y a un petit magasin."
+    },
+    {
+      "id": 101,
+      "he": "בחנות יש תה.",
+      "fr": "Dans le magasin, il y a du thé."
+    },
+    {
+      "id": 102,
+      "he": "יש חומוס.",
+      "fr": "Il y a du houmous."
+    },
+    {
+      "id": 103,
+      "he": "יש תבלינים בלי כימיקלים.",
+      "fr": "Il y a des épices sans produits chimiques."
+    },
+    {
+      "id": 104,
+      "he": "יש לחם מיוחד.",
+      "fr": "Il y a du pain spécial."
+    },
+    {
+      "id": 105,
+      "he": "יש קורסים על הפילוסופיה האנתרופוסופית.",
+      "fr": "Il y a des cours sur la philosophie anthroposophique."
+    },
+    {
+      "id": 106,
+      "he": "ישראל היא סוף שבוע.",
+      "fr": "En Israël, c'est le week-end."
+    },
+    {
+      "id": 107,
+      "he": "אנשים הולכים לשוק או לקניון.",
+      "fr": "Les gens vont au marché ou au centre commercial."
+    },
+    {
+      "id": 108,
+      "he": "בקניון יש מסעדות.",
+      "fr": "Au centre commercial, il y a des restaurants."
+    },
+    {
+      "id": 109,
+      "he": "יש בתי קפה.",
+      "fr": "Il y a des cafés."
+    },
+    {
+      "id": 110,
+      "he": "יש הרבה חנויות.",
+      "fr": "Il y a beaucoup de magasins."
+    },
+    {
+      "id": 111,
+      "he": "אנשים אוהבים לטייל בקניון.",
+      "fr": "Les gens aiment se promener au centre commercial."
+    },
+    {
+      "id": 112,
+      "he": "הם קונים חומוס וטחינה.",
+      "fr": "Ils achètent du houmous et de la tahina."
+    },
+    {
+      "id": 113,
+      "he": "הם קונים קפה ותה.",
+      "fr": "Ils achètent du café et du thé."
+    },
+    {
+      "id": 114,
+      "he": "הם קונים עוגות ושוקולד.",
+      "fr": "Ils achètent des gâteaux et du chocolat."
+    },
+    {
+      "id": 115,
+      "he": "הם קונים גם פרחים ועיתונים.",
+      "fr": "Ils achètent aussi des fleurs et des journaux."
+    },
+    {
+      "id": 116,
+      "he": "הישראלים אומרים.",
+      "fr": "Les Israéliens disent."
+    },
+    {
+      "id": 117,
+      "he": "אנחנו מקבלים את השבת בשירים.",
+      "fr": "Nous accueillons le Shabbat avec des chants."
+    },
+    {
+      "id": 118,
+      "he": "יש אוניברסיטה.",
+      "fr": "Il y a une université."
+    },
+    {
+      "id": 119,
+      "he": "יש סימנטק.",
+      "fr": "Il y a une cinémathèque."
+    },
+    {
+      "id": 120,
+      "he": "יש מוזאון.",
+      "fr": "Il y a un musée."
+    },
+    {
+      "id": 121,
+      "he": "יש מקומות אחרים.",
+      "fr": "Il y a d'autres endroits."
+    },
+    {
+      "id": 122,
+      "he": "אנחנו לא רוצים ללמוד ביום שישי.",
+      "fr": "Nous ne voulons pas étudier le vendredi."
+    },
+    {
+      "id": 123,
+      "he": "אנחנו רוצים לראות חנויות יפות.",
+      "fr": "Nous voulons voir de beaux magasins."
+    },
+    {
+      "id": 124,
+      "he": "גם הקניון הוא אוניברסיטה.",
+      "fr": "Le centre commercial aussi est une université."
+    },
+    {
+      "id": 125,
+      "he": "אנחנו לומדים על החיים.",
+      "fr": "Nous apprenons sur la vie."
+    },
+    {
+      "id": 126,
+      "he": "השוק בקניון רואים את הסרט של החיים.",
+      "fr": "Au marché et au centre commercial, on voit le film de la vie."
+    },
+    {
+      "id": 127,
+      "he": "הרבה אנשים בעולם המודרני מצליחים בחיים בלי לקרוא ספרים.",
+      "fr": "Beaucoup de gens dans le monde moderne réussissent dans la vie sans lire de livres."
+    },
+    {
+      "id": 128,
+      "he": "הם לא קוראים ספרים.",
+      "fr": "Ils ne lisent pas de livres."
+    },
+    {
+      "id": 129,
+      "he": "הם לא קונים ספרים.",
+      "fr": "Ils n'achètent pas de livres."
+    },
+    {
+      "id": 130,
+      "he": "הם לא מזמינים ספרים בספרייה.",
+      "fr": "Ils ne commandent pas de livres à la bibliothèque."
+    },
+    {
+      "id": 131,
+      "he": "הם לא יושבים עם ספר.",
+      "fr": "Ils ne s'assoient pas avec un livre."
+    },
+    {
+      "id": 132,
+      "he": "לא בבית.",
+      "fr": "Pas à la maison."
+    },
+    {
+      "id": 133,
+      "he": "לא בגן.",
+      "fr": "Pas au jardin."
+    },
+    {
+      "id": 134,
+      "he": "לא בבית קפה.",
+      "fr": "Pas au café."
+    },
+    {
+      "id": 135,
+      "he": "גם הילדים בעולם המודרני לא קוראים הרבה ספרים.",
+      "fr": "Les enfants aussi, dans le monde moderne, ne lisent pas beaucoup de livres."
+    },
+    {
+      "id": 136,
+      "he": "הם רואים טלוויזיה הרבה שעות ביום.",
+      "fr": "Ils regardent la télévision de nombreuses heures par jour."
+    },
+    {
+      "id": 137,
+      "he": "הם משחקים במחשב.",
+      "fr": "Ils jouent à l'ordinateur."
+    },
+    {
+      "id": 138,
+      "he": "הם קוראים רק באינטרנט.",
+      "fr": "Ils lisent seulement sur Internet."
+    },
+    {
+      "id": 139,
+      "he": "אין חיים בלי ספרים.",
+      "fr": "Il n'y a pas de vie sans livres."
+    },
+    {
+      "id": 140,
+      "he": "הספרים הם דבר חדש בהיסטוריה.",
+      "fr": "Les livres sont une chose nouvelle dans l'histoire."
+    },
+    {
+      "id": 141,
+      "he": "העולם העתיק הוא עולם בלי ספרים.",
+      "fr": "Le monde antique est un monde sans livres."
+    },
+    {
+      "id": 142,
+      "he": "פילוסופים חשובים כותבים על חיים אידיאליים בטבע.",
+      "fr": "Des philosophes importants écrivent sur une vie idéale dans la nature."
+    },
+    {
+      "id": 143,
+      "he": "החיים בטבע הם חיים בלי ספרים.",
+      "fr": "La vie dans la nature est une vie sans livres."
+    }
+  ],
+  "complexe": [
+    {
+      "id": 1,
+      "he": "בישראל סוף שבוע הוא יום שישי ושבת, אבל הם עובדים ביום שישי.",
+      "fr": "En Israël, le weekend est vendredi et samedi, mais ils travaillent le vendredi."
+    },
+    {
+      "id": 2,
+      "he": "הרבה ישראלים עובדים ביום שישי וחוזרים הביתה בערב.",
+      "fr": "Beaucoup d'Israéliens travaillent le vendredi et rentrent à la maison le soir."
+    },
+    {
+      "id": 3,
+      "he": "בקיבוץ הם גדלים פרחים וירקות כדי למכור אותם.",
+      "fr": "Au kiboutz, ils cultivent des fleurs et des légumes pour les vendre."
+    },
+    {
+      "id": 4,
+      "he": "השראלים אוהבים את האומנות ולכן הם הולכים למוזיאון.",
+      "fr": "Les Israéliens aiment l'art, c'est pourquoi ils vont au musée."
+    },
+    {
+      "id": 5,
+      "he": "בישראל יש טיולים וקונצרטים, ולכן החיים שם מעניינים.",
+      "fr": "En Israël, il y a des promenades et des concerts, donc la vie y est intéressante."
+    },
+    {
+      "id": 6,
+      "he": "לילדים יש שעות למידה קבועות, אבל גם זמן לשחק.",
+      "fr": "Les enfants ont des heures d'étude régulières, mais aussi du temps pour jouer."
+    },
+    {
+      "id": 7,
+      "he": "בקיבוץ עובדים בשדה, ואחרי כן אוכלים ביחד.",
+      "fr": "Au kiboutz, on travaille aux champs, et après on mange ensemble."
+    },
+    {
+      "id": 8,
+      "he": "השראלים חובבי אומנות ותרבות, ולכן הם בונים מוזיאונים.",
+      "fr": "Les Israéliens sont amateurs d'art et de culture, c'est pourquoi ils construisent des musées."
+    },
+    {
+      "id": 9,
+      "he": "בישראל חובה ללמוד שנה אחת, כי החינוך חשוב מאוד.",
+      "fr": "En Israël, il est obligatoire d'étudier une année, car l'éducation est très importante."
+    },
+    {
+      "id": 10,
+      "he": "הם מעריכים את הערכים החינוכיים ולכן השקיעו בבנייה של בתי ספר.",
+      "fr": "Ils apprécient les valeurs éducatives, c'est pourquoi ils ont investi dans la construction d'écoles."
+    },
+    {
+      "id": 11,
+      "he": "החומוס טוב מאוד, אבל הפלאפל גם טעים.",
+      "fr": "Le houmous est très bon, mais le falafel est aussi délicieux."
+    },
+    {
+      "id": 12,
+      "he": "בישראל חם בקיץ, אבל בחורף קר.",
+      "fr": "En Israël, il fait chaud en été, mais froid en hiver."
+    },
+    {
+      "id": 13,
+      "he": "הם אוהבים את המוזיקה, אבל גם את הרקוד.",
+      "fr": "Ils aiment la musique, mais aussi la danse."
+    },
+    {
+      "id": 14,
+      "he": "בעיר יש מוזיאונים, אבל גם יש טיאטרונים.",
+      "fr": "En ville, il y a des musées, mais aussi des théâtres."
+    },
+    {
+      "id": 15,
+      "he": "בקיבוץ גדלים פרחים וגם ירקות.",
+      "fr": "Au kiboutz, on cultive des fleurs et aussi des légumes."
+    },
+    {
+      "id": 16,
+      "he": "האב עובד וגם האם עובדת.",
+      "fr": "Le père travaille et la mère aussi travaille."
+    },
+    {
+      "id": 17,
+      "he": "הם אוהבים את הקיבוץ וגם את העיר.",
+      "fr": "Ils aiment le kiboutz et aussi la ville."
+    },
+    {
+      "id": 18,
+      "he": "בישראל יש ים וגם יש הרים.",
+      "fr": "En Israël, il y a la mer et aussi il y a des montagnes."
+    },
+    {
+      "id": 19,
+      "he": "הם לומדים עברית וגם אנגלית.",
+      "fr": "Ils étudient l'hébreu et aussi l'anglais."
+    },
+    {
+      "id": 20,
+      "he": "הם הולכים לקיבוץ, כי אוהבים את הטבע.",
+      "fr": "Ils vont au kiboutz, parce qu'ils aiment la nature."
+    },
+    {
+      "id": 21,
+      "he": "הם אוכלים פלאפל, כי זה טעים.",
+      "fr": "Ils mangent du falafel, parce que c'est délicieux."
+    },
+    {
+      "id": 22,
+      "he": "בישראל יש טיולים, כי יש דברים יפים לראות.",
+      "fr": "En Israël, il y a des excursions, parce qu'il y a de belles choses à voir."
+    },
+    {
+      "id": 23,
+      "he": "הם אוהבים את הקונצרטים, כי המוזיקה נהדרת.",
+      "fr": "Ils aiment les concerts, parce que la musique est merveilleuse."
+    },
+    {
+      "id": 24,
+      "he": "אחרי הלימודים, הם הולכים לעיר.",
+      "fr": "Après les études, ils vont en ville."
+    },
+    {
+      "id": 25,
+      "he": "אחרי העבודה, הם אוכלים ביחד.",
+      "fr": "Après le travail, ils mangent ensemble."
+    },
+    {
+      "id": 26,
+      "he": "אחרי הקונצרט, הם חוזרים הביתה.",
+      "fr": "Après le concert, ils rentrent à la maison."
+    },
+    {
+      "id": 27,
+      "he": "לפני הלימודים, הם אוכלים ארוחת בוקר.",
+      "fr": "Avant les études, ils prennent le petit déjeuner."
+    },
+    {
+      "id": 28,
+      "he": "לפני השבת, הם מנקים את הבית.",
+      "fr": "Avant le Shabbat, ils nettoient la maison."
+    },
+    {
+      "id": 29,
+      "he": "כאשר הם בקיבוץ, הם עובדים בשדה.",
+      "fr": "Quand ils sont au kiboutz, ils travaillent aux champs."
+    },
+    {
+      "id": 30,
+      "he": "כאשר הם בעיר, הם הולכים למוזיאון.",
+      "fr": "Quand ils sont en ville, ils vont au musée."
+    },
+    {
+      "id": 31,
+      "he": "כאשר זה קיץ, בישראל חם מאוד.",
+      "fr": "Quand c'est l'été, en Israël il fait très chaud."
+    },
+    {
+      "id": 32,
+      "he": "אם אתה אוהב אומנות, אתה צריך ללכת למוזיאון.",
+      "fr": "Si tu aimes l'art, tu dois aller au musée."
+    },
+    {
+      "id": 33,
+      "he": "אם אתה רוצה לאכול טוב, אתה צריך ללכת לישראל.",
+      "fr": "Si tu veux manger bien, tu dois aller en Israël."
+    },
+    {
+      "id": 34,
+      "he": "אם זה חם, אנחנו הולכים לים.",
+      "fr": "Si c'est chaud, nous allons à la mer."
+    },
+    {
+      "id": 35,
+      "he": "הם אוכלים פלאפל או חומוס.",
+      "fr": "Ils mangent du falafel ou du houmous."
+    },
+    {
+      "id": 36,
+      "he": "הם הולכים לקיבוץ או לעיר.",
+      "fr": "Ils vont au kiboutz ou en ville."
+    },
+    {
+      "id": 37,
+      "he": "הם נוסעים באוטובוס או במכונית.",
+      "fr": "Ils voyagent en bus ou en voiture."
+    },
+    {
+      "id": 38,
+      "he": "גם הילדים הולכים לבית ספר.",
+      "fr": "Les enfants aussi vont à l'école."
+    },
+    {
+      "id": 39,
+      "he": "גם בעיר יש קונצרטים.",
+      "fr": "En ville aussi il y a des concerts."
+    },
+    {
+      "id": 40,
+      "he": "גם בחורף בישראל יפה.",
+      "fr": "En hiver aussi c'est beau en Israël."
+    },
+    {
+      "id": 41,
+      "he": "הם עובדים בשדה ואחרי כן אוכלים ביחד.",
+      "fr": "Ils travaillent aux champs et après ils mangent ensemble."
+    },
+    {
+      "id": 42,
+      "he": "בבוקר הם לומדים, ובערב הם משחקים.",
+      "fr": "Le matin ils étudient, et le soir ils jouent."
+    },
+    {
+      "id": 43,
+      "he": "הם הולכים לקיבוץ, הם עובדים, ואחרי כן חוזרים הביתה.",
+      "fr": "Ils vont au kiboutz, ils travaillent, et après ils rentrent à la maison."
+    },
+    {
+      "id": 44,
+      "he": "בישראל יש עיר עתיקה בשם ירושלים.",
+      "fr": "En Israël, il y a une vieille ville appelée Jérusalem."
+    },
+    {
+      "id": 45,
+      "he": "בקיבוץ יש חקלאים שגדלים ירקות טובים.",
+      "fr": "Au kiboutz, il y a des fermiers qui cultivent de bons légumes."
+    },
+    {
+      "id": 46,
+      "he": "בעיר יש מוזיאון שמציג אומנות עתיקה.",
+      "fr": "En ville, il y a un musée qui expose de l'art ancien."
+    },
+    {
+      "id": 47,
+      "he": "הישראלים הם אנשים שאוהבים אומנות ותרבות.",
+      "fr": "Les Israéliens sont des gens qui aiment l'art et la culture."
+    },
+    {
+      "id": 48,
+      "he": "האנשים בישראל אוהבים מאוד את חומוס.",
+      "fr": "Les gens en Israël aiment beaucoup le houmous."
+    },
+    {
+      "id": 49,
+      "he": "הערכים המשפחתיים הם חשובים מאוד בישראל.",
+      "fr": "Les valeurs familiales sont très importantes en Israël."
+    },
+    {
+      "id": 50,
+      "he": "החינוך הוא דבר חשוב מאוד בקיבוץ.",
+      "fr": "L'éducation est une chose très importante au kiboutz."
+    },
+    {
+      "id": 51,
+      "he": "הקיבוץ הוא דרך חיים שונה מאוד.",
+      "fr": "Le kiboutz est un mode de vie très différent."
+    },
+    {
+      "id": 52,
+      "he": "אתה נוסע בדרך מירושלים לסדום.",
+      "fr": "Tu voyages sur la route de Jérusalem à Sodome."
+    },
+    {
+      "id": 53,
+      "he": "ליד יריחו אתה רואה אוהלים של בדווים, והכול שקט.",
+      "fr": "Près de Jéricho, tu vois des tentes de Bédouins, et tout est silencieux."
+    },
+    {
+      "id": 54,
+      "he": "פתאום אתה רואה מלונות גדולים ומודרניים.",
+      "fr": "Soudain, tu vois de grands hôtels modernes."
+    },
+    {
+      "id": 55,
+      "he": "מלון אחד ועוד מלון, ועוד מלון.",
+      "fr": "Un hôtel, puis encore un hôtel, et encore un hôtel."
+    },
+    {
+      "id": 56,
+      "he": "אתה שואל: מה הם עושים שם באמצע המדבר?",
+      "fr": "Tu demandes : que font-ils là, au milieu du désert ?"
+    },
+    {
+      "id": 57,
+      "he": "ליד ים המלח יש מעיינות של מים חמים.",
+      "fr": "Près de la mer Morte, il y a des sources d'eau chaude."
+    },
+    {
+      "id": 58,
+      "he": "הרבה תיירים מהארץ ומחוץ לארץ באים לשם.",
+      "fr": "Beaucoup de touristes du pays et de l'étranger viennent là-bas."
+    },
+    {
+      "id": 59,
+      "he": "אנשים חולים מכל העולם באים למעיינות האלה.",
+      "fr": "Des personnes malades du monde entier viennent à ces sources."
+    },
+    {
+      "id": 60,
+      "he": "הם באים בחורף כי יש במים הרבה מינרלים.",
+      "fr": "Ils viennent en hiver parce qu'il y a beaucoup de minéraux dans l'eau."
+    },
+    {
+      "id": 61,
+      "he": "הם באים בחורף כי במדבר יש שמש טובה.",
+      "fr": "Ils viennent en hiver parce qu'il y a un bon soleil dans le désert."
+    },
+    {
+      "id": 62,
+      "he": "הם גרים במלונות ושם הם רואים את ההרים המיוחדים.",
+      "fr": "Ils logent dans les hôtels et là-bas ils voient les montagnes particulières."
+    },
+    {
+      "id": 63,
+      "he": "הם רואים את הים הכחול ואת השמים היפים.",
+      "fr": "Ils voient la mer bleue et le beau ciel."
+    },
+    {
+      "id": 64,
+      "he": "הם רואים את המדבר ושומעים את השקט.",
+      "fr": "Ils voient le désert et entendent le silence."
+    },
+    {
+      "id": 65,
+      "he": "בגליל, ליד חיפה, יש קיבוץ קטן ומיוחד.",
+      "fr": "En Galilée, près de Haïfa, il y a un petit kibboutz particulier."
+    },
+    {
+      "id": 66,
+      "he": "האנשים בקיבוץ לא רוצים לגור בעיר גדולה כמו תל אביב או חיפה.",
+      "fr": "Les gens du kibboutz ne veulent pas habiter dans une grande ville comme Tel-Aviv ou Haïfa."
+    },
+    {
+      "id": 67,
+      "he": "הם מחפשים שקט ורוצים לגור במקום קטן.",
+      "fr": "Ils cherchent le calme et veulent habiter dans un petit endroit."
+    },
+    {
+      "id": 68,
+      "he": "החיים בקיבוץ הדרוף הם לפי האידיאולוגיה האנתרופוסופית של רודולף שטיינר.",
+      "fr": "La vie au kibboutz Hardouf suit l'idéologie anthroposophique de Rudolf Steiner."
+    },
+    {
+      "id": 69,
+      "he": "האנשים בקיבוץ אוהבים את הטבע ולא את המודרניזציה.",
+      "fr": "Les gens du kibboutz aiment la nature et non la modernisation."
+    },
+    {
+      "id": 70,
+      "he": "הם אוהבים את האדם ולא את המכונה.",
+      "fr": "Ils aiment l'être humain et non la machine."
+    },
+    {
+      "id": 71,
+      "he": "הם לא רוצים מיקרוגל בבית, הם לא רוצים טלוויזיה, וגם לא מחשב.",
+      "fr": "Ils ne veulent pas de micro-ondes à la maison, ils ne veulent pas de télévision, ni d'ordinateur."
+    },
+    {
+      "id": 72,
+      "he": "החברים בקיבוץ עובדים בחקלאות אורגנית, חקלאות בלי כימיקלים.",
+      "fr": "Les membres du kibboutz travaillent dans l'agriculture biologique, une agriculture sans produits chimiques."
+    },
+    {
+      "id": 73,
+      "he": "בערב הם יושבים ביחד, עושים מדיטציה ויוגה, שרים, רוקדים ומדברים על הטבע ועל החיים.",
+      "fr": "Le soir, ils s'assoient ensemble, font de la méditation et du yoga, chantent, dansent et parlent de la nature et de la vie."
+    },
+    {
+      "id": 74,
+      "he": "הילדים בהרדוף לומדים בבית ספר מיוחד.",
+      "fr": "Les enfants à Hardouf étudient dans une école particulière."
+    },
+    {
+      "id": 75,
+      "he": "הם מטיילים הרבה בטבע, עובדים בחקלאות, לומדים לשיר ולרקוד, ומשחקים גם בשיעורים וגם בהפסקות.",
+      "fr": "Ils se promènent beaucoup dans la nature, travaillent dans l'agriculture, apprennent à chanter et à danser, et jouent en cours comme pendant les pauses."
+    },
+    {
+      "id": 76,
+      "he": "אנשים מהעיר באים לקיבוץ הדרוף כי יש שם מסעדה עם אוכל אורגני וחנות קטנה.",
+      "fr": "Des gens de la ville viennent au kibboutz Hardouf parce qu'il y a là-bas un restaurant avec de la nourriture biologique et un petit magasin."
+    },
+    {
+      "id": 77,
+      "he": "יש בקיבוץ הדרוף קורסים על הפילוסופיה האנתרופוסופית.",
+      "fr": "Au kibboutz Hardouf, il y a des cours sur la philosophie anthroposophique."
+    },
+    {
+      "id": 78,
+      "he": "הרבה אנשים רוצים לבוא ללמוד על הפילוסופיה ועל רודולף שטיינר.",
+      "fr": "Beaucoup de gens veulent venir étudier la philosophie et Rudolf Steiner."
+    },
+    {
+      "id": 79,
+      "he": "הם רוצים לפגוש את האנשים בקיבוץ ולשמוע על החיים המיוחדים בקיבוץ הזה.",
+      "fr": "Ils veulent rencontrer les gens du kibboutz et entendre parler de la vie particulière dans ce kibboutz."
+    },
+    {
+      "id": 80,
+      "he": "הם לא קוראים ספרים, לא קונים ספרים ולא מזמינים ספרים בספרייה.",
+      "fr": "Ils ne lisent pas de livres, n'achètent pas de livres et ne commandent pas de livres à la bibliothèque."
+    },
+    {
+      "id": 81,
+      "he": "הם לא יושבים עם ספר — לא בבית, לא בגן ולא בבית קפה.",
+      "fr": "Ils ne s'assoient pas avec un livre — ni à la maison, ni au jardin, ni au café."
+    },
+    {
+      "id": 82,
+      "he": "הם רואים טלוויזיה הרבה שעות ביום ומשחקים במחשב.",
+      "fr": "Ils regardent la télévision de nombreuses heures par jour et jouent à l'ordinateur."
+    },
+    {
+      "id": 83,
+      "he": "הם קוראים רק באינטרנט.",
+      "fr": "Ils lisent seulement sur Internet."
+    },
+    {
+      "id": 84,
+      "he": "יורם ברונובסקי כותב: בזמן האחרון הורים, מורים ואינטלקטואלים לא יודעים מה לעשות.",
+      "fr": "Yoram Bronovski écrit : ces derniers temps, les parents, les enseignants et les intellectuels ne savent pas quoi faire."
+    },
+    {
+      "id": 85,
+      "he": "הם חושבים: אין חיים בלי ספרים.",
+      "fr": "Ils pensent : il n'y a pas de vie sans livres."
+    },
+    {
+      "id": 86,
+      "he": "יורם ברונובסקי אומר: יש חיים בלי ספרים.",
+      "fr": "Yoram Bronovski dit : il y a une vie sans livres."
+    },
+    {
+      "id": 87,
+      "he": "הספרים הם דבר חדש בהיסטוריה.",
+      "fr": "Les livres sont une chose nouvelle dans l'histoire."
+    },
+    {
+      "id": 88,
+      "he": "העולם העתיק הוא עולם בלי ספרים.",
+      "fr": "Le monde antique est un monde sans livres."
+    },
+    {
+      "id": 89,
+      "he": "פילוסופים חשובים כותבים על חיים אידיאליים בטבע.",
+      "fr": "Des philosophes importants écrivent sur une vie idéale dans la nature."
+    },
+    {
+      "id": 90,
+      "he": "אפלטון אומר שאנשים מטיילים בטבע, שומעים סיפורים, מדברים עם חברים, שרים ורוקדים.",
+      "fr": "Platon dit que les gens se promènent dans la nature, écoutent des histoires, parlent avec des amis, chantent et dansent."
+    },
+    {
+      "id": 91,
+      "he": "הספרים מסבירים שום דבר.",
+      "fr": "Les livres n'expliquent rien."
+    },
+    {
+      "id": 92,
+      "he": "אולי באמת בעולם המודרני אין עתיד לספרים.",
+      "fr": "Peut-être que, dans le monde moderne, il n'y a vraiment pas d'avenir pour les livres."
+    },
+    {
+      "id": 93,
+      "he": "אולי אנחנו באמת מתחילים להבין ולהרגיש את העולם כמו הפילוסופים הגדולים וכמו בעולם העתיק.",
+      "fr": "Peut-être commençons-nous vraiment à comprendre et à ressentir le monde comme les grands philosophes et comme dans le monde antique."
+    }
+  ]
+}
