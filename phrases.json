@@ -1,0 +1,156 @@
+{
+  "simple": [
+    {
+      "id": 1,
+      "he": "בישראל סוף שבוע הוא יום שישי ושבת.",
+      "fr": "En Israël, le weekend est vendredi et samedi."
+    },
+    {
+      "id": 2,
+      "he": "הרבה ישראלים עובדים ביום שישי.",
+      "fr": "Beaucoup d'Israéliens travaillent le vendredi."
+    },
+    {
+      "id": 3,
+      "he": "ולא עובדים בשבת.",
+      "fr": "Et ne travaillent pas le samedi."
+    },
+    {
+      "id": 4,
+      "he": "השראלים אוכלים פלאפל וחומוס.",
+      "fr": "Les Israéliens mangent du falafel et du houmous."
+    },
+    {
+      "id": 5,
+      "he": "הם אוהבים את הסלט.",
+      "fr": "Ils aiment la salade."
+    },
+    {
+      "id": 6,
+      "he": "בישראל יש קונצרטים וטיולים.",
+      "fr": "En Israël, il y a des concerts et des promenades."
+    },
+    {
+      "id": 7,
+      "he": "בעיר יש מוזיאון ויצירות אומנות.",
+      "fr": "En ville, il y a un musée et des œuvres d'art."
+    },
+    {
+      "id": 8,
+      "he": "הם הולכים לטיולים ביום שישי.",
+      "fr": "Ils vont en excursion le vendredi."
+    },
+    {
+      "id": 9,
+      "he": "בקיבוץ יש בתים וחוות.",
+      "fr": "Au kiboutz, il y a des maisons et des fermes."
+    },
+    {
+      "id": 10,
+      "he": "בישראל יש קולות צפויים ופרחים יפים.",
+      "fr": "En Israël, il y a des sons familiers et de belles fleurs."
+    },
+    {
+      "id": 11,
+      "he": "השראלים חובבי אומנות ותרבות.",
+      "fr": "Les Israéliens sont amateurs d'art et de culture."
+    },
+    {
+      "id": 12,
+      "he": "הם מעריכים את הערכים החינוכיים.",
+      "fr": "Ils apprécient les valeurs éducatives."
+    },
+    {
+      "id": 13,
+      "he": "בקיבוץ עובדים בשדה.",
+      "fr": "Au kiboutz, on travaille aux champs."
+    },
+    {
+      "id": 14,
+      "he": "בקיבוץ גדלים פרחים וירקות.",
+      "fr": "Au kiboutz, on cultive des fleurs et des légumes."
+    },
+    {
+      "id": 15,
+      "he": "לילדים יש שעות למידה קבועות.",
+      "fr": "Les enfants ont des heures d'étude régulières."
+    },
+    {
+      "id": 16,
+      "he": "הם לומדים בכיתה.",
+      "fr": "Ils étudient en classe."
+    },
+    {
+      "id": 17,
+      "he": "בישראל חובה ללמוד שנה אחת.",
+      "fr": "En Israël, il est obligatoire d'étudier une année."
+    },
+    {
+      "id": 18,
+      "he": "השראלים מדברים עברית.",
+      "fr": "Les Israéliens parlent hébreu."
+    },
+    {
+      "id": 19,
+      "he": "יש להם שפות אחרות גם.",
+      "fr": "Ils ont aussi d'autres langues."
+    },
+    {
+      "id": 20,
+      "he": "בית הספר הוא מקום חשוב.",
+      "fr": "L'école est un endroit important."
+    }
+  ],
+  "complexe": [
+    {
+      "id": 21,
+      "he": "בישראל סוף שבוע הוא יום שישי ושבת, אבל הם עובדים ביום שישי.",
+      "fr": "En Israël, le weekend est vendredi et samedi, mais ils travaillent le vendredi."
+    },
+    {
+      "id": 22,
+      "he": "הרבה ישראלים עובדים ביום שישי וחוזרים הביתה בערב.",
+      "fr": "Beaucoup d'Israéliens travaillent le vendredi et rentrent à la maison le soir."
+    },
+    {
+      "id": 23,
+      "he": "בקיבוץ הם גדלים פרחים וירקות כדי למכור אותם.",
+      "fr": "Au kiboutz, ils cultivent des fleurs et des légumes pour les vendre."
+    },
+    {
+      "id": 24,
+      "he": "השראלים אוהבים את האומנות ולכן הם הולכים למוזיאון.",
+      "fr": "Les Israéliens aiment l'art, c'est pourquoi ils vont au musée."
+    },
+    {
+      "id": 25,
+      "he": "בישראל יש טיולים וקונצרטים, ולכן החיים שם מעניינים.",
+      "fr": "En Israël, il y a des promenades et des concerts, donc la vie y est intéressante."
+    },
+    {
+      "id": 26,
+      "he": "לילדים יש שעות למידה קבועות, אבל גם זמן לשחק.",
+      "fr": "Les enfants ont des heures d'étude régulières, mais aussi du temps pour jouer."
+    },
+    {
+      "id": 27,
+      "he": "בקיבוץ עובדים בשדה, ואחרי כן אוכלים ביחד.",
+      "fr": "Au kiboutz, on travaille aux champs, et après on mange ensemble."
+    },
+    {
+      "id": 28,
+      "he": "השראלים חובבי אומנות ותרבות, ולכן הם בונים מוזיאונים.",
+      "fr": "Les Israéliens sont amateurs d'art et de culture, c'est pourquoi ils construisent des musées."
+    },
+    {
+      "id": 29,
+      "he": "בישראל חובה ללמוד שנה אחת, כי החינוך חשוב מאוד.",
+      "fr": "En Israël, il est obligatoire d'étudier une année, car l'éducation est très importante."
+    },
+    {
+      "id": 30,
+      "he": "הם מעריכים את הערכים החינוכיים ולכן השקיעו בבנייה של בתי ספר.",
+      "fr": "Ils apprécient les valeurs éducatives, c'est pourquoi ils ont investi dans la construction d'écoles."
+    }
+  ]
+}
