@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN - Vocabulaire</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Heebo', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #E3F2FD 0%, #F3E5F5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Logo */
+        .logo-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-header img {
+            height: 90px;
+            width: auto;
+            max-width: 350px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        .logo-header img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sur mobile */
+        @media (max-width: 768px) {
+            .logo-header img {
+                height: 70px;
+                max-width: 250px;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        header h1 {
+            color: #0038B8;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flag-icon {
+            width: 50px;
+            height: 33px;
+            object-fit: cover;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* ÉCRAN D'ACCUEIL - CATÉGORIES */
+        .home-screen {
+            display: block;
+        }
+
+        .home-screen.hidden {
+            display: none;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 15px rgba(0, 56, 184, 0.12);
+            border-color: #0038B8;
+        }
+
+        .category-icon {
+            font-size: 2.2rem;
+            margin-bottom: 6px;
+        }
+
+        .category-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0038B8;
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* ÉCRAN TABLEAU - DICTIONNAIRE */
+        .dict-screen {
+            display: none;
+        }
+
+        .dict-screen.active {
+            display: block;
+        }
+
+        .dict-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: #0038B8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            margin-bottom: 30px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: #002D7A;
+            transform: translateX(-3px);
+        }
+
+        .dict-title {
+            font-size: 1.6rem;
+            color: #0038B8;
+            font-weight: 700;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #DDD;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #0038B8;
+        }
+
+        .search-results {
+            font-size: 0.9rem;
+            color: #666;
+            padding: 8px 0;
+        }
+
+        /* TABLEAU SCROLLABLE */
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            max-height: 600px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #0038B8 0%, #002D7A 100%);
+            z-index: 10;
+        }
+
+        th {
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 700;
+            white-space: nowrap;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #EEE;
+            word-break: break-word;
+        }
+
+        tbody tr:hover {
+            background: #F5F5F5;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #FAFAFA;
+        }
+
+        /* Texte hébreu */
+        .hebrew {
+            font-family: 'Arial Hebrew', 'David', serif;
+            font-size: 1.1rem;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .french {
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #0038B8;
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #DDD;
+            border-top-color: #0038B8;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+            }
+
+            .category-card {
+                padding: 16px;
+            }
+
+            .category-icon {
+                font-size: 2.2rem;
+            }
+
+            .category-name {
+                font-size: 1rem;
+            }
+
+            .dict-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dict-title {
+                font-size: 1.3rem;
+                width: 100%;
+            }
+
+            .search-box {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .table-wrapper {
+                max-height: 500px;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 10px 8px;
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <a href="accueil.html" class="logo-header">
+            <img src="logo-mizoulpan.png" alt="MIZOULPAN" title="Retour à l'accueil">
+        </a>
+
+    <header>
+        <h1>
+            <img src="israel.png" alt="Israël" class="flag-icon">
+            MIZOULPAN - Vocabulaire
+            <img src="france.png" alt="France" class="flag-icon">
+        </h1>
+        <p>Dictionnaire interactif de l'hébreu</p>
+    </header>
+
+    <!-- ÉCRAN D'ACCUEIL : CATÉGORIES -->
+    <div class="home-screen" id="homeScreen">
+        <a href="accueil.html" class="back-button">← Retour</a>
+        <div class="categories-grid" id="categoriesGrid"></div>
+    </div>
+
+    <!-- ÉCRAN DICTIONNAIRE : TABLEAU -->
+    <div class="dict-screen" id="dictScreen">
+        <div class="dict-header">
+            <button class="back-button" onclick="backToHome()">← Retour</button>
+            <div class="dict-title" id="dictTitle"></div>
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Chercher un mot (FR ou HE)..."
+                    onkeyup="filterTable()"
+                >
+            </div>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+        
+        <div class="loading" id="loadingMsg">
+            <div class="spinner"></div>
+            <p>Chargement...</p>
+        </div>
+
+        <div class="table-wrapper" id="tableWrapper" style="display:none;">
+            <table id="dataTable">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="no-results" id="noResults" style="display:none;">
+            Aucun résultat trouvé
+        </div>
+    </div>
+</div>
+
+<script>
+const CATEGORY_ICONS = {
+    'verbes': '📖',
+    'liaison': '🔗',
+    'interrogation': '❓',
+    'adjectif': '✨',
+    'vocabulaire': '📚',
+    'vétement': '👕',
+    'transport': '🚌',
+    'classroom': '🏫',
+    'couleur': '🎨',
+    'famille': '👨‍👩‍👧',
+    'métier': '💼',
+    'lieux': '📍',
+    'nourriture': '🍎',
+    'expression': '💬',
+    'chiffres': '🔢',
+    'temps': '⏰'
+};
+
+let allData = {};
+let currentCategory = null;
+let filteredData = [];
+
+// Charger le fichier Excel
+async function loadVocabulaire() {
+    try {
+        const response = await fetch('vocabulaire.xlsx');
+        const buffer = await response.arrayBuffer();
+        const workbook = XLSX.read(buffer, { type: 'array' });
+
+        // Parser tous les onglets
+        workbook.SheetNames.forEach(sheetName => {
+            const worksheet = workbook.Sheets[sheetName];
+            const data = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
+            
+            // Nettoyer les données vides
+            const cleaned = data.map(row => {
+                const newRow = {};
+                Object.keys(row).forEach(key => {
+                    const cleanKey = key.trim();
+                    if (cleanKey && row[key] !== '') {
+                        newRow[cleanKey] = String(row[key]).trim();
+                    }
+                });
+                return newRow;
+            }).filter(row => Object.keys(row).length > 0);
+
+            allData[sheetName] = cleaned;
+        });
+
+        displayCategories();
+    } catch (e) {
+        console.error('Erreur:', e);
+        document.getElementById('homeScreen').innerHTML = '<p style="color:red; text-align:center; padding:40px;">❌ Erreur lors du chargement du fichier</p>';
+    }
+}
+
+// Afficher les catégories
+function displayCategories() {
+    const grid = document.getElementById('categoriesGrid');
+    grid.innerHTML = '';
+
+    Object.keys(allData).forEach(category => {
+        const count = allData[category].length;
+        const icon = CATEGORY_ICONS[category] || '📌';
+
+        const card = document.createElement('div');
+        card.className = 'category-card';
+        card.onclick = () => showCategory(category);
+        card.innerHTML = `
+            <div class="category-icon">${icon}</div>
+            <div class="category-name">${category}</div>
+            <div class="category-count">${count} mots</div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Afficher une catégorie
+function showCategory(category) {
+    currentCategory = category;
+    filteredData = [...allData[category]];
+
+    document.getElementById('homeScreen').classList.add('hidden');
+    document.getElementById('dictScreen').classList.add('active');
+    document.getElementById('dictTitle').textContent = category.toUpperCase();
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').textContent = '';
+
+    // Préparer le tableau
+    const headers = filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
+    
+    // Afficher le tableau
+    displayTable(filteredData, headers);
+}
+
+// Afficher le tableau
+function displayTable(data, headers) {
+    const tableHead = document.getElementById('tableHead');
+    const tableBody = document.getElementById('tableBody');
+    const tableWrapper = document.getElementById('tableWrapper');
+    const loadingMsg = document.getElementById('loadingMsg');
+    const noResults = document.getElementById('noResults');
+
+    loadingMsg.style.display = 'none';
+    tableWrapper.style.display = 'none';
+    noResults.style.display = 'none';
+
+    if (data.length === 0) {
+        noResults.style.display = 'block';
+        return;
+    }
+
+    // Entête
+    tableHead.innerHTML = '';
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        tableHead.appendChild(th);
+    });
+
+    // Corps du tableau
+    tableBody.innerHTML = '';
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        headers.forEach(header => {
+            const td = document.createElement('td');
+            const value = row[header] || '';
+            
+            // Détecter si c'est de l'hébreu
+            const isHebrew = /[\u0590-\u05FF]/.test(value);
+            if (isHebrew) {
+                td.className = 'hebrew';
+            } else {
+                td.className = 'french';
+            }
+            
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+    });
+
+    tableWrapper.style.display = 'block';
+    updateSearchResults();
+}
+
+// Rechercher dans le tableau
+function filterTable() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    
+    if (!query) {
+        filteredData = [...allData[currentCategory]];
+    } else {
+        filteredData = allData[currentCategory].filter(row => {
+            return Object.values(row).some(value =>
+                String(value).toLowerCase().includes(query)
+            );
+        });
+    }
+
+    const headers = allData[currentCategory].length > 0 ? Object.keys(allData[currentCategory][0]) : [];
+    displayTable(filteredData, headers);
+}
+
+// Mettre à jour les résultats de recherche
+function updateSearchResults() {
+    const query = document.getElementById('searchInput').value;
+    const resultsEl = document.getElementById('searchResults');
+    
+    if (query) {
+        resultsEl.textContent = `📊 ${filteredData.length} résultat(s) trouvé(s)`;
+    } else {
+        resultsEl.textContent = `📊 ${filteredData.length} mots total`;
+    }
+}
+
+// Retourner à l'accueil
+function backToHome() {
+    document.getElementById('homeScreen').classList.remove('hidden');
+    document.getElementById('dictScreen').classList.remove('active');
+    document.getElementById('searchInput').value = '';
+    currentCategory = null;
+}
+
+// Charger au démarrage
+window.addEventListener('load', () => {
+    loadVocabulaire();
+});
+</script>
+
+</body>
+</html>
