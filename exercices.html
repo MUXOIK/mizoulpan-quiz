@@ -490,10 +490,13 @@
         }
 
         let recognitionInstance = null;  // ← RÉFÉRENCE GLOBALE pour le micro
+        let lastSpeechText = null;  // Tracker la dernière phrase parlée
 
         // ════ AUDIO & MICROPHONE ════
         function playAudio() {
-            window.speechSynthesis.cancel();  // Arrêter si quelque chose parle
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
             const p = phrases[currentIdx];
             const text = state.sens === 'fr-he' ? p.fr : p.he;
             const u = new SpeechSynthesisUtterance(text);
@@ -502,13 +505,14 @@
         }
 
         function startMicrophone() {
-            if (recognitionInstance) recognitionInstance.stop();  // ← Arrêter l'ancienne
-            
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SR) { alert('❌ Microphone non supporté'); return; }
             
+            // Si une instance existe et écoute encore, ignorer
+            if (recognitionInstance) return;
+            
             const r = new SR();
-            recognitionInstance = r;  // ← Sauvegarder la référence
+            recognitionInstance = r;
             r.lang = state.sens === 'fr-he' ? 'he-IL' : 'fr-FR';
             r.continuous = false;
             r.interimResults = false;
@@ -526,6 +530,32 @@
                 const transcript = e.results[0][0].transcript || '';
                 document.getElementById('answerInput').value = transcript.trim();
             };
+            
+            r.onerror = (e) => {
+                micBtn.style.animation = 'none';
+                micBtn.style.opacity = '1';
+                if (e.error !== 'aborted') {
+                    alert('Erreur micro: ' + e.error);
+                }
+            };
+            
+            r.onend = () => {
+                micBtn.style.animation = 'none';
+                micBtn.style.opacity = '1';
+                recognitionInstance = null;  // ← Réinitialiser quand terminé
+            };
+            
+            r.start();
+        }
+
+        function stopMicrophone() {
+            if (recognitionInstance) {
+                try {
+                    recognitionInstance.abort();  // ← abort() au lieu de stop()
+                } catch (e) {}
+                recognitionInstance = null;
+            }
+        }
             
             r.onerror = (e) => {
                 micBtn.style.animation = 'none';
@@ -646,11 +676,18 @@
         }
 
         function speakAnswer(text, lang) {
-            window.speechSynthesis.cancel();  // ← D'ABORD, arrêter le précédent
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang;
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+            // Arrêter VRAIMENT le précédent
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.pause();
+            window.speechSynthesis.resume();
+            
+            // Attendre un peu puis parler
+            setTimeout(() => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }, 100);
         }
 
         function nextPhrase() {
