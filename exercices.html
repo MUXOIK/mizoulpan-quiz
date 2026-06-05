@@ -485,14 +485,16 @@
             document.getElementById('progBar').style.width = ((currentIdx / phrases.length) * 100) + '%';
             document.getElementById('scoreText').textContent = answers.filter(a => a && a.correct === 'correct').length;
             document.getElementById('btnValider').classList.add('visible');
-        }
-
-            if (oldSpeaker) oldSpeaker.remove();
+            
+            // Enlever ancien speaker et réinitialiser
             const oldSpeaker = document.getElementById('solutionSpeaker');
+            if (oldSpeaker) oldSpeaker.remove();
             document.getElementById('btnSolution').disabled = false;
             document.getElementById('btnSolution').style.opacity = '1';
             document.getElementById('answerInput').style.fontWeight = 'normal';
-        let recognitionInstance = null;  // ← RÉFÉRENCE GLOBALE pour le micro
+        }
+
+        let recognitionInstance = null;  // RÉFÉRENCE GLOBALE pour le micro
         let lastSpeechText = null;  // Tracker la dernière phrase parlée
 
         // ════ AUDIO & MICROPHONE ════
@@ -560,7 +562,6 @@
             }
         }
             
-        }
 
 
         // ════ VALIDATIONS (SIMPLIFIÉE) ════
