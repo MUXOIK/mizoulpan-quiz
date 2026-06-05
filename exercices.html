@@ -474,8 +474,6 @@
 
         // ════ AFFICHER PHRASE (INCHANGÉE) ════
         function displayPhrase() {
-            stopMicrophone();  // Arrêter micro précédent
-            window.speechSynthesis.cancel();  // Arrêter speaker précédent
             const p = phrases[currentIdx];
             let text = state.sens === 'fr-he' ? p.fr : p.he;
             text = text.replace(/^[\.\s]+/, '').replace(/[\.\s]+$/, '');
@@ -571,12 +569,6 @@
             r.start();
         }
 
-        function stopMicrophone() {
-            if (recognitionInstance) {
-                recognitionInstance.stop();
-                recognitionInstance = null;
-            }
-        }
 
         // ════ VALIDATIONS (SIMPLIFIÉE) ════
         function similarity(s1, s2) {
