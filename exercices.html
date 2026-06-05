@@ -474,6 +474,8 @@
 
         // ════ AFFICHER PHRASE (INCHANGÉE) ════
         function displayPhrase() {
+            stopMicrophone();  // Arrêter micro précédent
+            window.speechSynthesis.cancel();  // Arrêter speaker précédent
             const p = phrases[currentIdx];
             let text = state.sens === 'fr-he' ? p.fr : p.he;
             text = text.replace(/^[\.\s]+/, '').replace(/[\.\s]+$/, '');
@@ -487,8 +489,11 @@
             document.getElementById('btnValider').classList.add('visible');
         }
 
-        // ════ AUDIO & MICROPHONE (INCHANGÉ) ════
+        let recognitionInstance = null;  // ← RÉFÉRENCE GLOBALE pour le micro
+
+        // ════ AUDIO & MICROPHONE ════
         function playAudio() {
+            window.speechSynthesis.cancel();  // Arrêter si quelque chose parle
             const p = phrases[currentIdx];
             const text = state.sens === 'fr-he' ? p.fr : p.he;
             const u = new SpeechSynthesisUtterance(text);
@@ -497,10 +502,13 @@
         }
 
         function startMicrophone() {
+            if (recognitionInstance) recognitionInstance.stop();  // ← Arrêter l'ancienne
+            
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SR) { alert('❌ Microphone non supporté'); return; }
             
             const r = new SR();
+            recognitionInstance = r;  // ← Sauvegarder la référence
             r.lang = state.sens === 'fr-he' ? 'he-IL' : 'fr-FR';
             r.continuous = false;
             r.interimResults = false;
@@ -531,6 +539,13 @@
             };
             
             r.start();
+        }
+
+        function stopMicrophone() {
+            if (recognitionInstance) {
+                recognitionInstance.stop();
+                recognitionInstance = null;
+            }
         }
 
         // ════ VALIDATIONS (SIMPLIFIÉE) ════
@@ -631,10 +646,10 @@
         }
 
         function speakAnswer(text, lang) {
+            window.speechSynthesis.cancel();  // ← D'ABORD, arrêter le précédent
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang;
             utterance.rate = 0.9;
-            window.speechSynthesis.cancel();
             window.speechSynthesis.speak(utterance);
         }
 
