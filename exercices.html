@@ -424,7 +424,7 @@
 
     <script>
         // ════ CONFIGURATION (INCHANGÉE) ════
-        const GITHUB_URL = 'https://raw.githubusercontent.com/MUXOIK/mizoulpan-quiz/main/phrases.json';
+        const GITHUB_URL = 'phrases.json';
         let state = { sens: 'fr-he', level: 'simple' };
         let phrases = [];
         let currentIdx = 0;
@@ -487,6 +487,11 @@
             document.getElementById('btnValider').classList.add('visible');
         }
 
+            if (oldSpeaker) oldSpeaker.remove();
+            const oldSpeaker = document.getElementById('solutionSpeaker');
+            document.getElementById('btnSolution').disabled = false;
+            document.getElementById('btnSolution').style.opacity = '1';
+            document.getElementById('answerInput').style.fontWeight = 'normal';
         let recognitionInstance = null;  // ← RÉFÉRENCE GLOBALE pour le micro
         let lastSpeechText = null;  // Tracker la dernière phrase parlée
 
@@ -555,18 +560,6 @@
             }
         }
             
-            r.onerror = (e) => {
-                micBtn.style.animation = 'none';
-                micBtn.style.opacity = '1';
-                alert('Erreur micro: ' + e.error);
-            };
-            
-            r.onend = () => {
-                micBtn.style.animation = 'none';
-                micBtn.style.opacity = '1';
-            };
-            
-            r.start();
         }
 
 
@@ -651,7 +644,7 @@
             document.getElementById('btnSolution').disabled = true;
             document.getElementById('btnSolution').style.opacity = '0.5';
             
-            // AJOUTER BOUTON SPEAKER POUR LA SOLUTION
+            // SPEAKER POUR LA SOLUTION - créer ou mettre à jour
             let speakerBtn = document.getElementById('solutionSpeaker');
             if (!speakerBtn) {
                 speakerBtn = document.createElement('button');
@@ -659,12 +652,13 @@
                 speakerBtn.className = 'audio-btn';
                 speakerBtn.textContent = '🔊';
                 speakerBtn.style.marginLeft = '8px';
-                speakerBtn.onclick = (e) => {
-                    e.preventDefault();
-                    speakAnswer(correct, lang);
-                };
                 document.getElementById('answerInput').after(speakerBtn);
             }
+            // TOUJOURS mettre à jour le onclick (même si le bouton existe)
+            speakerBtn.onclick = (e) => {
+                e.preventDefault();
+                speakAnswer(correct, lang);
+            };
         }
 
         function speakAnswer(text, lang) {
