@@ -575,17 +575,15 @@
 </head>
 <body>
 
+<!-- LOGO M ISOLÉ EN HAUT DROIT -->
+<a href="accueil.html" class="logo-header" style="position: absolute; top: 20px; right: 30px; z-index: 1000; text-decoration: none; line-height: 0;">
+    <img src="logo-mizoulpan.png" alt="MIZOULPAN" style="height: 100px; width: auto; display: block;">
+</a>
+
 <!-- HEADER PERSONNALISÉ POUR QUIZ -->
 <div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,56,184,0.3);">
-    <!-- LOGO M EN HAUT DROIT -->
-    <a href="accueil.html" class="logo-header" style="position: absolute; top: 15px; right: 20px; z-index: 110; text-decoration: none;">
-        <img src="logo-mizoulpan.png" alt="MIZOULPAN" style="height: 80px; width: auto; display: block;">
-    </a>
-    <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15); position: relative;">
-        <!-- BOUTON RETOUR EN HAUT GAUCHE -->
-        <a href="accueil.html" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; padding: 6px 12px; border-radius: 4px; background: rgba(255,255,255,0.2); transition: all 0.2s;">← Retour</a>
-        
-        <div style="font-size: 2rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); margin-left: 70px;">🇮🇱</div>
+    <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">
+        <div style="font-size: 2rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">🇮🇱</div>
         <div style="flex: 1;">
             <div style="font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: -0.5px; line-height: 1.1;">Mizoulpan <span style="color: #a8c4ff;">Quiz</span></div>
             <div style="font-size: 0.72rem; color: rgba(200,220,255,0.75); font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;">Révisez votre hébreu</div>
@@ -596,6 +594,11 @@
             <div id="tabs" style="display: flex; gap: 4px;"></div>
         </div>
     </div>
+</div>
+
+<!-- BOUTON RETOUR SÉPARÉ (pas en position absolute) -->
+<div style="padding: 0 16px; background: var(--primary-blue); border-bottom: 1px solid rgba(255,255,255,0.15);">
+    <a href="accueil.html" style="display: inline-block; color: white; text-decoration: none; font-weight: bold; font-size: 0.85rem; padding: 8px 12px; border-radius: 4px; background: rgba(255,255,255,0.2); transition: all 0.2s; margin-bottom: 10px;">← Retour à l'accueil</a>
 </div>
 
 <div id="body" style="padding: 16px 14px 0; max-width: 520px; margin: 0 auto;">
