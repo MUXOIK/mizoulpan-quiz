@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0038b8">
+    <title>Mizoulpan Quiz</title>
+    <!-- REDIRECTION POUR UTILISATEURS HISTORIQUES -->
+    <script>
+        // Si accès direct à index.html, redirection vers accueil
+        // (sauf si c'est intentionnel depuis accueil)
+        if (window.location.pathname.endsWith('/index.html') || window.location.pathname === '/') {
+            window.location.href = 'accueil.html';
+        }
+    </script>
+    <meta name="description" content="Révisez votre hébreu avec des quiz interactifs par catégories.">
+    <meta property="og:title" content="Mizoulpan Quiz – Révisez ton hébreu">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇮🇱</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style-global.css">
+    <style>
+        /* ════ QUIZ SPÉCIFIQUE ════ */
+        body {
+            background: linear-gradient(160deg, #f0f5ff 0%, #dce8ff 50%, #c8d8f8 100%);
+        }
+
+        /* TABS */
+        #tabs-outer {
+            position: relative;
+            background: var(--primary-blue);
+            padding: 0 16px;
+            margin-bottom: 20px;
+        }
+
+        #tabs-outer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 48px;
+            background: linear-gradient(to right, transparent, var(--primary-blue));
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        #tabs-outer.scrolled-end::after {
+            opacity: 0;
+        }
+
+        .tabs-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 4px;
+            padding: 8px 48px 0 0;
+            scrollbar-width: none;
+        }
+
+        .tabs-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            border-radius: 8px 8px 0 0;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.92);
+            color: #0a1a3a;
+            white-space: nowrap;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+            flex-shrink: 0;
+        }
+
+        .tab:hover {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary-blue);
+            font-weight: 900;
+            border-bottom-color: var(--primary-blue);
+        }
+
+        .tab .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            margin-left: 6px;
+            font-weight: 700;
+        }
+
+        .tab .badge.has-score {
+            background: #1a7a3a;
+        }
+
+        /* LOADING */
+        #loading-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 56px;
+            height: 56px;
+            border: 5px solid #c5d4f0;
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
+
+        .loading-sub {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .loading-error {
+            color: #b01a1a;
+            font-size: 0.95rem;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        /* SETUP */
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .pill {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 2px solid var(--border-light);
+            background: white;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .pill.active {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .count-info {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            margin-bottom: 18px;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 16px rgba(0, 56, 184, 0.3);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(0, 56, 184, 0.4);
+        }
+
+        /* QUIZ */
+        .nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .back-link {
+            color: var(--primary-blue);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .counter {
+            font-size: 0.88rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .score-disp {
+            font-size: 0.88rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        .prog-wrap {
+            height: 5px;
+            background: #c5d4f0;
+            border-radius: 99px;
+            margin-bottom: 18px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .prog-fill {
+            height: 100%;
+            background: var(--primary-blue);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+
+        .q-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .q-box {
+            background: var(--bg-light);
+            border-radius: 14px;
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .q-text {
+            font-weight: 800;
+            flex: 1;
+        }
+
+        .q-text.fr {
+            font-size: 1.45rem;
+        }
+
+        .q-text.he {
+            font-size: 1.9rem;
+            font-family: 'Frank Ruhl Libre', serif;
+            direction: rtl;
+        }
+
+        .spk-btn {
+            background: white;
+            border: none;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spk-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .spk-btn.speaking {
+            background: var(--primary-blue);
+            animation: pulse 0.6s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.08); }
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .choice-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .choice-spk {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            flex-shrink: 0;
+            width: 38px;
+            padding: 0;
+        }
+
+        .choice {
+            flex: 1;
+            padding: 16px 14px;
+            border-radius: 12px;
+            border: 2px solid var(--border-light);
+            background: white;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1.5rem;
+            text-align: left;
+            line-height: 1.4;
+            transition: all 0.15s;
+        }
+
+        .choice.he {
+            font-size: 1.55rem;
+            font-family: 'Frank Ruhl Libre', serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .choice:hover:not(:disabled) {
+            border-color: var(--primary-blue);
+            background: var(--bg-light);
+        }
+
+        .choice.correct {
+            border-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+            border-width: 3px;
+        }
+
+        .choice.wrong {
+            border-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+            border-width: 3px;
+        }
+
+        .dontknow-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px dashed var(--border-light);
+            background: transparent;
+            color: var(--text-light);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            margin-bottom: 10px;
+        }
+
+        .dontknow-btn:hover {
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .reveal-box {
+            background: var(--bg-light);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .reveal-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
+
+        .reveal-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .reveal-word {
+            font-size: 1.5rem;
+            font-weight: 800;
+            flex: 1;
+        }
+
+        .reveal-word.he {
+            font-family: 'Frank Ruhl Libre', serif;
+            direction: rtl;
+            font-size: 1.8rem;
+        }
+
+        .reveal-word.correct-color {
+            color: #1a7a3a;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* RESULT */
+        .trophy-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .result-label {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 18px;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-blue);
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .restart-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .outline-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 14px;
+            border: 2px solid var(--primary-blue);
+            background: transparent;
+            color: var(--primary-blue);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .choices {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .q-text.fr {
+                font-size: 1.3rem;
+            }
+
+            .q-text.he {
+                font-size: 1.7rem;
+            }
+
+            .choice {
+                padding: 14px 10px;
+                font-size: 1.45rem;
+            }
+
+            .choice.he {
+                font-size: 1.5rem;
+            }
+
+            .stat-num {
+                font-size: 1.5rem;
+            }
+
+            .stats-row {
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .choices {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER PERSONNALISÉ POUR QUIZ -->
+<div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,56,184,0.3);">
+    <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">
+        <div style="font-size: 2rem; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">🇮🇱</div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.3rem; font-weight: 900; color: white; letter-spacing: -0.5px; line-height: 1.1;">Mizoulpan <span style="color: #a8c4ff;">Quiz</span></div>
+            <div style="font-size: 0.72rem; color: rgba(200,220,255,0.75); font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;">Révisez votre hébreu</div>
+        </div>
+    </div>
+    <div class="tabs-outer" id="tabs-outer">
+        <div class="tabs-scroll" id="tabs-scroll">
+            <div id="tabs" style="display: flex; gap: 4px;"></div>
+        </div>
+    </div>
+</div>
+
+<div id="body" style="padding: 16px 14px 0; max-width: 520px; margin: 0 auto;">
+
+    <!-- LOADING -->
+    <div id="loading-screen" class="card">
+        <div class="loading-spinner"></div>
+        <div class="loading-title">Chargement du vocabulaire…</div>
+        <div class="loading-sub">Connexion en cours</div>
+        <div class="loading-error hidden" id="loading-error"></div>
+    </div>
+
+    <!-- SETUP -->
+    <div id="setup-screen" class="card hidden">
+        <div class="section-label">Sens de la question</div>
+        <div class="pills">
+            <button class="pill active" data-dir="fr→he">🇫🇷 Français → עברית</button>
+            <button class="pill" data-dir="he→fr">עברית → 🇫🇷 Français</button>
+        </div>
+        <div class="section-label">Ordre</div>
+        <div class="pills">
+            <button class="pill active" data-order="random">🔀 Aléatoire</button>
+            <button class="pill" data-order="sequential">📋 Dans l'ordre</button>
+        </div>
+        <div class="count-info" id="count-info"></div>
+        <button class="start-btn" id="start-btn">Commencer →</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz-screen" class="card hidden">
+        <div class="nav-row">
+            <button class="back-link" id="back-btn">← Retour au menu</button>
+            <span class="counter" id="q-counter"></span>
+            <span class="score-disp" id="q-score"></span>
+        </div>
+        <div class="prog-wrap" id="prog-wrap">
+            <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+        </div>
+        <div class="q-label" id="q-label"></div>
+        <div class="q-box">
+            <div class="q-text fr" id="q-text"></div>
+            <button class="spk-btn" id="q-spk">🔊</button>
+        </div>
+        <div class="choices" id="choices"></div>
+        <button class="dontknow-btn" id="dontknow-btn">🤷 Je ne sais pas</button>
+        <div class="reveal-box hidden" id="reveal-box">
+            <div class="reveal-label" id="reveal-label"></div>
+            <div class="reveal-row">
+                <div class="reveal-word" id="reveal-word"></div>
+                <button class="spk-btn" id="ans-spk">🔊</button>
+            </div>
+        </div>
+        <button class="next-btn hidden" id="next-btn"></button>
+    </div>
+
+    <!-- RESULT -->
+    <div id="result-screen" class="card hidden">
+        <div class="trophy-wrap">
+            <svg width="110" height="110" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#c5d4f0" stroke-width="7"/>
+                <circle id="trophy-ring" cx="50" cy="50" r="45" fill="none"
+                    stroke="var(--primary-blue)" stroke-width="7" stroke-linecap="round"
+                    transform="rotate(-90 50 50)" stroke-dasharray="283" stroke-dashoffset="283"
+                    style="transition:stroke-dashoffset 1.2s ease"/>
+                <text id="trophy-pct" x="50" y="44" text-anchor="middle" font-size="17"
+                    font-weight="900" fill="var(--primary-blue)" font-family="Heebo,sans-serif"></text>
+                <text id="trophy-emoji" x="50" y="64" text-anchor="middle" font-size="22"></text>
+            </svg>
+        </div>
+        <div class="result-label" id="result-label"></div>
+        <div class="stats-row">
+            <div class="stat"><div class="stat-num" id="stat-ok"></div><div class="stat-lbl">Corrects</div></div>
+            <div class="stat"><div class="stat-num" id="stat-err"></div><div class="stat-lbl">Erreurs</div></div>
+            <div class="stat"><div class="stat-num" id="stat-tot"></div><div class="stat-lbl">Total</div></div>
+        </div>
+        <div class="result-btns" style="margin-top: 20px;">
+            <button class="restart-btn" id="restart-btn">↺ Recommencer</button>
+            <button class="outline-btn" id="back-setup-btn">Changer de catégorie</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ════ CONFIGURATION MÉTIER INTACTE ════
+    const isHeb = s => /[\u0590-\u05FF]/.test(String(s||''));
+    const SKIP = ['traduction','singulier','feminin','masculin','verbe','mois','fruits','saison','lieux','direction','classroom','hebreu','pluriel','transcription','couleur','famille','expression','corps','transport','temps'];
+
+    function parseSheet(sheet) {
+        const rows = XLSX.utils.sheet_to_json(sheet,{header:1,defval:null})
+            .map(r=>r.map(v=>v===null?'':String(v).trim()));
+        const numCols = Math.max(...rows.map(r=>r.length),0);
+        if(numCols<2) return [];
+        const heOnly=new Array(numCols).fill(0), frOnly=new Array(numCols).fill(0);
+        for(const row of rows) for(let j=0;j<row.length;j++){
+            if(!row[j]) continue;
+            if(isHeb(row[j])) heOnly[j]++; else frOnly[j]++;
+        }
+        const heCol=heOnly.indexOf(Math.max(...heOnly));
+        let frCol=-1;
+        for(let j=0;j<numCols;j++){
+            if(j===heCol||heOnly[j]>2||frOnly[j]<3) continue;
+            if(frCol===-1||frOnly[j]>frOnly[frCol]*1.1) frCol=j;
+            else if(frOnly[j]>=frOnly[frCol]*0.9&&j<frCol) frCol=j;
+        }
+        if(frCol===-1) return [];
+        const used=new Set([frCol,heCol]);
+        let transCol=-1;
+        for(let j=0;j<numCols;j++){
+            if(used.has(j)) continue;
+            const s=rows.slice(0,5).map(r=>r[j]||'').join(' ').toLowerCase();
+            if(s.includes('trans')||s.includes('prononc')){transCol=j;break;}
+        }
+        const result=[], seen=new Set();
+        for(const row of rows){
+            const fr=row[frCol]||'', he=row[heCol]||'';
+            if(!fr||!he||!isHeb(he)) continue;
+            const fl=fr.toLowerCase().trim();
+            if(SKIP.some(k=>fl===k||fl.startsWith(k+' ')||fl.startsWith(k+'/'))) continue;
+            const key=fr+'|'+he;
+            if(seen.has(key)) continue;
+            seen.add(key);
+            const entry={fr,he};
+            if(transCol!==-1&&row[transCol]&&!isHeb(row[transCol])) entry.trans=row[transCol];
+            result.push(entry);
+        }
+        return result;
+    }
+
+    const TAB_ICONS = {verbes:'📚',liaison:'🔗',interrogation:'❓',adjectif:'✨',vocabulaire:'📖',transport:'🚌',classeroom:'🏫',couleur:'🎨',famille:'👨‍👩‍👧',métier:'💼',lieux:'📍',nourriture:'🍎',expression:'💬',chiffres:'🔢',temps:'⏰'};
+
+    let allData={}, currentTab=null, direction='fr→he', quizOrder='random';
+    let quiz=[], idx=0, score=0, errors=[], answered=false;
+    let visited=new Set([0]);
+
+    const $=id=>document.getElementById(id);
+    const show=id=>$(id).classList.remove('hidden');
+    const hide=id=>$(id).classList.add('hidden');
+    function shuffle(arr){
+        const a=[...arr];
+        for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+        return a;
+    }
+
+    const LS_KEY = 'mizoulpan_scores';
+    function loadScores() {
+        try { return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); } catch(e){ return {}; }
+    }
+    function saveScore(tab, correct, total) {
+        const scores = loadScores();
+        scores[tab] = { correct, total, pct: Math.round(correct/total*100), date: Date.now() };
+        try { localStorage.setItem(LS_KEY, JSON.stringify(scores)); } catch(e){}
+    }
+    function loadLastTab() {
+        try { return localStorage.getItem('mizoulpan_last_tab')||null; } catch(e){ return null; }
+    }
+    function saveLastTab(tab) {
+        try { localStorage.setItem('mizoulpan_last_tab', tab); } catch(e){}
+    }
+
+    let cachedVoiceHe=null, cachedVoiceFr=null;
+    function pickFemaleVoice(lang){
+        const voices=window.speechSynthesis.getVoices();
+        if(lang==='he-IL'){
+            if(cachedVoiceHe) return cachedVoiceHe;
+            const heVoices=voices.filter(x=>x.lang.startsWith('he'));
+            let v=heVoices.find(x=>/anat|carmit|tali|dana|miriam|female|woman/i.test(x.name));
+            if(!v) v=heVoices.find(x=>x.name.toLowerCase().indexOf('male')===-1);
+            if(!v) v=heVoices[0]||null;
+            cachedVoiceHe=v; return v;
+        } else {
+            if(cachedVoiceFr) return cachedVoiceFr;
+            const frVoices=voices.filter(x=>x.lang.startsWith('fr'));
+            let v=frVoices.find(x=>/amelie|audrey|claire|marie|female|woman/i.test(x.name));
+            if(!v) v=frVoices.find(x=>x.name.toLowerCase().indexOf('thomas')===-1&&x.name.toLowerCase().indexOf('male')===-1);
+            if(!v) v=frVoices[0]||null;
+            cachedVoiceFr=v; return v;
+        }
+    }
+    function speak(text,lang,btn){
+        if(!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        setTimeout(()=>{
+            const u=new SpeechSynthesisUtterance(text);
+            u.lang=lang; u.rate=0.85; u.volume=1;
+            try{ const v=pickFemaleVoice(lang); if(v) u.voice=v; }catch(e){}
+            if(btn){ btn.classList.add('speaking'); u.onend=()=>btn.classList.remove('speaking'); }
+            window.speechSynthesis.speak(u);
+        },50);
+    }
+    if(window.speechSynthesis){
+        window.speechSynthesis.onvoiceschanged=()=>{
+            cachedVoiceHe=null; cachedVoiceFr=null;
+            window.speechSynthesis.getVoices();
+        };
+    }
+
+    function initTabsScroll(){
+        const scroll=$('tabs-scroll');
+        const outer=$('tabs-outer');
+        function check(){
+            const atEnd=scroll.scrollLeft+scroll.clientWidth>=scroll.scrollWidth-4;
+            outer.classList.toggle('scrolled-end', atEnd);
+        }
+        scroll.addEventListener('scroll', check, {passive:true});
+        setTimeout(check, 300);
+        setTimeout(()=>{
+            if(scroll.scrollWidth>scroll.clientWidth){
+                scroll.scrollTo({left:60,behavior:'smooth'});
+                setTimeout(()=>scroll.scrollTo({left:0,behavior:'smooth'}),600);
+            }
+        },800);
+    }
+
+    const CACHE_KEY = 'mizoulpan_vocab_data';
+    const CACHE_TS_KEY = 'mizoulpan_vocab_ts';
+    const CACHE_VER_KEY = 'mizoulpan_vocab_ver';
+    const CACHE_DURATION = 60 * 60 * 1000;
+    const APP_VERSION = 'v9.0';
+
+    function parseAndInit(buf){
+        const wb=XLSX.read(buf,{type:'array'});
+        allData={};
+        for(const name of wb.SheetNames){
+            const words=parseSheet(wb.Sheets[name]);
+            if(words.length>0) allData[name]=words;
+        }
+        if(Object.keys(allData).length===0) throw new Error('Aucun mot trouvé.');
+        initApp();
+    }
+
+    function loadVocabulaire(){
+        const forceRefresh = location.search.includes('refresh');
+        if(!forceRefresh){
+            try{
+                const cachedVer = localStorage.getItem(CACHE_VER_KEY);
+                const cachedTs  = parseInt(localStorage.getItem(CACHE_TS_KEY)||'0');
+                const cachedRaw = localStorage.getItem(CACHE_KEY);
+                const age = Date.now() - cachedTs;
+                if(cachedRaw && cachedVer === APP_VERSION && age < CACHE_DURATION){
+                    allData = JSON.parse(cachedRaw);
+                    if(Object.keys(allData).length > 0){ initApp(); return; }
+                }
+            }catch(e){}
+        }
+        const monthStamp = new Date().toISOString().slice(0,7);
+        fetch(`vocabulaire.xlsx?m=${monthStamp}`)
+            .then(r=>{ if(!r.ok) throw new Error(`Fichier introuvable`); return r.arrayBuffer(); })
+            .then(buf=>{
+                parseAndInit(buf);
+                try{
+                    localStorage.setItem(CACHE_KEY, JSON.stringify(allData));
+                    localStorage.setItem(CACHE_TS_KEY, String(Date.now()));
+                    localStorage.setItem(CACHE_VER_KEY, APP_VERSION);
+                }catch(e){}
+            })
+            .catch(err=>{
+                try{
+                    const cachedRaw = localStorage.getItem(CACHE_KEY);
+                    if(cachedRaw){
+                        allData = JSON.parse(cachedRaw);
+                        if(Object.keys(allData).length > 0){ initApp(); return; }
+                    }
+                }catch(e){}
+                const errEl=$('loading-error');
+                errEl.innerHTML=`❌ Impossible de charger le vocabulaire.<br><small>${err.message}</small>`;
+                show('loading-error');
+            });
+    }
+
+    function initApp(){
+        buildTabs();
+        const last=loadLastTab();
+        currentTab=(last&&allData[last])?last:Object.keys(allData)[0];
+        setActiveTab(currentTab);
+        hide('loading-screen');
+        show('setup-screen');
+        initTabsScroll();
+        scrollToActiveTab();
+    }
+
+    function buildTabs(){
+        const container=$('tabs');
+        container.innerHTML='';
+        const scores=loadScores();
+        for(const name of Object.keys(allData)){
+            const btn=document.createElement('button');
+            btn.className='tab'+(name===currentTab?' active':'');
+            btn.dataset.name=name;
+            const icon=TAB_ICONS[name]||'📌';
+            const sc=scores[name];
+            let badgeClass='badge'+(sc?' has-score':'');
+            let badgeText=sc?`${sc.pct}%`:String(allData[name].length);
+            btn.innerHTML=`${icon} ${name}<span class="${badgeClass}">${badgeText}</span>`;
+            btn.addEventListener('click',()=>{ currentTab=name; setActiveTab(name); showSetup(); saveLastTab(name); });
+            container.appendChild(btn);
+        }
+    }
+
+    function setActiveTab(name){
+        document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.name===name));
+        $('count-info').textContent=`${allData[name].length} mots · QCM 4 choix`;
+    }
+
+    function scrollToActiveTab(){
+        const active=document.querySelector('.tab.active');
+        if(active) active.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+    }
+
+    function buildQuiz(words,dir){
+        const ordered=quizOrder==='sequential'?words:shuffle(words);
+        return ordered.map(w=>{
+            const isHeTofr=dir==='he→fr';
+            const question=isHeTofr?w.he:w.fr;
+            const answer=isHeTofr?w.fr:w.he;
+            const pool=words.filter(x=>x!==w&&(isHeTofr?x.fr:x.he)!==answer);
+            const wrongItems=shuffle(pool).slice(0,3);
+            const wrong=wrongItems.map(x=>isHeTofr?x.fr:x.he);
+            const choiceMeanings={};
+            choiceMeanings[answer]=isHeTofr?w.fr:w.he;
+            wrongItems.forEach(y=>{ choiceMeanings[isHeTofr?y.fr:y.he]=isHeTofr?y.he:y.fr; });
+            return{question,answer,choices:shuffle([answer,...wrong]),choiceMeanings,trans:w.trans,isHeTofr,fr:w.fr,he:w.he};
+        });
+    }
+
+    function showSetup(){ hide('quiz-screen'); hide('result-screen'); show('setup-screen'); }
+
+    function startQuiz(){
+        quiz=buildQuiz(allData[currentTab],direction);
+        idx=0; score=0; errors=[]; answered=false;
+        visited=new Set([0]);
+        hide('setup-screen'); hide('result-screen'); show('quiz-screen');
+        renderQuestion();
+    }
+
+    function renderQuestion(){
+        answered=false;
+        const q=quiz[idx];
+        const pct=(idx/quiz.length)*100;
+        const isHeAns=!q.isHeTofr;
+        $('q-counter').textContent=`${idx+1} / ${quiz.length}`;
+        $('q-score').textContent=`✓ ${score}`;
+        $('prog-fill').style.width=pct+'%';
+        $('q-label').textContent=q.isHeTofr?'Que signifie ce mot ?':'Comment dit-on en hébreu ?';
+        const qText=$('q-text');
+        qText.textContent=q.question;
+        qText.className='q-text '+(q.isHeTofr?'he':'fr');
+        $('q-spk').onclick=()=>speak(q.question,q.isHeTofr?'he-IL':'fr-FR',$('q-spk'));
+        const choicesEl=$('choices');
+        choicesEl.innerHTML='';
+        q.choices.forEach(c=>{
+            const wrap=document.createElement('div');
+            wrap.className='choice-wrap';
+            if(!q.isHeTofr){
+                const spk=document.createElement('button');
+                spk.className='choice-spk'; spk.textContent='🔊';
+                spk.addEventListener('click',e=>{e.stopPropagation();speak(c,'he-IL');});
+                wrap.appendChild(spk);
+            }
+            const btn=document.createElement('button');
+            btn.className='choice'+(isHeAns?' he':'');
+            btn.dataset.choice=c;
+            btn.innerHTML=`<div>${c}</div>`;
+            btn.addEventListener('click',()=>answerQ(c));
+            wrap.appendChild(btn);
+            choicesEl.appendChild(wrap);
+        });
+        show('dontknow-btn'); hide('reveal-box'); hide('next-btn');
+    }
+
+    function answerQ(choice){
+        if(answered) return;
+        answered=true;
+        const q=quiz[idx];
+        const isCorrect=choice===q.answer;
+        if(isCorrect) score++; else errors.push(q);
+        document.querySelectorAll('.choice').forEach(btn=>{
+            btn.disabled=true;
+            const c=btn.dataset.choice;
+            if(c===q.answer) btn.classList.add('correct');
+            else if(c===choice&&!isCorrect) btn.classList.add('wrong');
+        });
+        const isDontKnow=choice==='__dk__';
+        $('reveal-label').textContent=isDontKnow?'La réponse était':isCorrect?'✓ Bonne réponse !':'La réponse correcte était';
+        const revWord=$('reveal-word');
+        revWord.textContent=q.answer;
+        revWord.className='reveal-word'+(q.isHeTofr?' fr':' he')+(isCorrect?' correct-color':'');
+        $('ans-spk').onclick=()=>speak(q.answer,q.isHeTofr?'fr-FR':'he-IL',$('ans-spk'));
+        hide('dontknow-btn'); show('reveal-box');
+        const nextBtn=$('next-btn');
+        nextBtn.textContent=idx+1>=quiz.length?'Voir les résultats':'Question suivante →';
+        show('next-btn');
+    }
+
+    function showResult(){
+        hide('quiz-screen'); show('result-screen');
+        saveScore(currentTab, score, quiz.length);
+        buildTabs();
+        setActiveTab(currentTab);
+        const pct=Math.round((score/quiz.length)*100);
+        const color=pct>=80?'#1a7a3a':pct>=60?'#0038b8':'#b01a1a';
+        const emoji=pct>=80?'🎉':pct>=60?'💪':'📚';
+        const msg=pct>=80?'Excellent !':pct>=60?'Bon travail !':'Continue à réviser !';
+        const tabEmoji=TAB_ICONS[currentTab]||'🇮🇱';
+        const fullMsg=`${emoji} ${msg} ${tabEmoji}`;
+        const ring=$('trophy-ring');
+        ring.style.stroke=color;
+        setTimeout(()=>{ring.style.strokeDashoffset=283-(pct/100)*283;},100);
+        $('trophy-pct').textContent=pct+'%';
+        $('trophy-pct').setAttribute('fill',color);
+        $('trophy-emoji').textContent=emoji;
+        $('result-label').textContent=fullMsg;
+        $('stat-ok').textContent=score;
+        $('stat-err').textContent=quiz.length-score;
+        $('stat-tot').textContent=quiz.length;
+    }
+
+    document.querySelectorAll('.pill[data-dir]').forEach(p=>{
+        p.addEventListener('click',()=>{
+            direction=p.dataset.dir;
+            document.querySelectorAll('.pill[data-dir]').forEach(x=>x.classList.toggle('active',x===p));
+        });
+    });
+    document.querySelectorAll('.pill[data-order]').forEach(p=>{
+        p.addEventListener('click',()=>{
+            quizOrder=p.dataset.order;
+            document.querySelectorAll('.pill[data-order]').forEach(x=>x.classList.toggle('active',x===p));
+        });
+    });
+    $('start-btn').addEventListener('click',startQuiz);
+    $('back-btn').addEventListener('click',showSetup);
+    $('dontknow-btn').addEventListener('click',()=>answerQ('__dk__'));
+    $('next-btn').addEventListener('click',()=>{
+        if(idx+1>=quiz.length) showResult();
+        else{idx++;visited.add(idx);renderQuestion();}
+    });
+    $('restart-btn').addEventListener('click',startQuiz);
+    $('back-setup-btn').addEventListener('click',showSetup);
+
+    loadVocabulaire();
+</script>
+</body>
+</html>
