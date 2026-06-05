@@ -511,45 +511,52 @@
 
         function startMicrophone() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SR) { alert('❌ Microphone non supporté'); return; }
-            
-            // Si une instance existe et écoute encore, ignorer
-            if (recognitionInstance) return;
-            
+            if (!SR) {
+                alert('❌ Microphone non supporté');
+                return;
+            }
+
+            if (recognitionInstance) {
+                try { recognitionInstance.abort(); } catch (e) {}
+                recognitionInstance = null;
+            }
+
             const r = new SR();
             recognitionInstance = r;
+
             r.lang = state.sens === 'fr-he' ? 'he-IL' : 'fr-FR';
             r.continuous = false;
-            r.interimResults = false;
+            r.interimResults = true;
             r.maxAlternatives = 1;
-            
+
+            const input = document.getElementById('answerInput');
             const micBtn = document.querySelector('.audio-btn:nth-child(2)');
-            micBtn.style.animation = 'pulse 1s infinite';
+
             micBtn.style.opacity = '0.5';
-            
-            r.onstart = () => {
-                document.getElementById('answerInput').placeholder = '🎤 Écoute... parle maintenant!';
-            };
-            
+            input.placeholder = '🎤 Écoute...';
+
             r.onresult = (e) => {
-                const transcript = e.results[0][0].transcript || '';
-                document.getElementById('answerInput').value = transcript.trim();
+                let text = '';
+                for (let i = 0; i < e.results.length; i++) {
+                    text += e.results[i][0].transcript;
+                }
+                input.value = text.trim();
             };
-            
+
             r.onerror = (e) => {
-                micBtn.style.animation = 'none';
                 micBtn.style.opacity = '1';
-                if (e.error !== 'aborted') {
+                recognitionInstance = null;
+                if (e.error !== 'aborted' && e.error !== 'no-speech') {
                     alert('Erreur micro: ' + e.error);
                 }
             };
-            
+
             r.onend = () => {
-                micBtn.style.animation = 'none';
                 micBtn.style.opacity = '1';
-                recognitionInstance = null;  // ← Réinitialiser quand terminé
+                recognitionInstance = null;
+                input.placeholder = 'Tape ta réponse...';
             };
-            
+
             r.start();
         }
 
@@ -663,18 +670,18 @@
         }
 
         function speakAnswer(text, lang) {
-            // Arrêter VRAIMENT le précédent
+            if (!window.speechSynthesis) {
+                alert("Audio non supporté sur ce navigateur");
+                return;
+            }
+
             window.speechSynthesis.cancel();
-            window.speechSynthesis.pause();
-            window.speechSynthesis.resume();
-            
-            // Attendre un peu puis parler
-            setTimeout(() => {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-                utterance.rate = 0.9;
-                window.speechSynthesis.speak(utterance);
-            }, 100);
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = 0.85;
+
+            window.speechSynthesis.speak(utterance);
         }
 
         function nextPhrase() {
