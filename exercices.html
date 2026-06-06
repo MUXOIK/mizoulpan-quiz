@@ -407,8 +407,8 @@
             <!-- EXERCICES -->
             <p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Exercices</p>
 
-            <!-- RETOUR - COMPACT -->
-            <a href="accueil.html" class="back-button" style="margin-bottom: 8px;">← Retour</a>
+            <!-- RETOUR - COMPACT - INTELLIGENT -->
+            <a href="#" class="back-button" style="margin-bottom: 8px;" onclick="goBack(event)">← Retour</a>
 
             <!-- ════ SETUP SCREEN ════ -->
             <div class="setup-screen active" id="setupScreen">
@@ -520,6 +520,22 @@
         }
 
         // ════ DÉMARRAGE EXERCICES ════
+        function goBack(event) {
+            event.preventDefault();
+            const exerciseScreen = document.getElementById("exerciseScreen");
+            const setupScreen = document.getElementById("setupScreen");
+            
+            // Si on est sur la page 2 (exercices) → retour à page 1 (setup)
+            if (exerciseScreen.classList.contains("active")) {
+                exerciseScreen.classList.remove("active");
+                setupScreen.classList.add("active");
+            } else {
+                // Sinon → retour à accueil
+                window.location.href = "accueil.html";
+            }
+        }
+
+
         async function startExercises() {
             try {
                 const res = await fetch(GITHUB_URL + '?t=' + Date.now());
