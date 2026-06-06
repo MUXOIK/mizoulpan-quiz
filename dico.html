@@ -422,9 +422,11 @@
             const homeScreen = document.getElementById("homeScreen");
             
             // Si on est sur la page 2 (tableau) → retour à page 1 (catégories)
-            if (dictScreen.style.display !== "none") {
-                dictScreen.style.display = "none";
-                homeScreen.style.display = "block";
+            if (dictScreen.classList.contains('active')) {
+                dictScreen.classList.remove('active');
+                homeScreen.classList.remove('hidden');
+                // Réafficher les catégories
+                displayCategories();
             } else {
                 // Sinon → retour à accueil
                 window.location.href = "accueil.html";
