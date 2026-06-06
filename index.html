@@ -15,6 +15,73 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="style-global.css">
     <style>
+        /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
+        .page-header {
+            position: relative;
+            background: #dcecf8;
+            border-radius: 28px;
+            padding: 40px;
+            margin-bottom: 12px;
+            overflow: visible;
+        }
+
+        .title-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .title-zone h1 {
+            color: #0057D9;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .flag-icon {
+            width: clamp(58px, 10vw, 110px);
+            height: auto;
+            border-radius: 6px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+        }
+
+        .corner-logo {
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            width: 58px;
+            height: auto;
+            z-index: 100;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 25px 15px;
+            }
+
+            .corner-logo {
+                width: 34px;
+                top: -10px;
+                right: -10px;
+            }
+
+            .title-zone {
+                gap: 8px;
+            }
+
+            .flag-icon {
+                width: 34px;
+            }
+
+            .title-zone h1 {
+                font-size: 1.8rem;
+            }
+        }
         /* ════ QUIZ SPÉCIFIQUE ════ */
         body {
             background: #f5f7fa;
@@ -575,22 +642,19 @@
 </head>
 <body>
 
-<!-- LOGO MIZOULPAN - REMONTÉ PRÈS DU TITRE -->
-<div style="display: flex; justify-content: flex-end; margin-bottom: -8px; position: relative; z-index: 1; padding: 0 16px;">
-    <img src="logo-mizoulpan.png" alt="MIZOULPAN" style="height: 70px; width: auto;">
-</div>
-
-<!-- PAGE HEADER UNIFIÉ - SPACING RÉDUIT -->
-<div class="page-header" style="padding: 12px; margin-bottom: 8px;">
-    <div class="title-zone">
-        <img src="israel.png" alt="Israël" class="flag-icon" style="width: 35px; height: 23px;">
-        <h1 style="margin: 0; font-size: 1.6rem;">MIZOULPAN</h1>
-        <img src="france.png" alt="France" class="flag-icon" style="width: 35px; height: 23px;">
+    <!-- PAGE HEADER AVEC DRAPEAUX -->
+    <div class="page-header">
+        <div class="title-zone">
+            <img src="israel.png" alt="Israël" class="flag-icon">
+            <h1>MIZOULPAN</h1>
+            <img src="france.png" alt="France" class="flag-icon">
+        </div>
+        <!-- BULLE EN HAUT À DROITE -->
+        <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
     </div>
-</div>
-
-<!-- QUIZ - COMPACT -->
-<p style="text-align: center; font-weight: bold; color: var(--primary-blue); margin: 5px 0 8px; font-size: 1rem;">Quiz</p>
+    
+    <!-- QUIZ -->
+    <p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Quiz</p>
 
 <!-- RETOUR - COMPACT -->
 <div style="padding: 0 16px; margin-bottom: 8px;">
