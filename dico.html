@@ -425,8 +425,8 @@
             if (dictScreen.classList.contains('active')) {
                 dictScreen.classList.remove('active');
                 homeScreen.classList.remove('hidden');
-                // Réafficher les catégories
-                displayCategories();
+                // Recharger les catégories (important pour mobile)
+                loadVocabulaire();
             } else {
                 // Sinon → retour à accueil
                 window.location.href = "accueil.html";
