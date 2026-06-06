@@ -7,6 +7,58 @@
     <link rel="stylesheet" href="style-global.css">
     <style>
         /* SPÉCIFIQUE À L'ACCUEIL */
+        
+        /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
+        .page-header {
+            position: relative;
+            background: #E3F2FD;
+            border-radius: 24px;
+            padding: 34px 70px;
+            margin-bottom: 12px;
+        }
+
+        .title-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .title-zone h1 {
+            color: #0057D9;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .flag-icon {
+            width: clamp(58px, 10vw, 110px);
+            height: auto;
+            border-radius: 6px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+        }
+
+        .corner-logo {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            width: clamp(32px, 5vw, 54px);
+            height: auto;
+            z-index: 10;
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 24px 44px;
+                border-radius: 18px;
+            }
+
+            .title-zone {
+                gap: 14px;
+            }
+        }
+
         .logo-bandeau {
             text-align: center;
             margin-bottom: 40px;
@@ -172,18 +224,18 @@
     <div class="container">
         <div class="card">
             <!-- PAGE HEADER AVEC DRAPEAUX -->
-            <div class="page-header" style="position: relative;">
+            <div class="page-header">
                 <div class="title-zone">
                     <img src="israel.png" alt="Israël" class="flag-icon">
-                    <h1 style="margin: 0;">MIZOULPAN</h1>
+                    <h1>MIZOULPAN</h1>
                     <img src="france.png" alt="France" class="flag-icon">
                 </div>
-                <!-- BULLE EN HAUT À DROITE - POSITION ABSOLUE -->
-                <img src="logo-mizoulpan.png" alt="MIZOULPAN" style="position: absolute; top: 10px; right: 10px; width: 50px; height: 50px; z-index: 10;">
+                <!-- BULLE EN HAUT À DROITE -->
+                <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
             </div>
             
-            <!-- SOUS-TITRE COMPACT -->
-            <p style="text-align: center; margin: 4px 0 8px; font-size: 0.9rem; color: var(--primary-blue); font-weight: 500;">Apprendre l'hébreu moderne</p>
+            <!-- SOUS-TITRE -->
+            <p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Apprendre l'hébreu moderne</p>
 
             <!-- CARTES DE NAVIGATION -->
             <div class="buttons-section">
