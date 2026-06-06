@@ -526,7 +526,10 @@
             const setupScreen = document.getElementById("setupScreen");
             
             // Si on est sur la page 2 (exercices) → retour à page 1 (setup)
-            if (exerciseScreen.classList.contains("active")) {
+            // Vérifier si exerciseScreen est visible (display: block)
+            const isOnExercisePage = window.getComputedStyle(exerciseScreen).display === 'block';
+            
+            if (isOnExercisePage) {
                 exerciseScreen.classList.remove("active");
                 setupScreen.classList.add("active");
             } else {
