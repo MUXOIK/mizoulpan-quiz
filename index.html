@@ -658,6 +658,14 @@
 </head>
 <body>
 
+    <!-- PROTECTION : Rediriger vers accueil si accès direct -->
+    <script>
+        // Si l'utilisateur accède directement (pas venu de accueil), rediriger
+        if (!document.referrer || !document.referrer.includes('accueil.html')) {
+            window.location.href = 'accueil.html';
+        }
+    </script>
+
     <!-- PAGE HEADER AVEC DRAPEAUX -->
     <div class="page-header">
         <div class="title-zone">
