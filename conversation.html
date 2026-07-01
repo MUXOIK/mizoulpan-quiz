@@ -421,6 +421,7 @@
                         Niveau : <span class="heb" id="chatLevelHeb"></span> (<span id="chatLevelFr"></span>)
                     </span>
                     <div>
+                        <button class="speaker-toggle" id="handsFreeToggle" type="button">🎙️ Mains libres</button>
                         <button class="speaker-toggle" id="speakerToggle" type="button">🔊 Voix activée</button>
                         <button class="change-level-btn" id="changeLevelBtn" type="button">🔄 Changer de niveau</button>
                     </div>
@@ -470,9 +471,9 @@
 
         // Nombre max de tokens de réponse par niveau (réponses plus courtes pour les débutants)
         const LEVEL_MAX_TOKENS = {
-            debutant: 60,
-            intermediaire: 150,
-            avance: 500
+            debutant: 120,
+            intermediaire: 250,
+            avance: 600
         };
 
         // ════════════════════════════════════════════════════════════
@@ -638,9 +639,11 @@ ${vocabText}`;
         const sendBtn = document.getElementById('sendBtn');
         const micBtn = document.getElementById('micBtn');
         const speakerToggle = document.getElementById('speakerToggle');
+        const handsFreeToggle = document.getElementById('handsFreeToggle');
 
         // ── Voix (synthèse + reconnaissance) ─────────────────────────────
         let voiceEnabled = true;
+        let handsFreeMode = true; // conversation automatique : écoute après chaque réponse
         let hebrewVoice = null;
         let recognition = null;
         let isListening = false;
@@ -654,13 +657,22 @@ ${vocabText}`;
             window.speechSynthesis.addEventListener('voiceschanged', loadHebrewVoice);
         }
 
-        function speakHebrew(text) {
-            if (!voiceEnabled || !('speechSynthesis' in window)) return;
+        // onEnd : callback optionnel déclenché quand la voix a fini de parler
+        // (utilisé pour enchaîner automatiquement sur l'écoute en mode mains libres)
+        function speakHebrew(text, onEnd) {
+            if (!voiceEnabled || !('speechSynthesis' in window)) {
+                if (onEnd) onEnd();
+                return;
+            }
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'he-IL';
             if (hebrewVoice) utterance.voice = hebrewVoice;
             utterance.rate = 0.72;
+            if (onEnd) {
+                utterance.onend = onEnd;
+                utterance.onerror = onEnd;
+            }
             window.speechSynthesis.speak(utterance);
         }
 
@@ -669,6 +681,12 @@ ${vocabText}`;
             speakerToggle.textContent = voiceEnabled ? '🔊 Voix activée' : '🔇 Voix coupée';
             speakerToggle.classList.toggle('muted', !voiceEnabled);
             if (!voiceEnabled && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+        });
+
+        handsFreeToggle.addEventListener('click', () => {
+            handsFreeMode = !handsFreeMode;
+            handsFreeToggle.textContent = handsFreeMode ? '🎙️ Mains libres' : '🎙️ Mains libres (off)';
+            handsFreeToggle.classList.toggle('muted', !handsFreeMode);
         });
 
         function setListening(state) {
@@ -691,6 +709,7 @@ ${vocabText}`;
                 sendMessage();
             };
             rec.onerror = (event) => {
+                setListening(false);
                 if (event.error !== 'no-speech' && event.error !== 'aborted') {
                     addSystemNote("⚠️ Erreur de reconnaissance vocale : " + event.error);
                 }
@@ -700,25 +719,28 @@ ${vocabText}`;
             return rec;
         }
 
-        micBtn.addEventListener('click', () => {
+        function startListening() {
             if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
                 addSystemNote("⚠️ La reconnaissance vocale n'est pas disponible sur ce navigateur. Essayez avec Chrome (ordinateur ou Android).");
                 return;
             }
-            if (isListening) {
-                recognition.stop();
-                return;
-            }
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (isListening) return;
             if (!recognition) recognition = getRecognition();
             try {
                 recognition.start();
                 setListening(true);
             } catch {
-                recognition = getRecognition();
-                recognition.start();
-                setListening(true);
+                // recognition déjà démarrée ou état invalide : on ignore silencieusement
             }
+        }
+
+        micBtn.addEventListener('click', () => {
+            if (isListening) {
+                recognition.stop();
+                return;
+            }
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            startListening();
         });
 
         function addBubble(role, text) {
@@ -806,10 +828,24 @@ ${vocabText}`;
                     return;
                 }
 
-                const reply = data.reply || "…";
+                const reply = (data.reply || '').trim();
+
+                if (!reply) {
+                    // Réponse vide reçue de l'IA (rare, souvent une réponse coupée trop court) :
+                    // on ne l'affiche pas comme si c'était un vrai message, et on ne l'ajoute
+                    // pas à l'historique pour ne pas perturber la suite de la conversation.
+                    addSystemNote("⚠️ Le professeur n'a pas pu répondre cette fois (réponse vide). Réessayez votre message.");
+                    return;
+                }
+
                 addBubble('teacher', reply);
-                speakHebrew(reply);
                 history.push({ role: 'assistant', content: reply });
+
+                // Mode mains libres : dès que la voix a fini de parler, on relance
+                // automatiquement l'écoute du micro, sans avoir à toucher un bouton.
+                speakHebrew(reply, () => {
+                    if (handsFreeMode) startListening();
+                });
             } catch (err) {
                 hideTyping();
                 addSystemNote("⚠️ Impossible de contacter le professeur (vérifiez votre connexion).");
