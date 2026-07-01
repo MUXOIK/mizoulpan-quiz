@@ -216,7 +216,23 @@
             background: #F0F4F8;
             color: #1a1a1a;
             border-bottom-left-radius: 4px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
         }
+
+        .replay-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 2px;
+            flex-shrink: 0;
+            opacity: 0.6;
+            transition: opacity 0.2s ease;
+        }
+
+        .replay-btn:hover { opacity: 1; }
 
         .bubble.user {
             align-self: flex-end;
@@ -447,9 +463,16 @@
         };
 
         const LEVEL_TENSE_RULES = {
-            debutant: "- Phrases courtes\n- Présent et infinitif uniquement, pas de passé ni de futur",
-            intermediaire: "- Présent + passé (עבר)\n- Pas de futur pour l'instant",
-            avance: "- Tous les temps librement (présent, passé, futur)"
+            debutant: "- Présent et infinitif UNIQUEMENT, jamais de passé ni de futur\n- UNE SEULE phrase très courte par message : 3 à 5 mots maximum, pas de virgule, pas de subordonnée\n- Jamais deux idées dans le même message\n- Vocabulaire de base uniquement (salutations, objets simples, verbes très courants)",
+            intermediaire: "- Présent + passé (עבר), pas de futur pour l'instant\n- 1 à 2 phrases courtes par message maximum (8-10 mots par phrase)",
+            avance: "- Tous les temps librement (présent, passé, futur)\n- Phrases naturelles, longueur libre"
+        };
+
+        // Nombre max de tokens de réponse par niveau (réponses plus courtes pour les débutants)
+        const LEVEL_MAX_TOKENS = {
+            debutant: 60,
+            intermediaire: 150,
+            avance: 500
         };
 
         // ════════════════════════════════════════════════════════════
@@ -529,10 +552,16 @@
 NIVEAU : ${label.fr.toUpperCase()}
 ${LEVEL_TENSE_RULES[level]}
 
-RÈGLE VOCABULAIRE STRICTE :
-Tu dois construire tes phrases en utilisant UNIQUEMENT les mots de la liste ci-dessous.
+RÈGLE VOCABULAIRE ABSOLUE (LA PLUS IMPORTANTE) :
+Tu dois construire tes phrases EXCLUSIVEMENT avec les mots de la liste ci-dessous.
+C'est une contrainte stricte, pas une préférence : n'utilise JAMAIS un mot hébreu
+qui n'apparaît pas dans cette liste, même un mot très courant, même une particule
+grammaticale simple (mots de liaison, prépositions, etc. — tiens-toi uniquement à
+ceux présents dans la liste). Avant d'écrire une phrase, vérifie mentalement que
+chaque mot hébreu utilisé provient bien de la liste.
 Si tu as besoin d'un mot absent de la liste, utilise le mot FRANÇAIS à la place,
-afin que l'élève sache qu'il devra l'apprendre.
+afin que l'élève sache qu'il devra l'apprendre. Ne remplace jamais un mot manquant
+par un synonyme hébreu improvisé.
 
 RÈGLE MOT FRANÇAIS DÉTECTÉ :
 Si l'élève écrit un mot en français dans sa phrase, cela signifie qu'il ne connaît pas
@@ -631,7 +660,7 @@ ${vocabText}`;
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'he-IL';
             if (hebrewVoice) utterance.voice = hebrewVoice;
-            utterance.rate = 0.92;
+            utterance.rate = 0.72;
             window.speechSynthesis.speak(utterance);
         }
 
@@ -696,7 +725,21 @@ ${vocabText}`;
             const bubble = document.createElement('div');
             bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'teacher');
             bubble.setAttribute('dir', 'auto');
-            bubble.textContent = text;
+
+            const textSpan = document.createElement('span');
+            textSpan.textContent = text;
+            bubble.appendChild(textSpan);
+
+            if (role !== 'user') {
+                const replayBtn = document.createElement('button');
+                replayBtn.className = 'replay-btn';
+                replayBtn.type = 'button';
+                replayBtn.title = 'Réécouter';
+                replayBtn.textContent = '🔁';
+                replayBtn.addEventListener('click', () => speakHebrew(text));
+                bubble.appendChild(replayBtn);
+            }
+
             messagesEl.appendChild(bubble);
             messagesEl.scrollTop = messagesEl.scrollHeight;
             return bubble;
@@ -748,7 +791,11 @@ ${vocabText}`;
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     },
-                    body: JSON.stringify({ system: systemPrompt, messages: messagesToSend })
+                    body: JSON.stringify({
+                        system: systemPrompt,
+                        messages: messagesToSend,
+                        max_tokens: LEVEL_MAX_TOKENS[currentLevel] || 300
+                    })
                 });
 
                 const data = await res.json();
