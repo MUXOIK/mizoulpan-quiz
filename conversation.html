@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN - Conversation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style-global.css">
+    <style>
+        /* SPÉCIFIQUE À LA CONVERSATION */
+
+        /* PAGE HEADER - DRAPEAUX + TITRE + BULLE (identique aux autres pages) */
+        .page-header {
+            position: relative;
+            background: #dcecf8;
+            border-radius: 28px;
+            padding: 40px;
+            margin-bottom: 12px;
+            overflow: visible;
+        }
+
+        .title-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .title-zone h1 {
+            color: #0057D9;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .flag-icon {
+            width: clamp(58px, 10vw, 110px);
+            height: auto;
+            border-radius: 6px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+        }
+
+        .corner-logo {
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            width: 58px;
+            height: auto;
+            z-index: 100;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .page-header { padding: 25px 15px; }
+            .corner-logo { width: 34px; top: -10px; right: -10px; }
+            .title-zone { gap: 8px; }
+            .flag-icon { width: 34px; }
+            .title-zone h1 { font-size: 1.8rem; }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            margin: 4px 0 24px;
+            font-size: 0.9rem;
+            color: #0057D9;
+            font-weight: 500;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #0057D9;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .back-link:hover { text-decoration: underline; }
+
+        /* ════ ÉCRANS ════ */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* ════ SÉLECTION DE NIVEAU ════ */
+        .level-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .level-card {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 22px 24px;
+            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            border-radius: 16px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.25s ease;
+            text-align: right;
+        }
+
+        .level-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            background: linear-gradient(135deg, #81D4FA 0%, #B3E5FC 100%);
+        }
+
+        .level-card .level-heb {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #01579B;
+            direction: rtl;
+        }
+
+        .level-card .level-fr {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0057D9;
+        }
+
+        .level-card .level-desc {
+            font-size: 0.9rem;
+            color: #0277BD;
+            font-weight: 500;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .level-loading {
+            display: none;
+            text-align: center;
+            color: #0057D9;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        .level-error {
+            display: none;
+            text-align: center;
+            color: #C62828;
+            font-weight: 600;
+            margin-top: 16px;
+            background: #FFEBEE;
+            border-radius: 10px;
+            padding: 12px;
+        }
+
+        /* ════ ÉCRAN DE CHAT ════ */
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #dcecf8;
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+        }
+
+        .chat-header-level {
+            font-weight: 700;
+            color: #0057D9;
+            font-size: 0.95rem;
+        }
+
+        .chat-header-level .heb {
+            direction: rtl;
+            font-size: 1.05rem;
+        }
+
+        .change-level-btn {
+            background: white;
+            border: 1px solid #90CAF9;
+            color: #0057D9;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .change-level-btn:hover {
+            background: #E3F2FD;
+        }
+
+        .messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 320px;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding: 8px 4px;
+            margin-bottom: 16px;
+        }
+
+        .bubble {
+            max-width: 78%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 1rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .bubble.teacher {
+            align-self: flex-start;
+            background: #F0F4F8;
+            color: #1a1a1a;
+            border-bottom-left-radius: 4px;
+        }
+
+        .bubble.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #0057D9 0%, #0038B8 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble.system-note {
+            align-self: center;
+            background: #FFF8E1;
+            color: #8D6E00;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .bubble .translit {
+            display: block;
+            font-size: 0.78rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            display: flex;
+            gap: 4px;
+            padding: 14px 16px;
+            background: #F0F4F8;
+            border-radius: 16px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .typing-indicator span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #90A4AE;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.15s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-5px); opacity: 1; }
+        }
+
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input-row textarea {
+            flex: 1;
+            resize: none;
+            border: 2px solid #E0E0E0;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 1rem;
+            font-family: inherit;
+            direction: auto;
+            min-height: 48px;
+            max-height: 120px;
+        }
+
+        .chat-input-row textarea:focus {
+            outline: none;
+            border-color: #0057D9;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #0057D9 0%, #0038B8 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 0 22px;
+            height: 48px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,87,217,0.3); }
+        .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 480px) {
+            .level-card .level-heb { font-size: 1.2rem; }
+            .messages { max-height: 50vh; }
+            .bubble { max-width: 88%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+                <div class="title-zone">
+                    <img src="israel.png" alt="Israël" class="flag-icon">
+                    <h1>MIZOULPAN</h1>
+                    <img src="france.png" alt="France" class="flag-icon">
+                </div>
+                <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
+            </div>
+
+            <a href="accueil.html" class="back-link">← Retour à l'accueil</a>
+            <p class="page-subtitle">שיחה חופשית — Conversation avec un professeur d'hébreu</p>
+
+            <!-- ÉCRAN 1 : SÉLECTION DU NIVEAU -->
+            <div id="levelScreen" class="screen active">
+                <div class="level-cards">
+                    <div class="level-card" data-level="debutant">
+                        <span class="level-heb">מתחיל</span>
+                        <span class="level-fr">Débutant</span>
+                        <span class="level-desc">Phrases courtes, verbes au présent et à l'infinitif uniquement. Idéal pour commencer à pratiquer.</span>
+                    </div>
+                    <div class="level-card" data-level="intermediaire">
+                        <span class="level-heb">בינוני</span>
+                        <span class="level-fr">Intermédiaire</span>
+                        <span class="level-desc">Présent et passé (עבר), vocabulaire plus large. Pour progresser en confiance.</span>
+                    </div>
+                    <div class="level-card" data-level="avance">
+                        <span class="level-heb">מתקדם</span>
+                        <span class="level-fr">Avancé</span>
+                        <span class="level-desc">Tous les temps, vocabulaire complet (17 catégories, 600+ mots). Pour converser librement.</span>
+                    </div>
+                </div>
+                <p class="level-loading" id="levelLoading">Préparation du vocabulaire…</p>
+                <p class="level-error" id="levelError"></p>
+            </div>
+
+            <!-- ÉCRAN 2 : CHAT -->
+            <div id="chatScreen" class="screen">
+                <div class="chat-header">
+                    <span class="chat-header-level">
+                        Niveau : <span class="heb" id="chatLevelHeb"></span> (<span id="chatLevelFr"></span>)
+                    </span>
+                    <button class="change-level-btn" id="changeLevelBtn" type="button">🔄 Changer de niveau</button>
+                </div>
+
+                <div class="messages" id="messages"></div>
+
+                <div class="chat-input-row">
+                    <textarea id="userInput" placeholder="כתוב כאן... (écris ici en hébreu ou en français)" rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn" type="button">שלח</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ════════════════════════════════════════════════════════════
+        // CONFIGURATION
+        // ════════════════════════════════════════════════════════════
+
+        // ⚠️ Reste à faire : ajouter le secret ANTHROPIC_API_KEY dans le
+        // dashboard Supabase (voir supabase-function/README-DEPLOIEMENT-SUPABASE.md)
+        const SUPABASE_FUNCTION_URL = "https://zwckzkgilrcswoxdrpzi.supabase.co/functions/v1/hebrew-teacher";
+        // Clé "anon" du projet — PAS un secret, conçue pour être visible côté navigateur
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3Y2t6a2dpbHJjc3dveGRycHppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5MTU4NTIsImV4cCI6MjA5ODQ5MTg1Mn0.76v2NTXQ8GhnEQ6S2RTpF7hixw4tQx1nx8vjVJBHG0k";
+
+        // Répartition des onglets du fichier Excel par niveau.
+        // avance = null → tous les onglets sont utilisés.
+        const LEVEL_SHEETS = {
+            debutant: ['verbes', 'chiffres', 'couleur', 'famille', 'vocabulaire', 'animaux', 'expression', 'liaison'],
+            intermediaire: ['verbes', 'chiffres', 'couleur', 'famille', 'vocabulaire', 'animaux', 'expression', 'liaison', 'adjectif', 'vétement', 'transport', 'classroom', 'nourriture', 'temps', 'interrogation'],
+            avance: null
+        };
+
+        const LEVEL_LABELS = {
+            debutant: { heb: 'מתחיל', fr: 'Débutant' },
+            intermediaire: { heb: 'בינוני', fr: 'Intermédiaire' },
+            avance: { heb: 'מתקדם', fr: 'Avancé' }
+        };
+
+        const LEVEL_TENSE_RULES = {
+            debutant: "- Phrases courtes\n- Présent et infinitif uniquement, pas de passé ni de futur",
+            intermediaire: "- Présent + passé (עבר)\n- Pas de futur pour l'instant",
+            avance: "- Tous les temps librement (présent, passé, futur)"
+        };
+
+        // ════════════════════════════════════════════════════════════
+        // ÉTAT
+        // ════════════════════════════════════════════════════════════
+
+        let currentLevel = null;
+        let systemPrompt = null;
+        let history = []; // [{role:'user'|'assistant', content:'...'}]
+        let workbookCache = null;
+
+        // ════════════════════════════════════════════════════════════
+        // LECTURE DU FICHIER EXCEL
+        // ════════════════════════════════════════════════════════════
+
+        function isHebrew(value) {
+            return typeof value === 'string' && /[\u0590-\u05FF]/.test(value);
+        }
+
+        async function loadWorkbook() {
+            if (workbookCache) return workbookCache;
+            const response = await fetch(`vocabulaire.xlsx?t=${Date.now()}`);
+            if (!response.ok) throw new Error("Impossible de charger vocabulaire.xlsx");
+            const buffer = await response.arrayBuffer();
+            workbookCache = XLSX.read(buffer, { type: 'array' });
+            return workbookCache;
+        }
+
+        // Extrait "français = hébreu (phonétique)" pour un onglet, en détectant
+        // automatiquement les lignes d'en-tête (qui ne contiennent pas d'hébreu en colonne 1/2)
+        function extractSheetLines(worksheet) {
+            const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+            const lines = [];
+
+            for (const row of rows) {
+                const fr = row[0];
+                const c1 = row[1];
+                const c2 = row[2];
+                const heb = isHebrew(c1) ? c1 : (isHebrew(c2) ? c2 : null);
+
+                if (!fr || !heb) continue; // ligne d'en-tête ou incomplète → ignorée
+
+                // dernière cellule non vide et non-hébraïque de la ligne = transcription phonétique
+                let phon = '';
+                for (let i = row.length - 1; i >= 0; i--) {
+                    const v = row[i];
+                    if (v !== '' && v !== null && v !== undefined && !isHebrew(String(v))) {
+                        phon = String(v).trim();
+                        break;
+                    }
+                }
+
+                const frClean = String(fr).trim();
+                const hebClean = String(heb).trim();
+                lines.push(phon ? `${frClean} = ${hebClean} (${phon})` : `${frClean} = ${hebClean}`);
+            }
+            return lines;
+        }
+
+        function buildVocabularyPrompt(workbook, level) {
+            const sheetsToLoad = LEVEL_SHEETS[level] || workbook.SheetNames;
+            let vocab = '';
+            for (const sheetName of sheetsToLoad) {
+                const sheet = workbook.Sheets[sheetName];
+                if (!sheet) continue;
+                const lines = extractSheetLines(sheet);
+                if (lines.length === 0) continue;
+                vocab += `\n[${sheetName.toUpperCase()}]\n${lines.join('\n')}\n`;
+            }
+            return vocab.trim();
+        }
+
+        function buildSystemPrompt(level, vocabText) {
+            const label = LEVEL_LABELS[level];
+            return `Tu es un professeur d'hébreu bienveillant et patient. Tu converses uniquement en hébreu avec l'élève.
+
+NIVEAU : ${label.fr.toUpperCase()}
+${LEVEL_TENSE_RULES[level]}
+
+RÈGLE VOCABULAIRE STRICTE :
+Tu dois construire tes phrases en utilisant UNIQUEMENT les mots de la liste ci-dessous.
+Si tu as besoin d'un mot absent de la liste, utilise le mot FRANÇAIS à la place,
+afin que l'élève sache qu'il devra l'apprendre.
+
+RÈGLE MOT FRANÇAIS DÉTECTÉ :
+Si l'élève écrit un mot en français dans sa phrase, cela signifie qu'il ne connaît pas
+ce mot en hébreu. Dans ce cas :
+1. Félicite-le pour sa phrase
+2. Donne-lui le mot en hébreu + transcription phonétique entre parenthèses
+3. Répète sa phrase corrigée entièrement en hébreu
+4. Continue la conversation naturellement
+
+RÈGLE ERREUR DE GRAMMAIRE :
+Corrige doucement en une ligne, puis continue sans t'arrêter sur l'erreur.
+
+Commence la conversation par une courte phrase d'accueil chaleureuse en hébreu, adaptée au niveau ${label.fr}.
+
+LISTE DE VOCABULAIRE AUTORISÉ :
+${vocabText}`;
+        }
+
+        // ════════════════════════════════════════════════════════════
+        // SÉLECTION DU NIVEAU
+        // ════════════════════════════════════════════════════════════
+
+        document.querySelectorAll('.level-card').forEach(card => {
+            card.addEventListener('click', () => selectLevel(card.dataset.level));
+        });
+
+        async function selectLevel(level) {
+            const loadingEl = document.getElementById('levelLoading');
+            const errorEl = document.getElementById('levelError');
+            errorEl.style.display = 'none';
+            loadingEl.style.display = 'block';
+
+            try {
+                const workbook = await loadWorkbook();
+                const vocabText = buildVocabularyPrompt(workbook, level);
+                if (!vocabText) throw new Error("Aucun vocabulaire trouvé pour ce niveau.");
+
+                currentLevel = level;
+                systemPrompt = buildSystemPrompt(level, vocabText);
+                history = [];
+
+                document.getElementById('chatLevelHeb').textContent = LEVEL_LABELS[level].heb;
+                document.getElementById('chatLevelFr').textContent = LEVEL_LABELS[level].fr;
+
+                document.getElementById('messages').innerHTML = '';
+                document.getElementById('levelScreen').classList.remove('active');
+                document.getElementById('chatScreen').classList.add('active');
+
+                // Premier message du professeur, généré par l'IA selon le niveau
+                await requestTeacherReply();
+            } catch (err) {
+                errorEl.textContent = "Erreur : " + err.message;
+                errorEl.style.display = 'block';
+            } finally {
+                loadingEl.style.display = 'none';
+            }
+        }
+
+        document.getElementById('changeLevelBtn').addEventListener('click', () => {
+            document.getElementById('chatScreen').classList.remove('active');
+            document.getElementById('levelScreen').classList.add('active');
+            currentLevel = null;
+            systemPrompt = null;
+            history = [];
+        });
+
+        // ════════════════════════════════════════════════════════════
+        // CHAT
+        // ════════════════════════════════════════════════════════════
+
+        const messagesEl = document.getElementById('messages');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        function addBubble(role, text) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'teacher');
+            bubble.setAttribute('dir', 'auto');
+            bubble.textContent = text;
+            messagesEl.appendChild(bubble);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+            return bubble;
+        }
+
+        function addSystemNote(text) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble system-note';
+            bubble.textContent = text;
+            messagesEl.appendChild(bubble);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function showTyping() {
+            const el = document.createElement('div');
+            el.className = 'typing-indicator';
+            el.id = 'typingIndicator';
+            el.innerHTML = '<span></span><span></span><span></span>';
+            messagesEl.appendChild(el);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('typingIndicator');
+            if (el) el.remove();
+        }
+
+        async function requestTeacherReply() {
+            sendBtn.disabled = true;
+            showTyping();
+
+            if (SUPABASE_ANON_KEY.includes('REMPLACER')) {
+                hideTyping();
+                addSystemNote("⚠️ Le relais API n'est pas encore configuré (SUPABASE_ANON_KEY dans conversation.html). Voir supabase-function/README-DEPLOIEMENT-SUPABASE.md");
+                sendBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const isFirstMessage = history.length === 0;
+                if (isFirstMessage) {
+                    history.push({ role: 'user', content: 'שלום' });
+                }
+                const messagesToSend = history;
+
+                const res = await fetch(SUPABASE_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({ system: systemPrompt, messages: messagesToSend })
+                });
+
+                const data = await res.json();
+                hideTyping();
+
+                if (!res.ok || data.error) {
+                    addSystemNote("⚠️ " + (data.error || "Erreur de communication avec le professeur."));
+                    return;
+                }
+
+                const reply = data.reply || "…";
+                addBubble('teacher', reply);
+                history.push({ role: 'assistant', content: reply });
+            } catch (err) {
+                hideTyping();
+                addSystemNote("⚠️ Impossible de contacter le professeur (vérifiez votre connexion).");
+            } finally {
+                sendBtn.disabled = false;
+            }
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addBubble('user', text);
+            history.push({ role: 'user', content: text });
+            userInput.value = '';
+            userInput.style.height = 'auto';
+
+            await requestTeacherReply();
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        userInput.addEventListener('input', () => {
+            userInput.style.height = 'auto';
+            userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+        });
+    </script>
+</body>
+</html>
