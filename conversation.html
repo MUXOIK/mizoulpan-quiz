@@ -830,21 +830,29 @@ ${vocabText}`;
                 return;
             }
             if (isListening) return;
-            if (!recognition) recognition = getRecognition();
+
+            // Important : on recrée systématiquement une NOUVELLE instance de
+            // reconnaissance à chaque écoute plutôt que de réutiliser toujours
+            // la même. Sur Android Chrome, réutiliser le même objet plusieurs
+            // fois finit par le rendre silencieusement inactif après quelques
+            // cycles (bug connu du navigateur) — ce qui coupait la conversation
+            // après 4-5 échanges en mode mains libres.
+            recognition = getRecognition();
+            const thisRecognition = recognition;
+
             try {
-                recognition.start();
+                thisRecognition.start();
                 setListening(true);
-                // Filet de sécurité : si rien ne se passe (bug connu sur certains
-                // Android/Chrome), on force l'arrêt après 12 secondes pour ne
-                // jamais rester bloqué en silence.
+                // Filet de sécurité : si rien ne se passe, on force l'arrêt
+                // après 12 secondes pour ne jamais rester bloqué en silence.
                 setTimeout(() => {
-                    if (isListening) {
-                        try { recognition.stop(); } catch {}
+                    if (isListening && recognition === thisRecognition) {
+                        try { thisRecognition.stop(); } catch {}
                         setListening(false);
                     }
                 }, 12000);
             } catch {
-                // recognition déjà démarrée ou état invalide : on ignore silencieusement
+                // état invalide : on ignore silencieusement
             }
         }
 
