@@ -732,10 +732,13 @@ ${vocabText}`;
         // (parenthèses, guillemets, astérisques, etc.).
         function sanitizeForSpeech(text) {
             return text
-                // émoticônes et pictogrammes (incl. drapeaux, variation selectors)
-                .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\uFE0F\u200D]/gu, '')
-                // signes souvent épelés à voix haute par certaines voix
-                .replace(/[()[\]{}*_#"«»`~]/g, '')
+                // Liste blanche stricte : on ne garde que les lettres hébraïques
+                // (+ niqqud), les lettres latines/françaises accentuées, les
+                // chiffres, les espaces et l'apostrophe. Tout le reste (émoticônes,
+                // ponctuation...) est supprimé, quel que soit le symbole précis —
+                // certains moteurs vocaux (notamment sur Android) épellent sinon
+                // à voix haute chaque signe ("point d'exclamation", "sourire"...).
+                .replace(/[^\u0590-\u05FFa-zA-ZÀ-ÿ\u0100-\u017F0-9\s']/gu, ' ')
                 .replace(/\s{2,}/g, ' ')
                 .trim();
         }
