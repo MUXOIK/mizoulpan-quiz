@@ -631,6 +631,28 @@ ${vocabText}`;
         });
 
         async function selectLevel(level) {
+            // Débloque la synthèse vocale sur iOS Safari : Apple exige que le tout
+            // premier appel à speechSynthesis se produise de façon synchrone dans
+            // le geste de l'utilisateur (le clic), sinon les appels suivants
+            // (après un "await") peuvent rester silencieux. Un utterance vide et
+            // muet suffit à "débloquer" l'audio pour le reste de la session.
+            if ('speechSynthesis' in window) {
+                const unlock = new SpeechSynthesisUtterance(' ');
+                unlock.volume = 0;
+                window.speechSynthesis.speak(unlock);
+            }
+
+            // Demande l'autorisation du micro dès ce tap initial (plutôt que
+            // d'attendre le premier appui sur 🎤) : c'est la seule étape qui a
+            // vraiment besoin d'un geste direct sur iOS. Une fois l'autorisation
+            // accordée ici, les redémarrages automatiques du micro en mode mains
+            // libres ont beaucoup plus de chances de fonctionner ensuite.
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => stream.getTracks().forEach(track => track.stop()))
+                    .catch(() => {}); // l'utilisateur pourra toujours autoriser plus tard via le bouton micro
+            }
+
             const loadingEl = document.getElementById('levelLoading');
             const errorEl = document.getElementById('levelError');
             errorEl.style.display = 'none';
@@ -651,6 +673,10 @@ ${vocabText}`;
                 document.getElementById('messages').innerHTML = '';
                 document.getElementById('levelScreen').classList.remove('active');
                 document.getElementById('chatScreen').classList.add('active');
+
+                if (isIOS() && handsFreeMode) {
+                    addSystemNote("ℹ️ Sur iPhone/iPad : si le micro ne se relance pas tout seul après chaque réponse, appuyez sur 🎤 manuellement (limitation possible de Safari).");
+                }
 
                 // Premier message du professeur, généré par l'IA selon le niveau
                 await requestTeacherReply();
@@ -683,6 +709,11 @@ ${vocabText}`;
         const handsFreeToggle = document.getElementById('handsFreeToggle');
 
         // ── Voix (synthèse + reconnaissance) ─────────────────────────────
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPad récent (se déclare comme Mac)
+        }
+
         let voiceEnabled = true;
         let handsFreeMode = true; // conversation automatique : écoute après chaque réponse
         let hebrewVoice = null;
@@ -799,6 +830,9 @@ ${vocabText}`;
             micBtn.classList.toggle('listening', state);
         }
 
+        let manualStop = false;
+        let consecutiveEmptyListens = 0;
+
         function getRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) return null;
@@ -808,18 +842,39 @@ ${vocabText}`;
             rec.interimResults = false;
             rec.maxAlternatives = 1;
 
+            let gotResult = false;
+
             rec.onresult = (event) => {
+                gotResult = true;
+                consecutiveEmptyListens = 0;
                 const transcript = event.results[0][0].transcript;
                 userInput.value = transcript;
                 sendMessage();
             };
             rec.onerror = (event) => {
-                setListening(false);
                 if (event.error !== 'no-speech' && event.error !== 'aborted') {
                     addSystemNote("⚠️ Erreur de reconnaissance vocale : " + event.error);
                 }
+                // Le redémarrage (si besoin) est géré dans onend pour éviter un
+                // double redémarrage, car les deux événements se déclenchent
+                // souvent l'un après l'autre pour la même écoute.
             };
-            rec.onend = () => setListening(false);
+            rec.onend = () => {
+                setListening(false);
+                // Rien n'a été dit (silence, réflexion en cours...) : en mode
+                // mains libres, on relance l'écoute automatiquement au lieu de
+                // laisser la conversation s'arrêter — c'est ce qui la coupait
+                // après quelques échanges pendant que l'élève réfléchissait.
+                if (!gotResult && handsFreeMode && !manualStop) {
+                    consecutiveEmptyListens++;
+                    if (consecutiveEmptyListens <= 8) {
+                        setTimeout(() => { if (!isListening) startListening(); }, 400);
+                    } else {
+                        addSystemNote("⏸️ Micro en pause (silence prolongé). Appuyez sur 🎤 quand vous êtes prêt·e.");
+                        consecutiveEmptyListens = 0;
+                    }
+                }
+            };
 
             return rec;
         }
@@ -830,27 +885,28 @@ ${vocabText}`;
                 return;
             }
             if (isListening) return;
+            manualStop = false;
 
             // Important : on recrée systématiquement une NOUVELLE instance de
             // reconnaissance à chaque écoute plutôt que de réutiliser toujours
             // la même. Sur Android Chrome, réutiliser le même objet plusieurs
             // fois finit par le rendre silencieusement inactif après quelques
-            // cycles (bug connu du navigateur) — ce qui coupait la conversation
-            // après 4-5 échanges en mode mains libres.
+            // cycles (bug connu du navigateur).
             recognition = getRecognition();
             const thisRecognition = recognition;
 
             try {
                 thisRecognition.start();
                 setListening(true);
-                // Filet de sécurité : si rien ne se passe, on force l'arrêt
-                // après 12 secondes pour ne jamais rester bloqué en silence.
+                // Filet de sécurité seulement : si l'instance reste bloquée sans
+                // jamais déclencher onend/onerror (rare), on force l'arrêt après
+                // 25 secondes. Ce n'est plus la limite normale de réflexion.
                 setTimeout(() => {
                     if (isListening && recognition === thisRecognition) {
                         try { thisRecognition.stop(); } catch {}
                         setListening(false);
                     }
-                }, 12000);
+                }, 25000);
             } catch {
                 // état invalide : on ignore silencieusement
             }
@@ -858,10 +914,12 @@ ${vocabText}`;
 
         micBtn.addEventListener('click', () => {
             if (isListening) {
+                manualStop = true;
                 recognition.stop();
                 return;
             }
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            consecutiveEmptyListens = 0;
             startListening();
         });
 
