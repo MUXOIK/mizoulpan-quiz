@@ -686,16 +686,44 @@ ${vocabText}`;
         let voiceEnabled = true;
         let handsFreeMode = true; // conversation automatique : écoute après chaque réponse
         let hebrewVoice = null;
+        let frenchVoice = null;
         let recognition = null;
         let isListening = false;
 
-        function loadHebrewVoice() {
+        function loadVoices() {
             const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
             hebrewVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('he')) || null;
+            frenchVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith('fr')) || null;
         }
         if ('speechSynthesis' in window) {
-            loadHebrewVoice();
-            window.speechSynthesis.addEventListener('voiceschanged', loadHebrewVoice);
+            loadVoices();
+            window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
+        }
+
+        // Découpe un texte mixte hébreu/français en morceaux consécutifs de
+        // même script, pour pouvoir lire chaque partie avec la bonne voix
+        // (évite qu'un mot français soit lu avec une voix/accent hébraïque
+        // par défaut, ce qui donnait un accent anglais peu clair).
+        function splitTextByScript(text) {
+            const chunks = [];
+            let current = '';
+            let currentIsHebrew = null;
+            for (const ch of text) {
+                const isHeb = /[\u0590-\u05FF]/.test(ch);
+                const isSpace = /\s/.test(ch);
+                if (currentIsHebrew === null) {
+                    currentIsHebrew = isHeb;
+                    current = ch;
+                } else if (isSpace || isHeb === currentIsHebrew) {
+                    current += ch;
+                } else {
+                    chunks.push({ text: current, hebrew: currentIsHebrew });
+                    current = ch;
+                    currentIsHebrew = isHeb;
+                }
+            }
+            if (current) chunks.push({ text: current, hebrew: currentIsHebrew });
+            return chunks.filter(c => c.text.trim().length > 0);
         }
 
         // onEnd : callback optionnel déclenché quand la voix a fini de parler
@@ -706,15 +734,33 @@ ${vocabText}`;
                 return;
             }
             window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'he-IL';
-            if (hebrewVoice) utterance.voice = hebrewVoice;
-            utterance.rate = 0.72;
-            if (onEnd) {
-                utterance.onend = onEnd;
-                utterance.onerror = onEnd;
+            const chunks = splitTextByScript(text);
+            if (chunks.length === 0) {
+                if (onEnd) onEnd();
+                return;
             }
-            window.speechSynthesis.speak(utterance);
+
+            let i = 0;
+            function speakNext() {
+                if (i >= chunks.length) {
+                    if (onEnd) onEnd();
+                    return;
+                }
+                const chunk = chunks[i++];
+                const utterance = new SpeechSynthesisUtterance(chunk.text);
+                if (chunk.hebrew) {
+                    utterance.lang = 'he-IL';
+                    if (hebrewVoice) utterance.voice = hebrewVoice;
+                } else {
+                    utterance.lang = 'fr-FR';
+                    if (frenchVoice) utterance.voice = frenchVoice;
+                }
+                utterance.rate = 0.72;
+                utterance.onend = speakNext;
+                utterance.onerror = speakNext;
+                window.speechSynthesis.speak(utterance);
+            }
+            speakNext();
         }
 
         speakerToggle.addEventListener('click', () => {
@@ -874,7 +920,8 @@ ${vocabText}`;
                         body: JSON.stringify({
                             system: systemPrompt,
                             messages: messagesToSend,
-                            max_tokens: LEVEL_MAX_TOKENS[currentLevel] || 300
+                            max_tokens: LEVEL_MAX_TOKENS[currentLevel] || 300,
+                            level: currentLevel
                         }),
                         signal: controller.signal
                     });
