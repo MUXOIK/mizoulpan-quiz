@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIZOULPAN - Conversation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="style-global.css">
     <style>
@@ -27,7 +29,7 @@
         }
 
         .title-zone h1 {
-            color: #0057D9;
+            color: var(--primary-blue);
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -61,26 +63,43 @@
             .title-zone h1 { font-size: 1.8rem; }
         }
 
-        .page-subtitle {
+        .page-title-fr {
             text-align: center;
-            margin: 4px 0 24px;
-            font-size: 0.9rem;
-            color: #0057D9;
-            font-weight: 500;
+            margin: 8px 0 2px;
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            color: var(--primary-blue);
+            font-weight: 800;
         }
 
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #0057D9;
+        .page-title-heb {
+            text-align: center;
+            margin: 0 0 24px;
+            font-size: clamp(1.6rem, 4.5vw, 2.3rem);
+            color: var(--primary-blue-dark);
+            font-weight: 800;
+            direction: rtl;
+        }
+
+        .back-button {
+            display: inline-block;
+            background: var(--primary-blue, #0038B8);
+            color: #FFFFFF;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-bottom: 16px;
+            font-weight: bold;
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
         }
 
-        .back-link:hover { text-decoration: underline; }
+        .back-button:hover {
+            background: var(--primary-blue-dark, #002D7A);
+            transform: translateX(-3px);
+        }
 
         /* ════ ÉCRANS ════ */
         .screen { display: none; }
@@ -96,48 +115,58 @@
         .level-card {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 10px;
             padding: 22px 24px;
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
             border-radius: 16px;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
             transition: all 0.25s ease;
-            text-align: right;
         }
 
         .level-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            background: linear-gradient(135deg, #81D4FA 0%, #B3E5FC 100%);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+            background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--primary-blue-dark) 100%);
         }
 
-        .level-card .level-heb {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #01579B;
-            direction: rtl;
+        .level-card-top {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
         }
 
         .level-card .level-fr {
-            font-size: 1rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .level-card .level-heb {
+            position: absolute;
+            right: 0;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #0057D9;
+            color: var(--white);
+            direction: rtl;
         }
 
         .level-card .level-desc {
             font-size: 0.9rem;
-            color: #0277BD;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
             direction: ltr;
-            text-align: left;
+            text-align: center;
         }
 
         .level-loading {
             display: none;
             text-align: center;
-            color: #0057D9;
+            color: var(--primary-blue);
             font-weight: 600;
             margin-top: 16px;
         }
@@ -166,7 +195,7 @@
 
         .chat-header-level {
             font-weight: 700;
-            color: #0057D9;
+            color: var(--primary-blue);
             font-size: 0.95rem;
         }
 
@@ -178,7 +207,7 @@
         .change-level-btn {
             background: white;
             border: 1px solid #90CAF9;
-            color: #0057D9;
+            color: var(--primary-blue);
             font-weight: 600;
             font-size: 0.85rem;
             padding: 8px 14px;
@@ -236,7 +265,7 @@
 
         .bubble.user {
             align-self: flex-end;
-            background: linear-gradient(135deg, #0057D9 0%, #0038B8 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
             color: white;
             border-bottom-right-radius: 4px;
         }
@@ -303,7 +332,7 @@
             transition: all 0.2s ease;
         }
 
-        .mic-btn:hover { border-color: #0057D9; }
+        .mic-btn:hover { border-color: var(--primary-blue); }
 
         .mic-btn.listening {
             background: #FFEBEE;
@@ -320,7 +349,7 @@
         .speaker-toggle {
             background: white;
             border: 1px solid #90CAF9;
-            color: #0057D9;
+            color: var(--primary-blue);
             font-weight: 600;
             font-size: 0.85rem;
             padding: 8px 12px;
@@ -348,11 +377,11 @@
 
         .chat-input-row textarea:focus {
             outline: none;
-            border-color: #0057D9;
+            border-color: var(--primary-blue);
         }
 
         .send-btn {
-            background: linear-gradient(135deg, #0057D9 0%, #0038B8 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
             color: white;
             border: none;
             border-radius: 14px;
@@ -388,25 +417,34 @@
                 <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
             </div>
 
-            <a href="accueil.html" class="back-link">← Retour à l'accueil</a>
-            <p class="page-subtitle">שיחה חופשית — Conversation avec un professeur d'hébreu</p>
+            <a href="https://muxoik.github.io/mizoulpan-quiz/accueil.html" class="back-button">← Retour</a>
+            <p class="page-title-fr">Conversation avec un professeur d'hébreu</p>
+            <p class="page-title-heb">שיחה חופשית</p>
 
             <!-- ÉCRAN 1 : SÉLECTION DU NIVEAU -->
             <div id="levelScreen" class="screen active">
                 <div class="level-cards">
                     <div class="level-card" data-level="debutant">
-                        <span class="level-heb">מתחיל</span>
-                        <span class="level-fr">Débutant</span>
+                        <div class="level-card-top">
+                            <span class="level-fr">DÉBUTANT</span>
+                            <span class="level-heb">מתחיל</span>
+                        </div>
                         <span class="level-desc">Phrases courtes, verbes au présent et à l'infinitif uniquement. Idéal pour commencer à pratiquer.</span>
                     </div>
+
                     <div class="level-card" data-level="intermediaire">
-                        <span class="level-heb">בינוני</span>
-                        <span class="level-fr">Intermédiaire</span>
+                        <div class="level-card-top">
+                            <span class="level-fr">INTERMÉDIAIRE</span>
+                            <span class="level-heb">בינוני</span>
+                        </div>
                         <span class="level-desc">Présent et passé (עבר), vocabulaire plus large. Pour progresser en confiance.</span>
                     </div>
+
                     <div class="level-card" data-level="avance">
-                        <span class="level-heb">מתקדם</span>
-                        <span class="level-fr">Avancé</span>
+                        <div class="level-card-top">
+                            <span class="level-fr">EXPERT</span>
+                            <span class="level-heb">מתקדם</span>
+                        </div>
                         <span class="level-desc">Tous les temps, vocabulaire complet (17 catégories, 600+ mots). Pour converser librement.</span>
                     </div>
                 </div>
@@ -460,7 +498,7 @@
         const LEVEL_LABELS = {
             debutant: { heb: 'מתחיל', fr: 'Débutant' },
             intermediaire: { heb: 'בינוני', fr: 'Intermédiaire' },
-            avance: { heb: 'מתקדם', fr: 'Avancé' }
+            avance: { heb: 'מתקדם', fr: 'Expert' }
         };
 
         const LEVEL_TENSE_RULES = {
@@ -729,6 +767,15 @@ ${vocabText}`;
             try {
                 recognition.start();
                 setListening(true);
+                // Filet de sécurité : si rien ne se passe (bug connu sur certains
+                // Android/Chrome), on force l'arrêt après 12 secondes pour ne
+                // jamais rester bloqué en silence.
+                setTimeout(() => {
+                    if (isListening) {
+                        try { recognition.stop(); } catch {}
+                        setListening(false);
+                    }
+                }, 12000);
             } catch {
                 // recognition déjà démarrée ou état invalide : on ignore silencieusement
             }
@@ -807,18 +854,30 @@ ${vocabText}`;
                 }
                 const messagesToSend = history;
 
-                const res = await fetch(SUPABASE_FUNCTION_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    },
-                    body: JSON.stringify({
-                        system: systemPrompt,
-                        messages: messagesToSend,
-                        max_tokens: LEVEL_MAX_TOKENS[currentLevel] || 300
-                    })
-                });
+                // Sécurité : on n'attend jamais indéfiniment une réponse.
+                // Si le serveur ne répond pas dans les 25 secondes, on affiche
+                // une erreur claire au lieu de rester bloqué en silence.
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 25000);
+
+                let res;
+                try {
+                    res = await fetch(SUPABASE_FUNCTION_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        },
+                        body: JSON.stringify({
+                            system: systemPrompt,
+                            messages: messagesToSend,
+                            max_tokens: LEVEL_MAX_TOKENS[currentLevel] || 300
+                        }),
+                        signal: controller.signal
+                    });
+                } finally {
+                    clearTimeout(timeoutId);
+                }
 
                 const data = await res.json();
                 hideTyping();
@@ -850,7 +909,11 @@ ${vocabText}`;
                 });
             } catch (err) {
                 hideTyping();
-                addSystemNote("⚠️ Impossible de contacter le professeur (vérifiez votre connexion).");
+                if (err.name === 'AbortError') {
+                    addSystemNote("⚠️ Le professeur met trop de temps à répondre (plus de 25 secondes). Réessayez.");
+                } else {
+                    addSystemNote("⚠️ Impossible de contacter le professeur (vérifiez votre connexion).");
+                }
             } finally {
                 sendBtn.disabled = false;
             }
