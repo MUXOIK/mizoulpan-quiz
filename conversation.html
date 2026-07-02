@@ -726,13 +726,28 @@ ${vocabText}`;
             return chunks.filter(c => c.text.trim().length > 0);
         }
 
+        // Nettoie le texte AVANT de le lire à voix haute (n'affecte jamais le
+        // texte affiché dans la bulle) : retire les émoticônes et les signes
+        // que certaines voix épellent à voix haute au lieu de faire une pause
+        // (parenthèses, guillemets, astérisques, etc.).
+        function sanitizeForSpeech(text) {
+            return text
+                // émoticônes et pictogrammes (incl. drapeaux, variation selectors)
+                .replace(/[\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{2190}-\u{21FF}\uFE0F\u200D]/gu, '')
+                // signes souvent épelés à voix haute par certaines voix
+                .replace(/[()[\]{}*_#"«»`~]/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim();
+        }
+
         // onEnd : callback optionnel déclenché quand la voix a fini de parler
         // (utilisé pour enchaîner automatiquement sur l'écoute en mode mains libres)
-        function speakHebrew(text, onEnd) {
+        function speakHebrew(rawText, onEnd) {
             if (!voiceEnabled || !('speechSynthesis' in window)) {
                 if (onEnd) onEnd();
                 return;
             }
+            const text = sanitizeForSpeech(rawText);
             window.speechSynthesis.cancel();
             const chunks = splitTextByScript(text);
             if (chunks.length === 0) {
