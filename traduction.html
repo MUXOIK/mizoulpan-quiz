@@ -69,6 +69,7 @@
 input:checked+.toggle-slider { background:#0038B8; }
 input:checked+.toggle-slider:before { transform:translateX(24px); }
 .toggle-label { font-size:0.9rem; color:#555; font-weight:600; }
+.camera-status { text-align:center; color:#888; font-size:0.85rem; min-height:20px; margin-top:4px; }
 @media(max-width:768px){ .page-header{padding:25px 15px;} .corner-logo{width:34px;top:-10px;right:-10px;} .title-zone{gap:8px;} }
 </style>
 </head>
@@ -84,11 +85,13 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
   </div>
   <p class="page-subtitle">Traduction</p>
   <a href="accueil.html" class="back-button">← Retour</a>
+
   <div class="direction-bar">
     <button class="lang-btn active" id="btnFR" onclick="setDirection('fr-he')">Francais</button>
     <button class="swap-btn" onclick="swapLanguages()" title="Inverser">⇄</button>
     <button class="lang-btn" id="btnHE" onclick="setDirection('he-fr')">עברית</button>
   </div>
+
   <div class="auto-toggle">
     <label class="toggle-switch">
       <input type="checkbox" id="autoTranslate" checked>
@@ -96,7 +99,9 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
     </label>
     <span class="toggle-label">Traduction automatique</span>
   </div>
+
   <div class="status-bar" id="statusBar">Saisissez du texte ou utilisez le micro</div>
+
   <div class="panels">
     <div class="panel">
       <div class="panel-label" id="sourceLang">Francais</div>
@@ -116,7 +121,9 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
       </div>
     </div>
   </div>
+
   <button class="translate-btn" id="translateBtn" onclick="doTranslate()">Traduire</button>
+
   <div class="camera-section">
     <div class="camera-title">📷 Traduction par camera (OCR)</div>
     <div class="camera-controls">
@@ -128,8 +135,9 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
         <input type="file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
       </label>
     </div>
+    <div class="camera-status" id="cameraStatus"></div>
     <div class="camera-view" id="cameraView">
-      <video id="cameraVideo" autoplay playsinline></video>
+      <video id="cameraVideo" autoplay playsinline muted></video>
       <canvas id="cameraCanvas"></canvas>
       <div class="camera-overlay">Pointez vers le texte a traduire (FR ou HE)</div>
     </div>
@@ -148,6 +156,13 @@ var recognition = null;
 var isListening = false;
 var translateTimer = null;
 var mediaStream = null;
+
+function decodeHtmlEntities(str) {
+  if (!str) return str;
+  var txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
+}
 
 function setDirection(dir) {
   direction = dir;
@@ -179,9 +194,11 @@ function swapLanguages() {
 }
 
 function setStatus(msg, type) {
-  var bar = document.getElementById('statusBar');
-  bar.textContent = msg;
-  bar.className = 'status-bar'+(type?' '+type:'');
+  var bars = document.querySelectorAll('.status-bar, .camera-status');
+  for (var i=0;i<bars.length;i++) {
+    bars[i].textContent = msg;
+    bars[i].className = bars[i].className.indexOf('camera-status')>=0 ? ('camera-status'+(type?' '+type:'')) : ('status-bar'+(type?' '+type:''));
+  }
 }
 
 async function doTranslate() {
@@ -197,7 +214,8 @@ async function doTranslate() {
     var resp = await fetch(url);
     var data = await resp.json();
     if (data.responseStatus===200) {
-      document.getElementById('targetText').textContent = data.responseData.translatedText;
+      var translated = decodeHtmlEntities(data.responseData.translatedText);
+      document.getElementById('targetText').textContent = translated;
       setStatus('Traduction reussie', 'success');
       if (document.getElementById('autoTranslate').checked) {
         setTimeout(speakTranslation, 400);
@@ -315,16 +333,21 @@ function copyTranslation() {
 
 async function startCamera() {
   try {
+    setStatus('Demande d\'acces a la camera...', 'loading');
     var stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode:'environment', width:{ideal:1280}, height:{ideal:720} }
+      video: { facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
     });
     mediaStream = stream;
     var video = document.getElementById('cameraVideo');
     video.srcObject = stream;
     document.getElementById('cameraView').style.display = 'block';
-    setStatus('Camera active - pointez vers le texte', '');
+    await video.play().catch(function(){});
+    setStatus('Camera active - pointez vers le texte puis appuyez sur Capturer', 'success');
   } catch(err) {
-    setStatus('Erreur camera: '+err.message, 'error');
+    var msg = 'Erreur camera: '+err.message;
+    if (err.name === 'NotAllowedError') msg = 'Acces camera refuse. Autorisez la camera dans les parametres du navigateur.';
+    if (err.name === 'NotFoundError') msg = 'Aucune camera detectee sur cet appareil.';
+    setStatus(msg, 'error');
   }
 }
 
@@ -336,12 +359,17 @@ function stopCamera() {
 
 async function captureAndOCR() {
   var video = document.getElementById('cameraVideo');
-  if (!video.srcObject) { setStatus('Ouvrez la camera', 'error'); return; }
+  if (!video.srcObject) { setStatus('Ouvrez d\'abord la camera', 'error'); return; }
+  if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
+    setStatus('La camera n\'est pas encore prete, patientez 1 seconde et reessayez', 'error');
+    return;
+  }
   var canvas = document.getElementById('cameraCanvas');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video,0,0);
-  await runOCR(canvas.toDataURL('image/png'));
+  canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
+  var dataUrl = canvas.toDataURL('image/png');
+  await runOCR(dataUrl);
 }
 
 function handleImageUpload(event) {
@@ -361,10 +389,15 @@ async function runOCR(imageData) {
   ocrResult.style.display = 'none';
   setStatus('Analyse OCR en cours...', 'loading');
   try {
+    if (typeof Tesseract === 'undefined') {
+      throw new Error('Librairie OCR non chargee. Verifiez votre connexion internet.');
+    }
     var worker = await Tesseract.createWorker('fra+heb', 1, {
       logger: function(m) {
         if (m.status==='recognizing text') {
           progressFill.style.width = (m.progress*100).toFixed(0)+'%';
+        } else if (m.status) {
+          setStatus('OCR: ' + m.status + '...', 'loading');
         }
       }
     });
@@ -372,7 +405,7 @@ async function runOCR(imageData) {
     await worker.terminate();
     progressBar.style.display = 'none';
     var detectedText = result.data.text.trim();
-    if (!detectedText) { setStatus('Aucun texte detecte', 'error'); return; }
+    if (!detectedText) { setStatus('Aucun texte detecte, reessayez avec une image plus nette', 'error'); return; }
     var hasHebrew = /[א-ת]/.test(detectedText);
     var langFrom = hasHebrew?'iw':'fr';
     var langTo = hasHebrew?'fr':'iw';
@@ -383,7 +416,7 @@ async function runOCR(imageData) {
     var data = await resp.json();
     var ocrTransEl = document.getElementById('ocrTranslation');
     if (data.responseStatus===200) {
-      ocrTransEl.textContent = data.responseData.translatedText;
+      ocrTransEl.textContent = decodeHtmlEntities(data.responseData.translatedText);
       ocrTransEl.className = 'ocr-translation'+(langTo==='iw'?' rtl-text':'');
       ocrResult.style.display = 'block';
       setStatus('OCR et Traduction reussis', 'success');
@@ -397,4 +430,4 @@ async function runOCR(imageData) {
 }
 </script>
 </body>
-        </html>
+</html>
