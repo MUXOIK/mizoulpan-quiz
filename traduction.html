@@ -110,12 +110,12 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
     <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
   </div>
   <p class="page-subtitle">Traduction</p>
-  <a href="accueil.html" class="back-button">â Retour</a>
+  <a href="accueil.html" class="back-button">← Retour</a>
 
   <div class="direction-bar">
     <button class="lang-btn active" id="btnFR" onclick="setDirection('fr-he')">Francais</button>
-    <button class="swap-btn" onclick="swapLanguages()" title="Inverser">â</button>
-    <button class="lang-btn" id="btnHE" onclick="setDirection('he-fr')">×¢××¨××ª</button>
+    <button class="swap-btn" onclick="swapLanguages()" title="Inverser">⇄</button>
+    <button class="lang-btn" id="btnHE" onclick="setDirection('he-fr')">עברית</button>
   </div>
 
   <div class="auto-toggle">
@@ -133,17 +133,17 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
       <div class="panel-label" id="sourceLang">Francais</div>
       <textarea class="panel-textarea" id="sourceText" placeholder="Entrez votre texte ici..." rows="5"></textarea>
       <div class="panel-actions">
-        <button class="action-btn" id="micBtn" onclick="toggleMic()">ð¤ Micro</button>
-        <button class="action-btn" onclick="clearSource()">ð Effacer</button>
+        <button class="action-btn" id="micBtn" onclick="toggleMic()">🎤 Micro</button>
+        <button class="action-btn" onclick="clearSource()">🗑 Effacer</button>
       </div>
     </div>
     <div class="panel">
-      <div class="panel-label" id="targetLang">×¢××¨××ª</div>
-      <div class="panel-result rtl-text" id="targetText">â</div>
+      <div class="panel-label" id="targetLang">עברית</div>
+      <div class="panel-result rtl-text" id="targetText">—</div>
       <div class="transliteration" id="transliteration"></div>
       <div class="panel-actions">
-        <button class="action-btn" onclick="speakTranslation()">ð Ecouter</button>
-        <button class="action-btn" onclick="copyTranslation()">ð Copier</button>
+        <button class="action-btn" onclick="speakTranslation()">🔊 Ecouter</button>
+        <button class="action-btn" onclick="copyTranslation()">📋 Copier</button>
       </div>
     </div>
   </div>
@@ -151,12 +151,12 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
   <button class="translate-btn" id="translateBtn" onclick="doTranslate()">Traduire</button>
 
   <div class="camera-section">
-    <div class="camera-title">ð· Traduction par camera (OCR)</div>
+    <div class="camera-title">📷 Traduction par camera (OCR)</div>
     <p class="camera-help">Ouvrez la camera et visez un texte (francais ou hebreu), puis appuyez sur le bouton rond pour le capturer : il sera traduit et lu a voix haute automatiquement. "Choisir une photo" fait la meme chose a partir d'une image deja enregistree dans votre galerie.</p>
     <div class="camera-controls">
-      <button class="action-btn large" id="cameraToggleBtn" onclick="toggleCamera()">ð· Ouvrir la camera</button>
+      <button class="action-btn large" id="cameraToggleBtn" onclick="toggleCamera()">📷 Ouvrir la camera</button>
       <label class="action-btn large" style="cursor:pointer;">
-        ð¼ Choisir une photo
+        🖼 Choisir une photo
         <input type="file" accept="image/*" id="imageFileInput" style="display:none">
       </label>
     </div>
@@ -165,7 +165,7 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
       <video id="cameraVideo" autoplay playsinline muted></video>
       <canvas id="cameraCanvas"></canvas>
       <div class="camera-overlay">Visez le texte a traduire</div>
-      <button class="shutter-btn" onclick="captureAndOCR()" title="Capturer">ð¸</button>
+      <button class="shutter-btn" onclick="captureAndOCR()" title="Capturer">📸</button>
     </div>
     <div class="progress-bar" id="progressBar">
       <div class="progress-fill" id="progressFill"></div>
@@ -199,19 +199,19 @@ function setDirection(dir) {
   var tgtTxt = document.getElementById('targetText');
   if (dir==='fr-he') {
     document.getElementById('sourceLang').textContent = 'Francais';
-    document.getElementById('targetLang').textContent = '×¢××¨××ª';
+    document.getElementById('targetLang').textContent = 'עברית';
     srcTxt.className = 'panel-textarea';
     srcTxt.placeholder = 'Entrez votre texte ici...';
     tgtTxt.className = 'panel-result rtl-text';
   } else {
-    document.getElementById('sourceLang').textContent = '×¢××¨××ª';
+    document.getElementById('sourceLang').textContent = 'עברית';
     document.getElementById('targetLang').textContent = 'Francais';
     srcTxt.className = 'panel-textarea rtl-text';
-    srcTxt.placeholder = '××§×× ×××...';
+    srcTxt.placeholder = 'הקלד כאן...';
     tgtTxt.className = 'panel-result';
   }
   srcTxt.value = '';
-  tgtTxt.textContent = 'â';
+  tgtTxt.textContent = '—';
   document.getElementById('transliteration').textContent = '';
   setStatus('Pret', '');
 }
@@ -258,7 +258,7 @@ async function doTranslate() {
 
 function clearSource() {
   document.getElementById('sourceText').value = '';
-  document.getElementById('targetText').textContent = 'â';
+  document.getElementById('targetText').textContent = '—';
   document.getElementById('transliteration').textContent = '';
   setStatus('Saisissez du texte ou utilisez le micro', '');
 }
@@ -289,7 +289,7 @@ function startMic() {
   recognition.onstart = function() {
     isListening = true;
     document.getElementById('micBtn').className = 'action-btn mic-active';
-    document.getElementById('micBtn').textContent = 'â¹ Stop';
+    document.getElementById('micBtn').textContent = '⏹ Stop';
     setStatus('Ecoute en cours...', 'loading');
   };
   recognition.onresult = function(event) {
@@ -314,7 +314,7 @@ function stopMic() {
   isListening = false;
   if (recognition) { recognition.stop(); recognition = null; }
   document.getElementById('micBtn').className = 'action-btn';
-  document.getElementById('micBtn').textContent = 'ð¤ Micro';
+  document.getElementById('micBtn').textContent = '🎤 Micro';
   setStatus('Micro arrete', '');
 }
 
@@ -334,7 +334,7 @@ function speakText(text, lang) {
 
 function speakTranslation() {
   var text = document.getElementById('targetText').textContent;
-  if (!text || text==='â') return;
+  if (!text || text==='—') return;
   var lang = direction==='fr-he'?'he-IL':'fr-FR';
   if ('speechSynthesis' in window) {
     setStatus('Lecture...', '');
@@ -353,7 +353,7 @@ if ('speechSynthesis' in window) {
 
 function copyTranslation() {
   var text = document.getElementById('targetText').textContent;
-  if (!text || text==='â') return;
+  if (!text || text==='—') return;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text).then(function() {
       setStatus('Copie dans le presse-papier', 'success');
@@ -403,7 +403,7 @@ async function toggleCamera() {
     document.getElementById('cameraView').style.display = 'block';
     await video.play().catch(function(){});
     await waitForVideoReady(video);
-    btn.textContent = 'â Fermer la camera';
+    btn.textContent = '✕ Fermer la camera';
     setStatus('Camera prete. Visez le texte et appuyez sur le bouton rond pour capturer.', 'success');
   } catch(err) {
     var msg = 'Erreur camera: '+err.message;
@@ -416,7 +416,7 @@ async function toggleCamera() {
 function stopCamera() {
   if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
   document.getElementById('cameraView').style.display = 'none';
-  document.getElementById('cameraToggleBtn').textContent = 'ð· Ouvrir la camera';
+  document.getElementById('cameraToggleBtn').textContent = '📷 Ouvrir la camera';
   setStatus('Camera fermee', '');
 }
 
@@ -496,7 +496,7 @@ progressBar.style.display='none';
 setStatus('Texte peu net ou illisible. Reessayez avec un meilleur cadrage, plus de lumiere et en tenant le telephone stable.', 'error');
 return;
 }
-    var hasHebrew = /[×-×ª]/.test(detectedText);
+    var hasHebrew = /[א-ת]/.test(detectedText);
     var langFrom = hasHebrew?'iw':'fr';
     var langTo = hasHebrew?'fr':'iw';
     var speakLang = hasHebrew?'fr-FR':'he-IL';
@@ -524,6 +524,5 @@ return;
 </script>
 </body>
 </html>
-
 
 
