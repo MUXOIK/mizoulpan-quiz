@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0038b8">
+<title>MIZOULPAN - Traduction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style-global.css">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style>
+:root { --primary-blue: #0038B8; --primary-blue-dark: #002D7A; }
+.page-header { position:relative; background:#dcecf8; border-radius:28px; padding:40px; margin-bottom:12px; overflow:visible; }
+.title-zone { display:flex; align-items:center; justify-content:center; gap:32px; }
+.title-zone h1 { color:#0038B8; font-size:clamp(2rem,6vw,4.5rem); font-weight:900; margin:0; line-height:1; }
+.flag-icon { width:clamp(58px,10vw,110px); height:auto; border-radius:6px; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.18)); }
+.corner-logo { position:absolute; top:-25px; right:-25px; width:58px; height:auto; z-index:100; }
+.page-subtitle { text-align:center; color:#0038B8; font-size:1.1rem; font-weight:600; margin:8px 0 4px; }
+.back-button { display:inline-flex; align-items:center; gap:8px; background:#0038B8; color:white; border:none; border-radius:12px; padding:12px 24px; font-size:1rem; font-weight:700; cursor:pointer; text-decoration:none; margin-bottom:20px; transition:background 0.2s; }
+.back-button:hover { background:#002D7A; }
+.traduction-container { max-width:900px; margin:0 auto; }
+.direction-bar { display:flex; align-items:center; justify-content:center; gap:12px; margin:20px 0; flex-wrap:wrap; }
+.lang-btn { background:white; border:2px solid #0038B8; color:#0038B8; border-radius:30px; padding:10px 28px; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:8px; }
+.lang-btn.active { background:#0038B8; color:white; }
+.swap-btn { background:#0038B8; color:white; border:none; border-radius:50%; width:44px; height:44px; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.2s,transform 0.3s; flex-shrink:0; }
+.swap-btn:hover { background:#002D7A; transform:rotate(180deg); }
+.panels { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+@media(max-width:600px){ .panels { grid-template-columns:1fr; } }
+.panel { background:white; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1); padding:20px; display:flex; flex-direction:column; min-height:200px; position:relative; }
+.panel-label { font-size:0.85rem; font-weight:700; color:#0038B8; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.panel-textarea { flex:1; border:none; outline:none; resize:none; font-family:inherit; font-size:1.1rem; color:#333; background:transparent; min-height:120px; width:100%; }
+.panel-textarea.rtl-text { direction:rtl; font-family:'Frank Ruhl Libre','Arial Hebrew',serif; font-size:1.2rem; }
+.panel-result { flex:1; font-size:1.2rem; color:#333; min-height:120px; padding:4px 0; word-wrap:break-word; }
+.panel-result.rtl-text { direction:rtl; font-family:'Frank Ruhl Libre','Arial Hebrew',serif; font-size:1.3rem; }
+.transliteration { font-size:0.9rem; color:#888; margin-top:8px; font-style:italic; }
+.panel-actions { display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+.action-btn { background:none; border:1.5px solid #0038B8; color:#0038B8; border-radius:20px; padding:7px 16px; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all 0.2s; font-weight:600; }
+.action-btn:hover { background:#0038B8; color:white; }
+.action-btn.mic-active { background:#e53935; border-color:#e53935; color:white; animation:pulse 1s infinite; }
+.action-btn.large { padding:12px 24px; font-size:1rem; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.translate-btn { display:block; width:100%; max-width:300px; margin:0 auto 20px; background:#0038B8; color:white; border:none; border-radius:16px; padding:16px 32px; font-size:1.1rem; font-weight:700; cursor:pointer; transition:background 0.2s; letter-spacing:0.5px; }
+.translate-btn:hover { background:#002D7A; }
+.translate-btn:disabled { opacity:0.6; cursor:not-allowed; }
+.status-bar { text-align:center; color:#888; font-size:0.9rem; min-height:22px; margin-bottom:10px; }
+.status-bar.error { color:#e53935; }
+.status-bar.success { color:#2e7d32; }
+.status-bar.loading { color:#0038B8; }
+.camera-section { background:white; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; }
+.camera-title { font-size:1rem; font-weight:700; color:#0038B8; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.camera-controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.camera-view { position:relative; border-radius:12px; overflow:hidden; background:#000; display:none; }
+.camera-view video { width:100%; border-radius:12px; display:block; }
+.camera-view canvas { display:none; }
+.camera-overlay { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:10px; text-align:center; font-size:0.85rem; }
+.ocr-result { background:#f5f5f5; border-radius:12px; padding:16px; margin-top:12px; display:none; }
+.ocr-detected { font-size:0.9rem; color:#555; margin-bottom:8px; }
+.ocr-translation { font-size:1.1rem; color:#0038B8; font-weight:700; }
+.ocr-translation.rtl-text { direction:rtl; font-family:'Frank Ruhl Libre','Arial Hebrew',serif; }
+.progress-bar { height:4px; background:#e0e0e0; border-radius:2px; margin-top:8px; overflow:hidden; display:none; }
+.progress-fill { height:100%; background:#0038B8; width:0%; transition:width 0.3s; }
+.auto-toggle { display:flex; align-items:center; gap:10px; margin-bottom:16px; justify-content:center; }
+.toggle-switch { position:relative; width:52px; height:28px; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; cursor:pointer; top:0;left:0;right:0;bottom:0; background:#ccc; border-radius:28px; transition:0.3s; }
+.toggle-slider:before { position:absolute; content:""; height:20px;width:20px; left:4px;bottom:4px; background:white; border-radius:50%; transition:0.3s; }
+input:checked+.toggle-slider { background:#0038B8; }
+input:checked+.toggle-slider:before { transform:translateX(24px); }
+.toggle-label { font-size:0.9rem; color:#555; font-weight:600; }
+@media(max-width:768px){ .page-header{padding:25px 15px;} .corner-logo{width:34px;top:-10px;right:-10px;} .title-zone{gap:8px;} }
+</style>
+</head>
+<body>
+<div class="traduction-container">
+  <div class="page-header">
+    <div class="title-zone">
+      <img src="israel.png" alt="Israel" class="flag-icon">
+      <h1>MIZOULPAN</h1>
+      <img src="france.png" alt="France" class="flag-icon">
+    </div>
+    <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
+  </div>
+  <p class="page-subtitle">Traduction</p>
+  <a href="accueil.html" class="back-button">← Retour</a>
+  <div class="direction-bar">
+    <button class="lang-btn active" id="btnFR" onclick="setDirection('fr-he')">Francais</button>
+    <button class="swap-btn" onclick="swapLanguages()" title="Inverser">⇄</button>
+    <button class="lang-btn" id="btnHE" onclick="setDirection('he-fr')">עברית</button>
+  </div>
+  <div class="auto-toggle">
+    <label class="toggle-switch">
+      <input type="checkbox" id="autoTranslate" checked>
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label">Traduction automatique</span>
+  </div>
+  <div class="status-bar" id="statusBar">Saisissez du texte ou utilisez le micro</div>
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-label" id="sourceLang">Francais</div>
+      <textarea class="panel-textarea" id="sourceText" placeholder="Entrez votre texte ici..." rows="5"></textarea>
+      <div class="panel-actions">
+        <button class="action-btn" id="micBtn" onclick="toggleMic()">🎤 Micro</button>
+        <button class="action-btn" onclick="clearSource()">🗑 Effacer</button>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-label" id="targetLang">עברית</div>
+      <div class="panel-result rtl-text" id="targetText">—</div>
+      <div class="transliteration" id="transliteration"></div>
+      <div class="panel-actions">
+        <button class="action-btn" onclick="speakTranslation()">🔊 Ecouter</button>
+        <button class="action-btn" onclick="copyTranslation()">📋 Copier</button>
+      </div>
+    </div>
+  </div>
+  <button class="translate-btn" id="translateBtn" onclick="doTranslate()">Traduire</button>
+  <div class="camera-section">
+    <div class="camera-title">📷 Traduction par camera (OCR)</div>
+    <div class="camera-controls">
+      <button class="action-btn large" onclick="startCamera()">📷 Ouvrir la camera</button>
+      <button class="action-btn large" onclick="captureAndOCR()">📸 Capturer et Traduire</button>
+      <button class="action-btn large" onclick="stopCamera()">✕ Fermer</button>
+      <label class="action-btn large" style="cursor:pointer;">
+        🖼 Importer image
+        <input type="file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+      </label>
+    </div>
+    <div class="camera-view" id="cameraView">
+      <video id="cameraVideo" autoplay playsinline></video>
+      <canvas id="cameraCanvas"></canvas>
+      <div class="camera-overlay">Pointez vers le texte a traduire (FR ou HE)</div>
+    </div>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="ocr-result" id="ocrResult">
+      <div class="ocr-detected" id="ocrDetected"></div>
+      <div class="ocr-translation" id="ocrTranslation"></div>
+    </div>
+  </div>
+</div>
+<script>
+var direction = 'fr-he';
+var recognition = null;
+var isListening = false;
+var translateTimer = null;
+var mediaStream = null;
+
+function setDirection(dir) {
+  direction = dir;
+  document.getElementById('btnFR').className = 'lang-btn' + (dir==='fr-he'?' active':'');
+  document.getElementById('btnHE').className = 'lang-btn' + (dir==='he-fr'?' active':'');
+  var srcTxt = document.getElementById('sourceText');
+  var tgtTxt = document.getElementById('targetText');
+  if (dir==='fr-he') {
+    document.getElementById('sourceLang').textContent = 'Francais';
+    document.getElementById('targetLang').textContent = 'עברית';
+    srcTxt.className = 'panel-textarea';
+    srcTxt.placeholder = 'Entrez votre texte ici...';
+    tgtTxt.className = 'panel-result rtl-text';
+  } else {
+    document.getElementById('sourceLang').textContent = 'עברית';
+    document.getElementById('targetLang').textContent = 'Francais';
+    srcTxt.className = 'panel-textarea rtl-text';
+    srcTxt.placeholder = 'הקלד כאן...';
+    tgtTxt.className = 'panel-result';
+  }
+  srcTxt.value = '';
+  tgtTxt.textContent = '—';
+  document.getElementById('transliteration').textContent = '';
+  setStatus('Pret', '');
+}
+
+function swapLanguages() {
+  setDirection(direction==='fr-he'?'he-fr':'fr-he');
+}
+
+function setStatus(msg, type) {
+  var bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.className = 'status-bar'+(type?' '+type:'');
+}
+
+async function doTranslate() {
+  var text = document.getElementById('sourceText').value.trim();
+  if (!text) return;
+  var btn = document.getElementById('translateBtn');
+  btn.disabled = true;
+  setStatus('Traduction en cours...', 'loading');
+  var langFrom = direction==='fr-he'?'fr':'iw';
+  var langTo = direction==='fr-he'?'iw':'fr';
+  try {
+    var url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair='+langFrom+'|'+langTo;
+    var resp = await fetch(url);
+    var data = await resp.json();
+    if (data.responseStatus===200) {
+      document.getElementById('targetText').textContent = data.responseData.translatedText;
+      setStatus('Traduction reussie', 'success');
+      if (document.getElementById('autoTranslate').checked) {
+        setTimeout(speakTranslation, 400);
+      }
+    } else {
+      throw new Error(data.responseDetails||'Erreur');
+    }
+  } catch(err) {
+    setStatus('Erreur: '+err.message, 'error');
+  }
+  btn.disabled = false;
+}
+
+function clearSource() {
+  document.getElementById('sourceText').value = '';
+  document.getElementById('targetText').textContent = '—';
+  document.getElementById('transliteration').textContent = '';
+  setStatus('Saisissez du texte ou utilisez le micro', '');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('sourceText').addEventListener('input', function() {
+    if (!document.getElementById('autoTranslate').checked) return;
+    clearTimeout(translateTimer);
+    translateTimer = setTimeout(doTranslate, 1200);
+  });
+});
+
+function toggleMic() {
+  if (isListening) { stopMic(); } else { startMic(); }
+}
+
+function startMic() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { setStatus('Reconnaissance vocale non supportee', 'error'); return; }
+  recognition = new SR();
+  recognition.lang = direction==='fr-he'?'fr-FR':'he-IL';
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.onstart = function() {
+    isListening = true;
+    document.getElementById('micBtn').className = 'action-btn mic-active';
+    document.getElementById('micBtn').textContent = '⏹ Stop';
+    setStatus('Ecoute en cours...', 'loading');
+  };
+  recognition.onresult = function(event) {
+    var interim = '', final = '';
+    for (var i=event.resultIndex; i<event.results.length; i++) {
+      var t = event.results[i][0].transcript;
+      if (event.results[i].isFinal) final += t; else interim += t;
+    }
+    var src = document.getElementById('sourceText');
+    src.value = final + (interim ? interim : '');
+    if (final && document.getElementById('autoTranslate').checked) {
+      clearTimeout(translateTimer);
+      translateTimer = setTimeout(doTranslate, 800);
+    }
+  };
+  recognition.onerror = function(e) { setStatus('Erreur micro: '+e.error, 'error'); stopMic(); };
+  recognition.onend = function() { if (isListening) recognition.start(); };
+  recognition.start();
+}
+
+function stopMic() {
+  isListening = false;
+  if (recognition) { recognition.stop(); recognition = null; }
+  document.getElementById('micBtn').className = 'action-btn';
+  document.getElementById('micBtn').textContent = '🎤 Micro';
+  setStatus('Micro arrete', '');
+}
+
+function speakTranslation() {
+  var text = document.getElementById('targetText').textContent;
+  if (!text || text==='—') return;
+  var lang = direction==='fr-he'?'he-IL':'fr-FR';
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    var utter = new SpeechSynthesisUtterance(text);
+    utter.lang = lang;
+    utter.rate = 0.85;
+    var voices = window.speechSynthesis.getVoices();
+    var voice = voices.find(function(v){return v.lang.startsWith(lang.split('-')[0]);});
+    if (voice) utter.voice = voice;
+    window.speechSynthesis.speak(utter);
+    setStatus('Lecture...', '');
+    utter.onend = function() { setStatus('',''); };
+  } else {
+    setStatus('Synthese vocale non supportee', 'error');
+  }
+}
+
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = function() { window.speechSynthesis.getVoices(); };
+}
+
+function copyTranslation() {
+  var text = document.getElementById('targetText').textContent;
+  if (!text || text==='—') return;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() {
+      setStatus('Copie dans le presse-papier', 'success');
+      setTimeout(function(){setStatus('','');}, 2000);
+    });
+  } else {
+    var el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setStatus('Copie', 'success');
+    setTimeout(function(){setStatus('','');}, 2000);
+  }
+}
+
+async function startCamera() {
+  try {
+    var stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode:'environment', width:{ideal:1280}, height:{ideal:720} }
+    });
+    mediaStream = stream;
+    var video = document.getElementById('cameraVideo');
+    video.srcObject = stream;
+    document.getElementById('cameraView').style.display = 'block';
+    setStatus('Camera active - pointez vers le texte', '');
+  } catch(err) {
+    setStatus('Erreur camera: '+err.message, 'error');
+  }
+}
+
+function stopCamera() {
+  if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
+  document.getElementById('cameraView').style.display = 'none';
+  setStatus('Camera fermee', '');
+}
+
+async function captureAndOCR() {
+  var video = document.getElementById('cameraVideo');
+  if (!video.srcObject) { setStatus('Ouvrez la camera', 'error'); return; }
+  var canvas = document.getElementById('cameraCanvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  await runOCR(canvas.toDataURL('image/png'));
+}
+
+function handleImageUpload(event) {
+  var file = event.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = async function(e) { await runOCR(e.target.result); };
+  reader.readAsDataURL(file);
+}
+
+async function runOCR(imageData) {
+  var progressBar = document.getElementById('progressBar');
+  var progressFill = document.getElementById('progressFill');
+  var ocrResult = document.getElementById('ocrResult');
+  progressBar.style.display = 'block';
+  progressFill.style.width = '0%';
+  ocrResult.style.display = 'none';
+  setStatus('Analyse OCR en cours...', 'loading');
+  try {
+    var worker = await Tesseract.createWorker('fra+heb', 1, {
+      logger: function(m) {
+        if (m.status==='recognizing text') {
+          progressFill.style.width = (m.progress*100).toFixed(0)+'%';
+        }
+      }
+    });
+    var result = await worker.recognize(imageData);
+    await worker.terminate();
+    progressBar.style.display = 'none';
+    var detectedText = result.data.text.trim();
+    if (!detectedText) { setStatus('Aucun texte detecte', 'error'); return; }
+    var hasHebrew = /[א-ת]/.test(detectedText);
+    var langFrom = hasHebrew?'iw':'fr';
+    var langTo = hasHebrew?'fr':'iw';
+    document.getElementById('ocrDetected').innerHTML = '<b>Texte detecte ('+( hasHebrew?'Hebreu':'Francais')+'):</b> '+detectedText.substring(0,200);
+    setStatus('Traduction du texte detecte...', 'loading');
+    var url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(detectedText.substring(0,500))+'&langpair='+langFrom+'|'+langTo;
+    var resp = await fetch(url);
+    var data = await resp.json();
+    var ocrTransEl = document.getElementById('ocrTranslation');
+    if (data.responseStatus===200) {
+      ocrTransEl.textContent = data.responseData.translatedText;
+      ocrTransEl.className = 'ocr-translation'+(langTo==='iw'?' rtl-text':'');
+      ocrResult.style.display = 'block';
+      setStatus('OCR et Traduction reussis', 'success');
+    } else {
+      setStatus('Traduction OCR echouee', 'error');
+    }
+  } catch(err) {
+    progressBar.style.display = 'none';
+    setStatus('Erreur OCR: '+err.message, 'error');
+  }
+}
+</script>
+</body>
+        </html>
