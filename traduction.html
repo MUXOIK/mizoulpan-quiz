@@ -127,12 +127,11 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
   <div class="camera-section">
     <div class="camera-title">📷 Traduction par camera (OCR)</div>
     <div class="camera-controls">
-      <button class="action-btn large" onclick="startCamera()">📷 Ouvrir la camera</button>
       <button class="action-btn large" onclick="captureAndOCR()">📸 Capturer et Traduire</button>
       <button class="action-btn large" onclick="stopCamera()">✕ Fermer</button>
       <label class="action-btn large" style="cursor:pointer;">
         🖼 Importer image
-        <input type="file" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+        <input type="file" accept="image/*" id="imageFileInput" style="display:none">
       </label>
     </div>
     <div class="camera-status" id="cameraStatus"></div>
@@ -156,6 +155,7 @@ var recognition = null;
 var isListening = false;
 var translateTimer = null;
 var mediaStream = null;
+var ocrWorkerPromise = null;
 
 function decodeHtmlEntities(str) {
   if (!str) return str;
@@ -242,6 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
     clearTimeout(translateTimer);
     translateTimer = setTimeout(doTranslate, 1200);
   });
+  var fileInput = document.getElementById('imageFileInput');
+  if (fileInput) {
+    fileInput.addEventListener('change', handleImageUpload);
+  }
 });
 
 function toggleMic() {
@@ -331,39 +335,50 @@ function copyTranslation() {
   }
 }
 
-async function startCamera() {
-  try {
-    setStatus('Demande d\'acces a la camera...', 'loading');
-    var stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
-    });
-    mediaStream = stream;
-    var video = document.getElementById('cameraVideo');
-    video.srcObject = stream;
-    document.getElementById('cameraView').style.display = 'block';
-    await video.play().catch(function(){});
-    setStatus('Camera active - pointez vers le texte puis appuyez sur Capturer', 'success');
-  } catch(err) {
-    var msg = 'Erreur camera: '+err.message;
-    if (err.name === 'NotAllowedError') msg = 'Acces camera refuse. Autorisez la camera dans les parametres du navigateur.';
-    if (err.name === 'NotFoundError') msg = 'Aucune camera detectee sur cet appareil.';
-    setStatus(msg, 'error');
-  }
-}
-
-function stopCamera() {
-  if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
-  document.getElementById('cameraView').style.display = 'none';
-  setStatus('Camera fermee', '');
+function waitForVideoReady(video) {
+  return new Promise(function(resolve) {
+    if (video.readyState >= 2 && video.videoWidth) { resolve(); return; }
+    var done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      video.removeEventListener('loadedmetadata', finish);
+      resolve();
+    }
+    video.addEventListener('loadedmetadata', finish);
+    setTimeout(finish, 2000);
+  });
 }
 
 async function captureAndOCR() {
   var video = document.getElementById('cameraVideo');
-  if (!video.srcObject) { setStatus('Ouvrez d\'abord la camera', 'error'); return; }
+  if (!mediaStream) {
+    try {
+      setStatus('Ouverture de la camera...', 'loading');
+      var stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
+      });
+      mediaStream = stream;
+      video.srcObject = stream;
+      document.getElementById('cameraView').style.display = 'block';
+      await video.play().catch(function(){});
+      await waitForVideoReady(video);
+      setStatus('Camera prete, capture en cours...', 'loading');
+    } catch(err) {
+      var msg = 'Erreur camera: '+err.message;
+      if (err.name === 'NotAllowedError') msg = 'Acces camera refuse. Autorisez la camera dans les parametres du navigateur.';
+      if (err.name === 'NotFoundError') msg = 'Aucune camera detectee sur cet appareil.';
+      setStatus(msg, 'error');
+      return;
+    }
+    await new Promise(function(r){ setTimeout(r, 600); });
+  }
+
   if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
-    setStatus('La camera n\'est pas encore prete, patientez 1 seconde et reessayez', 'error');
+    setStatus('La camera n\'est pas encore prete, reessayez dans un instant', 'error');
     return;
   }
+
   var canvas = document.getElementById('cameraCanvas');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
@@ -372,12 +387,45 @@ async function captureAndOCR() {
   await runOCR(dataUrl);
 }
 
+function stopCamera() {
+  if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
+  document.getElementById('cameraView').style.display = 'none';
+  setStatus('Camera fermee', '');
+}
+
 function handleImageUpload(event) {
-  var file = event.target.files[0];
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
   if (!file) return;
+  setStatus('Image selectionnee, analyse en cours...', 'loading');
   var reader = new FileReader();
-  reader.onload = async function(e) { await runOCR(e.target.result); };
+  reader.onerror = function() {
+    setStatus('Erreur de lecture de l\'image', 'error');
+  };
+  reader.onload = async function(e) {
+    try {
+      await runOCR(e.target.result);
+    } catch(err) {
+      setStatus('Erreur OCR: '+err.message, 'error');
+    }
+  };
   reader.readAsDataURL(file);
+}
+
+function getOCRWorker() {
+  if (!ocrWorkerPromise) {
+    ocrWorkerPromise = Tesseract.createWorker('fra+heb', 1, {
+      logger: function(m) {
+        var fill = document.getElementById('progressFill');
+        if (m.status==='recognizing text' && fill) {
+          fill.style.width = (m.progress*100).toFixed(0)+'%';
+        } else if (m.status) {
+          setStatus('OCR: ' + m.status + '...', 'loading');
+        }
+      }
+    });
+  }
+  return ocrWorkerPromise;
 }
 
 async function runOCR(imageData) {
@@ -392,17 +440,8 @@ async function runOCR(imageData) {
     if (typeof Tesseract === 'undefined') {
       throw new Error('Librairie OCR non chargee. Verifiez votre connexion internet.');
     }
-    var worker = await Tesseract.createWorker('fra+heb', 1, {
-      logger: function(m) {
-        if (m.status==='recognizing text') {
-          progressFill.style.width = (m.progress*100).toFixed(0)+'%';
-        } else if (m.status) {
-          setStatus('OCR: ' + m.status + '...', 'loading');
-        }
-      }
-    });
+    var worker = await getOCRWorker();
     var result = await worker.recognize(imageData);
-    await worker.terminate();
     progressBar.style.display = 'none';
     var detectedText = result.data.text.trim();
     if (!detectedText) { setStatus('Aucun texte detecte, reessayez avec une image plus nette', 'error'); return; }
