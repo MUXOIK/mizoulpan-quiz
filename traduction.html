@@ -48,13 +48,18 @@
 .status-bar.error { color:#e53935; }
 .status-bar.success { color:#2e7d32; }
 .status-bar.loading { color:#0038B8; }
+</style>
+<style>
 .camera-section { background:white; border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; }
-.camera-title { font-size:1rem; font-weight:700; color:#0038B8; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
+.camera-title { font-size:1rem; font-weight:700; color:#0038B8; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+.camera-help { font-size:0.85rem; color:#777; margin-bottom:14px; line-height:1.4; }
 .camera-controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
-.camera-view { position:relative; border-radius:12px; overflow:hidden; background:#000; display:none; }
-.camera-view video { width:100%; border-radius:12px; display:block; }
+.camera-view { position:relative; border-radius:12px; overflow:hidden; background:#000; display:none; max-height:60vh; }
+.camera-view video { width:100%; max-height:60vh; object-fit:cover; border-radius:12px; display:block; }
 .camera-view canvas { display:none; }
-.camera-overlay { position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:10px; text-align:center; font-size:0.85rem; }
+.camera-overlay { position:absolute; top:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:8px; text-align:center; font-size:0.8rem; }
+.shutter-btn { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); width:64px; height:64px; border-radius:50%; background:white; border:4px solid #0038B8; font-size:1.6rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(0,0,0,0.4); }
+.shutter-btn:active { transform:translateX(-50%) scale(0.92); }
 .ocr-result { background:#f5f5f5; border-radius:12px; padding:16px; margin-top:12px; display:none; }
 .ocr-detected { font-size:0.9rem; color:#555; margin-bottom:8px; }
 .ocr-translation { font-size:1.1rem; color:#0038B8; font-weight:700; }
@@ -70,7 +75,25 @@ input:checked+.toggle-slider { background:#0038B8; }
 input:checked+.toggle-slider:before { transform:translateX(24px); }
 .toggle-label { font-size:0.9rem; color:#555; font-weight:600; }
 .camera-status { text-align:center; color:#888; font-size:0.85rem; min-height:20px; margin-top:4px; }
-@media(max-width:768px){ .page-header{padding:25px 15px;} .corner-logo{width:34px;top:-10px;right:-10px;} .title-zone{gap:8px;} }
+@media(max-width:768px){
+  .page-header{padding:22px 12px;}
+  .corner-logo{width:32px;top:-8px;right:-8px;}
+  .title-zone{gap:6px;}
+  .panel{padding:14px;min-height:150px;}
+  .panel-textarea, .panel-result{font-size:1rem;min-height:90px;}
+  .action-btn{padding:6px 12px;font-size:0.8rem;}
+  .action-btn.large{padding:9px 16px;font-size:0.85rem;}
+  .translate-btn{padding:12px 20px;font-size:1rem;}
+  .lang-btn{padding:8px 18px;font-size:0.9rem;}
+  .swap-btn{width:38px;height:38px;font-size:1.2rem;}
+  .camera-section{padding:14px;}
+  .direction-bar{gap:8px;margin:14px 0;}
+  .traduction-container{padding:0 4px;}
+}
+@media(max-width:400px){
+  .action-btn.large{width:100%;justify-content:center;}
+  .camera-controls{flex-direction:column;}
+}
 </style>
 </head>
 <body>
@@ -126,11 +149,11 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
 
   <div class="camera-section">
     <div class="camera-title">📷 Traduction par camera (OCR)</div>
+    <p class="camera-help">Ouvrez la camera et visez un texte (francais ou hebreu), puis appuyez sur le bouton rond pour le capturer : il sera traduit et lu a voix haute automatiquement. "Choisir une photo" fait la meme chose a partir d'une image deja enregistree dans votre galerie.</p>
     <div class="camera-controls">
-      <button class="action-btn large" onclick="captureAndOCR()">📸 Capturer et Traduire</button>
-      <button class="action-btn large" onclick="stopCamera()">✕ Fermer</button>
+      <button class="action-btn large" id="cameraToggleBtn" onclick="toggleCamera()">📷 Ouvrir la camera</button>
       <label class="action-btn large" style="cursor:pointer;">
-        🖼 Importer image
+        🖼 Choisir une photo
         <input type="file" accept="image/*" id="imageFileInput" style="display:none">
       </label>
     </div>
@@ -138,7 +161,8 @@ input:checked+.toggle-slider:before { transform:translateX(24px); }
     <div class="camera-view" id="cameraView">
       <video id="cameraVideo" autoplay playsinline muted></video>
       <canvas id="cameraCanvas"></canvas>
-      <div class="camera-overlay">Pointez vers le texte a traduire (FR ou HE)</div>
+      <div class="camera-overlay">Visez le texte a traduire</div>
+      <button class="shutter-btn" onclick="captureAndOCR()" title="Capturer">📸</button>
     </div>
     <div class="progress-bar" id="progressBar">
       <div class="progress-fill" id="progressFill"></div>
@@ -291,10 +315,8 @@ function stopMic() {
   setStatus('Micro arrete', '');
 }
 
-function speakTranslation() {
-  var text = document.getElementById('targetText').textContent;
-  if (!text || text==='—') return;
-  var lang = direction==='fr-he'?'he-IL':'fr-FR';
+function speakText(text, lang) {
+  if (!text) return;
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     var utter = new SpeechSynthesisUtterance(text);
@@ -304,8 +326,19 @@ function speakTranslation() {
     var voice = voices.find(function(v){return v.lang.startsWith(lang.split('-')[0]);});
     if (voice) utter.voice = voice;
     window.speechSynthesis.speak(utter);
+  }
+}
+
+function speakTranslation() {
+  var text = document.getElementById('targetText').textContent;
+  if (!text || text==='—') return;
+  var lang = direction==='fr-he'?'he-IL':'fr-FR';
+  if ('speechSynthesis' in window) {
     setStatus('Lecture...', '');
-    utter.onend = function() { setStatus('',''); };
+    speakText(text, lang);
+    var check = setInterval(function(){
+      if (!window.speechSynthesis.speaking) { clearInterval(check); setStatus('',''); }
+    }, 300);
   } else {
     setStatus('Synthese vocale non supportee', 'error');
   }
@@ -334,7 +367,7 @@ function copyTranslation() {
     setTimeout(function(){setStatus('','');}, 2000);
   }
 }
-
+</script><script>
 function waitForVideoReady(video) {
   return new Promise(function(resolve) {
     if (video.readyState >= 2 && video.videoWidth) { resolve(); return; }
@@ -346,51 +379,57 @@ function waitForVideoReady(video) {
       resolve();
     }
     video.addEventListener('loadedmetadata', finish);
-    setTimeout(finish, 2000);
+    setTimeout(finish, 2500);
   });
+}
+
+async function toggleCamera() {
+  var btn = document.getElementById('cameraToggleBtn');
+  if (mediaStream) {
+    stopCamera();
+    return;
+  }
+  var video = document.getElementById('cameraVideo');
+  try {
+    setStatus('Ouverture de la camera...', 'loading');
+    var stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
+    });
+    mediaStream = stream;
+    video.srcObject = stream;
+    document.getElementById('cameraView').style.display = 'block';
+    await video.play().catch(function(){});
+    await waitForVideoReady(video);
+    btn.textContent = '✕ Fermer la camera';
+    setStatus('Camera prete. Visez le texte et appuyez sur le bouton rond pour capturer.', 'success');
+  } catch(err) {
+    var msg = 'Erreur camera: '+err.message;
+    if (err.name === 'NotAllowedError') msg = 'Acces camera refuse. Autorisez la camera dans les parametres du navigateur.';
+    if (err.name === 'NotFoundError') msg = 'Aucune camera detectee sur cet appareil.';
+    setStatus(msg, 'error');
+  }
+}
+
+function stopCamera() {
+  if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
+  document.getElementById('cameraView').style.display = 'none';
+  document.getElementById('cameraToggleBtn').textContent = '📷 Ouvrir la camera';
+  setStatus('Camera fermee', '');
 }
 
 async function captureAndOCR() {
   var video = document.getElementById('cameraVideo');
-  if (!mediaStream) {
-    try {
-      setStatus('Ouverture de la camera...', 'loading');
-      var stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode:{ideal:'environment'}, width:{ideal:1280}, height:{ideal:720} }
-      });
-      mediaStream = stream;
-      video.srcObject = stream;
-      document.getElementById('cameraView').style.display = 'block';
-      await video.play().catch(function(){});
-      await waitForVideoReady(video);
-      setStatus('Camera prete, capture en cours...', 'loading');
-    } catch(err) {
-      var msg = 'Erreur camera: '+err.message;
-      if (err.name === 'NotAllowedError') msg = 'Acces camera refuse. Autorisez la camera dans les parametres du navigateur.';
-      if (err.name === 'NotFoundError') msg = 'Aucune camera detectee sur cet appareil.';
-      setStatus(msg, 'error');
-      return;
-    }
-    await new Promise(function(r){ setTimeout(r, 600); });
-  }
-
+  if (!mediaStream) { setStatus('Ouvrez d\'abord la camera', 'error'); return; }
   if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
     setStatus('La camera n\'est pas encore prete, reessayez dans un instant', 'error');
     return;
   }
-
   var canvas = document.getElementById('cameraCanvas');
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
   canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
   var dataUrl = canvas.toDataURL('image/png');
   await runOCR(dataUrl);
-}
-
-function stopCamera() {
-  if (mediaStream) { mediaStream.getTracks().forEach(function(t){t.stop();}); mediaStream = null; }
-  document.getElementById('cameraView').style.display = 'none';
-  setStatus('Camera fermee', '');
 }
 
 function handleImageUpload(event) {
@@ -448,6 +487,7 @@ async function runOCR(imageData) {
     var hasHebrew = /[א-ת]/.test(detectedText);
     var langFrom = hasHebrew?'iw':'fr';
     var langTo = hasHebrew?'fr':'iw';
+    var speakLang = hasHebrew?'fr-FR':'he-IL';
     document.getElementById('ocrDetected').innerHTML = '<b>Texte detecte ('+( hasHebrew?'Hebreu':'Francais')+'):</b> '+detectedText.substring(0,200);
     setStatus('Traduction du texte detecte...', 'loading');
     var url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(detectedText.substring(0,500))+'&langpair='+langFrom+'|'+langTo;
@@ -455,10 +495,12 @@ async function runOCR(imageData) {
     var data = await resp.json();
     var ocrTransEl = document.getElementById('ocrTranslation');
     if (data.responseStatus===200) {
-      ocrTransEl.textContent = decodeHtmlEntities(data.responseData.translatedText);
+      var translated = decodeHtmlEntities(data.responseData.translatedText);
+      ocrTransEl.textContent = translated;
       ocrTransEl.className = 'ocr-translation'+(langTo==='iw'?' rtl-text':'');
       ocrResult.style.display = 'block';
-      setStatus('OCR et Traduction reussis', 'success');
+      setStatus('Traduction prete, lecture en cours...', 'success');
+      speakText(translated, speakLang);
     } else {
       setStatus('Traduction OCR echouee', 'error');
     }
