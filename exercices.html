@@ -6,7 +6,7 @@
     <title>MIZOULPAN - Exercices</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="style-global.css">
-    <style>
+    <style> .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#0057D9;font-weight:500;}
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
@@ -171,13 +171,7 @@
         }
 
         /* EXERCISE CONTENT */
-        .progress {
-            width: 100%;
-            height: 6px;
-            background: var(--border-light);
-            border-radius: 3px;
-            margin: 20px 0;
-        }
+        .progress{display:none;}
 
         .progress-bar {
             height: 100%;
@@ -186,64 +180,22 @@
             transition: width 0.4s ease;
         }
 
-        .question {
-            font-size: 1.8rem;
-            text-align: center;
-            background: var(--bg-light);
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            direction: rtl;
-            font-family: 'Arial Hebrew', 'David', serif;
-            font-weight: 600;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .question{font-size:0.9rem;text-align:center;background:linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);padding:12px;border-radius:10px;margin:10px 0;direction:rtl;font-family:'Arial Hebrew','David',serif;font-weight:600;min-height:30px;display:flex;align-items:center;justify-content:center;}
 
-        .audio-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .audio-btn {
-            background: none;
-            border: none;
-            font-size: 2.5rem;
-            cursor: pointer;
-            padding: 10px;
-            transition: transform 0.2s ease;
-        }
+        .audio-buttons{display:flex;gap:10px;justify-content:center;margin:8px 0;} .audio-btn{background:none;border:none;font-size:1.3rem;cursor:pointer;padding:4px;transition:transform 0.2s ease;}
 
         .audio-btn:hover {
             transform: scale(1.2);
         }
 
-        .input-box {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.1rem;
-            border: 2px solid var(--border-light);
-            border-radius: 8px;
-            margin: 20px 0;
-            font-family: inherit;
-            transition: border-color 0.2s ease;
-        }
+        .input-box{width:100%;padding:12px;font-size:1rem;border:2px solid var(--border-light);border-radius:8px;margin:8px 0 6px;font-family:inherit;transition:border-color 0.2s ease;}
 
         .input-box:focus {
             outline: none;
             border-color: var(--primary-blue);
         }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 20px 0;
-        }
+        .buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 20px;}
 
         .button {
             padding: 14px;
@@ -404,11 +356,7 @@
                 <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
             </div>
             
-            <!-- EXERCICES -->
-            <p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Exercices</p>
-
-            <!-- RETOUR - COMPACT - INTELLIGENT -->
-            <a href="#" class="back-button" style="margin-bottom: 8px;" onclick="goBack(event)">← Retour</a>
+            <div class="page-subrow"><a href="#" class="back-button" onclick="goBack(event)">← Retour</a><p class="page-title-ex">Exercices</p></div>
 
             <!-- ════ SETUP SCREEN ════ -->
             <div class="setup-screen active" id="setupScreen">
