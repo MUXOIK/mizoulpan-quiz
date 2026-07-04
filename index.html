@@ -676,6 +676,22 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+            @media (max-width: 480px) {
+            .setup-group .section-label {
+                font-size: 0.6rem;
+                letter-spacing: 0.6px;
+                line-height: 1.15;
+                min-height: 2.3em;
+                display: flex;
+                align-items: flex-end;
+            }
+
+            .setup-group .pill {
+                font-size: 0.8rem;
+                padding: 8px 10px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -737,8 +753,8 @@
             <div class="setup-group">
                 <div class="section-label">Sens de la question</div>
         <div class="pills">
-            <button class="pill active" data-dir="fr→he">🇫🇷 Français → עברית</button>
-            <button class="pill" data-dir="he→fr">עברית → 🇫🇷 Français</button>
+            <button class="pill active" data-dir="fr→he">Français → עברית</button>
+            <button class="pill" data-dir="he→fr">עברית → Français</button>
         </div>
             </div>
             <div class="setup-group">
