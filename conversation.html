@@ -100,6 +100,33 @@
             transform: translateX(-3px);
         }
 
+        .back-button-small {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--primary-blue, #0038B8);
+            font-weight: 700;
+            font-size: 0.95rem;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 6px 0;
+            margin-bottom: 8px;
+        }
+
+        .back-button-small:hover {
+            text-decoration: underline;
+        }
+
+        .card:has(#chatScreen.active) .page-header,
+        .card:has(#chatScreen.active) > .back-button,
+        .card:has(#chatScreen.active) > .page-title-fr,
+        .card:has(#chatScreen.active) > .page-title-heb {
+            display: none;
+        }
+
         /* ════ ÉCRANS ════ */
         .screen { display: none; }
         .screen.active { display: block; }
@@ -188,7 +215,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #dcecf8;
+            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
             border-radius: 16px;
             padding: 14px 18px;
             margin-bottom: 16px;
@@ -456,6 +483,7 @@
 
             <!-- ÉCRAN 2 : CHAT -->
             <div id="chatScreen" class="screen">
+                <button type="button" class="back-button-small" id="backToLevelBtn">← Retour</button>
                 <div class="chat-header">
                     <span class="chat-header-level">
                         Niveau : <span class="heb" id="chatLevelHeb"></span> (<span id="chatLevelFr"></span>)
@@ -705,14 +733,16 @@ ${vocabText}`;
             }
         }
 
-        document.getElementById('changeLevelBtn').addEventListener('click', () => {
+        function goToLevelScreen() {
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
             document.getElementById('chatScreen').classList.remove('active');
             document.getElementById('levelScreen').classList.add('active');
             currentLevel = null;
             systemPrompt = null;
             history = [];
-        });
+        }
+        document.getElementById('changeLevelBtn').addEventListener('click', goToLevelScreen);
+        document.getElementById('backToLevelBtn').addEventListener('click', goToLevelScreen);
 
         // ════════════════════════════════════════════════════════════
         // CHAT
