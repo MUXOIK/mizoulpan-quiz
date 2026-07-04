@@ -719,7 +719,13 @@
         <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
     </div>
     
-    <!-- HEADER PERSONNALISÉ POUR QUIZ (tabs) -->
+    <!-- QUIZZ + RETOUR sur la même ligne -->
+<div id="quiz-topbar" style="position:relative; display:flex; align-items:center; padding:0 16px; margin:4px 0 16px; min-height:36px;">
+        <a href="accueil.html" class="back-button">← Retour</a>
+        <p style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); margin:0; font-size: 0.9rem; color: #0057D9; font-weight: 500; white-space:nowrap;">Quizz</p>
+    </div>
+    
+<!-- HEADER PERSONNALISÉ POUR QUIZ (tabs) -->
 <div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,56,184,0.3);">
     <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">
         <div style="flex: 1; text-align: center;">
@@ -1014,6 +1020,7 @@
         setActiveTab(currentTab);
         hide('loading-screen');
         show('setup-screen');
+        show('quiz-topbar');
         initTabsScroll();
         scrollToActiveTab();
     }
@@ -1062,13 +1069,13 @@
         });
     }
 
-    function showSetup(){ hide('quiz-screen'); hide('result-screen'); show('setup-screen'); }
+    function showSetup(){ hide('quiz-screen'); hide('result-screen'); show('setup-screen'); show('quiz-topbar'); }
 
     function startQuiz(){
         quiz=buildQuiz(allData[currentTab],direction);
         idx=0; score=0; errors=[]; answered=false;
         visited=new Set([0]);
-        hide('setup-screen'); hide('result-screen'); show('quiz-screen');
+        hide('setup-screen'); hide('result-screen'); show('quiz-screen'); hide('quiz-topbar');
         renderQuestion();
     }
 
