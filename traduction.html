@@ -496,13 +496,13 @@ progressBar.style.display='none';
 setStatus('Texte peu net ou illisible. Reessayez avec un meilleur cadrage, plus de lumiere et en tenant le telephone stable.', 'error');
 return;
 }
-    var hasHebrew = /[א-ת]/.test(detectedText);
+    var hebrewCount = (detectedText.match(/[א-ת]/g) || []).length; var latinCount = (detectedText.match(/[a-zA-Zà-üÀ-Ü]/g) || []).length; var hasHebrew = hebrewCount > latinCount;
     var langFrom = hasHebrew?'iw':'fr';
     var langTo = hasHebrew?'fr':'iw';
     var speakLang = hasHebrew?'fr-FR':'he-IL';
     document.getElementById('ocrDetected').innerHTML = '<b>Texte detecte ('+( hasHebrew?'Hebreu':'Francais')+'):</b> '+detectedText.substring(0,200);
     setStatus('Traduction du texte detecte...', 'loading');
-    var url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(detectedText.substring(0,500))+'&langpair='+langFrom+'|'+langTo;
+    var cleanText = detectedText.replace(/[^a-zA-Zà-üÀ-Ü0-9א-ת\s]/g,' ').replace(/\s+/g,' ').trim(); var url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(cleanText.substring(0,500))+'&langpair='+langFrom+'|'+langTo;
     var resp = await fetch(url);
     var data = await resp.json();
     var ocrTransEl = document.getElementById('ocrTranslation');
