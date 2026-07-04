@@ -1,308 +1,329 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIZOULPAN - Apprendre l'Hébreu</title>
-    <link rel="stylesheet" href="style-global.css">
-    <style>
-        /* SPÉCIFIQUE À L'ACCUEIL */
-            /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
-        .page-header {
-            position: relative;
-            background: #dcecf8;
-            border-radius: 28px;
-            padding: 40px;
-            margin-bottom: 12px;
-            overflow: visible;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIZOULPAN - Apprendre l'Hébreu</title>
+<link rel="stylesheet" href="style-global.css">
+<style>
+/* SPÉCIFIQUE À L'ACCUEIL */
+/* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
+.page-header {
+    position: relative;
+    background: #dcecf8;
+    border-radius: 28px;
+    padding: 40px;
+    margin-bottom: 12px;
+    overflow: visible;
+}
 
-        .title-zone {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 32px;
-        }
+.title-zone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
 
-        .title-zone h1 {
-            color: #0057D9;
-            font-size: clamp(2rem, 6vw, 4.5rem);
-            font-weight: 900;
-            margin: 0;
-            line-height: 1;
-        }
+.title-zone h1 {
+    color: #0057D9;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+}
 
-        .flag-icon {
-            width: clamp(58px, 10vw, 110px);
-            height: auto;
-            border-radius: 6px;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
-        }
+.flag-icon {
+    width: clamp(58px, 10vw, 110px);
+    height: auto;
+    border-radius: 6px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+}
 
-        .corner-logo {
-            position: absolute;
-            top: -25px;
-            right: -25px;
-            width: 58px;
-            height: auto;
-            z-index: 100;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-        }
+.corner-logo {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    width: 58px;
+    height: auto;
+    z-index: 100;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
 
-        @media (max-width: 768px) {
-            .page-header {
-                padding: 25px 15px;
-            }
+@media (max-width: 768px) {
+    .page-header {
+        padding: 25px 15px;
+    }
 
-            .corner-logo {
-                width: 34px;
-                top: -10px;
-                right: -10px;
-            }
+    .corner-logo {
+        width: 34px;
+        top: -10px;
+        right: -10px;
+    }
 
-            .title-zone {
-                gap: 8px;
-            }
+    .title-zone {
+        gap: 8px;
+    }
 
-            .flag-icon {
-                width: 34px;
-            }
+    .flag-icon {
+        width: 34px;
+    }
 
-            .title-zone h1 {
-                font-size: 1.8rem;
-            }
-        }
+    .title-zone h1 {
+        font-size: 1.8rem;
+    }
+}
 
-        .logo-bandeau {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: slideDown 0.6s ease-out;
-        }
+.logo-bandeau {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: slideDown 0.6s ease-out;
+}
 
-        .logo-bandeau img {
-            max-width: 100%;
-            width: 100%;
-            max-width: 500px;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-            border-radius: 8px;
-        }
+.logo-bandeau img {
+    max-width: 100%;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    border-radius: 8px;
+}
 
-        .main-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+.main-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
 
-        .main-title h2 {
-            color: var(--primary-blue);
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
+.main-title h2 {
+    color: var(--primary-blue);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
 
-        .main-subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
+.main-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
 
-        /* ✅ OPTIMISÉ MOBILE */
-        @media (max-width: 768px) {
-            .main-title h2 {
-                font-size: 1.6rem;
-                margin-bottom: 8px;
-            }
+/* OPTIMISE MOBILE */
+@media (max-width: 768px) {
+    .main-title h2 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+    }
 
-            .main-subtitle {
-                font-size: 0.85rem;
-            }
-        }
+    .main-subtitle {
+        font-size: 0.85rem;
+    }
+}
 
-        @media (max-width: 480px) {
-            .main-title h2 {
-                font-size: 1.4rem;
-            }
+@media (max-width: 480px) {
+    .main-title h2 {
+        font-size: 1.4rem;
+    }
 
-            .main-subtitle {
-                font-size: 0.8rem;
-            }
-        }
+    .main-subtitle {
+        font-size: 0.8rem;
+    }
+}
 
-        /* GRILLE DE CARTES */
-        .buttons-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            animation: fadeIn 0.8s ease-out 0.2s backwards;
-        }
+/* GRILLE DE CARTES */
+.buttons-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: fadeIn 0.8s ease-out 0.2s backwards;
+}
 
-        .button-card {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 24px;
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
-            border-radius: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
+.button-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+    border-radius: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
 
-        .button-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-            background: linear-gradient(135deg, #81D4FA 0%, #B3E5FC 100%);
-        }
+.button-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(135deg, #81D4FA 0%, #B3E5FC 100%);
+}
 
-        .button-card:active {
-            transform: translateY(-2px);
-        }
+.button-card:active {
+    transform: translateY(-2px);
+}
 
-        .icon-wrapper {
-            flex-shrink: 0;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.icon-wrapper {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .icon-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 8px;
-        }
+.icon-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
 
-        .content-wrapper h3 {
-            color: #01579B;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+.content-wrapper h3 {
+    color: #01579B;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
 
-        .content-wrapper p {
-            color: #0277BD;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
+.content-wrapper p {
+    color: #0277BD;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
 
-        /* ✅ OPTIMISÉ MOBILE */
-        @media (max-width: 768px) {
-            .button-card {
-                padding: 18px;
-                gap: 12px;
-            }
+/* OPTIMISE MOBILE */
+@media (max-width: 768px) {
+    .buttons-section {
+        gap: 10px;
+    }
 
-            .icon-wrapper {
-                width: 55px;
-                height: 55px;
-            }
+    .button-card {
+        padding: 14px;
+        gap: 12px;
+    }
 
-            .content-wrapper h3 {
-                font-size: 1rem;
-            }
+    .icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
 
-            .content-wrapper p {
-                font-size: 0.8rem;
-            }
-        }
+    .content-wrapper h3 {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
 
-        @media (max-width: 480px) {
-            .button-card {
-                padding: 16px;
-                gap: 12px;
-            }
+    .content-wrapper p {
+        font-size: 0.75rem;
+    }
+}
 
-            .icon-wrapper {
-                width: 50px;
-                height: 50px;
-            }
+@media (max-width: 480px) {
+    .buttons-section {
+        gap: 8px;
+    }
 
-            .content-wrapper h3 {
-                font-size: 0.95rem;
-            }
+    .button-card {
+        padding: 12px;
+        gap: 10px;
+    }
 
-            .content-wrapper p {
-                font-size: 0.75rem;
-            }
-        }
-    </style>
+    .icon-wrapper {
+        width: 42px;
+        height: 42px;
+    }
+
+    .content-wrapper h3 {
+        font-size: 0.85rem;
+    }
+
+    .content-wrapper p {
+        font-size: 0.7rem;
+    }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <!-- PAGE HEADER AVEC DRAPEAUX -->
-            <div class="page-header">
-                <div class="title-zone">
-                    <img src="israel.png" alt="Israël" class="flag-icon">
-                    <h1>MIZOULPAN</h1>
-                    <img src="france.png" alt="France" class="flag-icon">
-                </div>
-                <!-- BULLE EN HAUT À DROITE -->
-                <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
-            </div>
-            
-            <!-- SOUS-TITRE -->
-            <p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Apprendre l'hébreu moderne</p>
+<div class="container">
+<div class="card">
+<!-- PAGE HEADER AVEC DRAPEAUX -->
+<div class="page-header">
+<div class="title-zone">
+<img src="israel.png" alt="Israël" class="flag-icon">
+<h1>MIZOULPAN</h1>
+<img src="france.png" alt="France" class="flag-icon">
+</div>
+<!-- BULLE EN HAUT A DROITE -->
+<img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
+</div>
 
-            <!-- CARTES DE NAVIGATION -->
-            <div class="buttons-section">
-                <!-- Quiz -->
-                <a href="index.html" class="button-card">
-                    <div class="icon-wrapper">
-                        <img src="icon-quizz.jpg" alt="Quizz" class="icon-image">
-                    </div>
-                    <div class="content-wrapper">
-                        <h3>Quizz</h3>
-                        <p>Testez vos connaissances</p>
-                    </div>
-                </a>
+<!-- SOUS-TITRE -->
+<p style="text-align: center; margin: 4px 0 16px; font-size: 0.9rem; color: #0057D9; font-weight: 500;">Apprendre l'hébreu moderne</p>
 
-                <!-- Exercices -->
-                <a href="exercices.html" class="button-card">
-                    <div class="icon-wrapper">
-                        <img src="icon-exercices.jpg" alt="Exercices" class="icon-image">
-                    </div>
-                    <div class="content-wrapper">
-                        <h3>Exercices</h3>
-                        <p>Pratiquez avec des exercices</p>
-                    </div>
-                </a>
+<!-- CARTES DE NAVIGATION -->
+<div class="buttons-section">
+<!-- Quiz -->
+<a href="index.html" class="button-card">
+<div class="icon-wrapper">
+<img src="icon-quizz.jpg" alt="Quizz" class="icon-image">
+</div>
+<div class="content-wrapper">
+<h3>Quizz</h3>
+<p>Testez vos connaissances</p>
+</div>
+</a>
 
-                <!-- Vocabulaire -->
-                <a href="dico.html" class="button-card">
-                    <div class="icon-wrapper">
-                        <img src="icon-vocabulaire.jpg" alt="Vocabulaire" class="icon-image">
-                    </div>
-                    <div class="content-wrapper">
-                        <h3>Vocabulaire</h3>
-                        <p>Apprenez de nouveaux mots</p>
-                    </div>
-                </a>
-                <!-- Conversation avec un professeur -->
-                <a href="conversation.html" class="button-card">
-                    <div class="icon-wrapper">
-                        <img src="icon-conversation.jpg" alt="Conversation" class="icon-image">
-                    </div>
-                    <div class="content-wrapper">
-                        <h3>Conversation</h3>
-                        <p>Parlez avec un professeur virtuel</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+<!-- Conversation avec un professeur -->
+<a href="conversation.html" class="button-card">
+<div class="icon-wrapper">
+<img src="icon-conversation.jpg" alt="Conversation" class="icon-image">
+</div>
+<div class="content-wrapper">
+<h3>Conversation</h3>
+<p>Parlez avec un professeur virtuel</p>
+</div>
+</a>
 
-    <script>
-        console.log('MIZOULPAN Accueil chargé');
-    </script>
+<!-- Traduction -->
+<a href="traduction.html" class="button-card">
+<div class="icon-wrapper">
+<img src="icon-traduction.jpg" alt="Traduction" class="icon-image">
+</div>
+<div class="content-wrapper">
+<h3>Traduction</h3>
+<p>Traduire en parlant</p>
+</div>
+</a>
+
+<!-- Exercices -->
+<a href="exercices.html" class="button-card">
+<div class="icon-wrapper">
+<img src="icon-exercices.jpg" alt="Exercices" class="icon-image">
+</div>
+<div class="content-wrapper">
+<h3>Exercices</h3>
+<p>Pratiquez avec des exercices</p>
+</div>
+</a>
+
+<!-- Vocabulaire -->
+<a href="dico.html" class="button-card">
+<div class="icon-wrapper">
+<img src="icon-vocabulaire.jpg" alt="Vocabulaire" class="icon-image">
+</div>
+<div class="content-wrapper">
+<h3>Vocabulaire</h3>
+<p>Apprenez de nouveaux mots</p>
+</div>
+</a>
+</div>
+</div>
+</div>
+
+<script>
+console.log('MIZOULPAN Accueil charge');
+</script>
 </body>
 </html>
