@@ -241,6 +241,28 @@
             color: white;
         }
 
+        .setup-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .setup-group {
+            flex: 1;
+            min-width: 0;
+            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            border-radius: 14px;
+            padding: 12px;
+        }
+
+        .setup-group .pills {
+            margin-bottom: 0;
+        }
+
+        .setup-group .section-label {
+            margin-bottom: 8px;
+        }
+
         .count-info {
             font-size: 0.82rem;
             color: var(--text-light);
@@ -711,15 +733,21 @@
 
     <!-- SETUP -->
     <div id="setup-screen" class="card hidden">
-        <div class="section-label">Sens de la question</div>
+        <div class="setup-row">
+            <div class="setup-group">
+                <div class="section-label">Sens de la question</div>
         <div class="pills">
             <button class="pill active" data-dir="fr→he">🇫🇷 Français → עברית</button>
             <button class="pill" data-dir="he→fr">עברית → 🇫🇷 Français</button>
         </div>
-        <div class="section-label">Ordre</div>
+            </div>
+            <div class="setup-group">
+                <div class="section-label">Ordre</div>
         <div class="pills">
             <button class="pill active" data-order="random">🔀 Aléatoire</button>
             <button class="pill" data-order="sequential">📋 Dans l'ordre</button>
+        </div>
+            </div>
         </div>
         <div class="count-info" id="count-info"></div>
         <button class="start-btn" id="start-btn">Commencer →</button>
