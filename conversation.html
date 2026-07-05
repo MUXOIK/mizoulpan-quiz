@@ -120,7 +120,7 @@
             text-decoration: underline;
         }
 
-        .card:has(#chatScreen.active) > .back-button,
+        .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:var(--primary-blue);font-weight:500;} .card:has(#chatScreen.active) > .page-subrow,
         .card:has(#chatScreen.active) > .page-title-fr,
         .card:has(#chatScreen.active) > .page-title-heb {
             display: none;
@@ -445,7 +445,7 @@
                 <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
             </div>
 
-            <a href="https://muxoik.github.io/mizoulpan-quiz/accueil.html" class="back-button">← Retour</a>
+            <div class="page-subrow"><a href="https://muxoik.github.io/mizoulpan-quiz/accueil.html" class="back-button">← Retour</a><p class="page-title-ex">Conversation</p></div>
             <p class="page-title-fr">Conversation avec un professeur d'hébreu</p>
             <p class="page-title-heb">שיחה חופשית</p>
 
