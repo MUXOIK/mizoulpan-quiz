@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIZOULPAN - Leçon</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="style-global.css">
+    <style>
+        /* SPÉCIFIQUE À LA LEÇON */
+        .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;}
+        .page-subrow .back-button{margin-bottom:0;}
+        .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#0057D9;font-weight:500;}
+
+        /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
+        .page-header {
+            position: relative;
+            background: #dcecf8;
+            border-radius: 28px;
+            padding: 40px;
+            margin-bottom: 12px;
+            overflow: visible;
+        }
+
+        .title-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .title-zone h1 {
+            color: #0057D9;
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .flag-icon {
+            width: clamp(58px, 10vw, 110px);
+            height: auto;
+            border-radius: 6px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));
+        }
+
+        .corner-logo {
+            position: absolute;
+            top: -25px;
+            right: -25px;
+            width: 58px;
+            height: auto;
+            z-index: 100;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .page-header { padding: 25px 15px; }
+            .corner-logo { width: 34px; top: -10px; right: -10px; }
+            .title-zone { gap: 8px; }
+            .flag-icon { width: 34px; }
+            .title-zone h1 { font-size: 1.8rem; }
+        }
+
+        /* ÉCRAN 1 - CATÉGORIES DE LEÇONS */
+        .home-screen { display: block; }
+        .home-screen.hidden { display: none; }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .category-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 15px rgba(0, 56, 184, 0.12);
+            border-color: var(--primary-blue);
+        }
+
+        .category-icon { font-size: 2.2rem; margin-bottom: 6px; }
+        .category-name { font-size: 0.85rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 4px; }
+        .category-count { font-size: 0.75rem; color: #999; }
+
+        @media (max-width: 768px) {
+            .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .category-card { padding: 8px 4px; }
+            .category-icon { font-size: 1.5rem; margin-bottom: 4px; }
+            .category-name { font-size: 0.68rem; }
+            .category-count { font-size: 0.6rem; }
+        }
+
+        /* ÉCRAN 2 - DÉTAIL DE LA LEÇON */
+        .lesson-screen { display: none; }
+        .lesson-screen.active { display: block; }
+
+        .lesson-title {
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .lesson-block { margin-bottom: 22px; }
+
+        .lesson-block-title {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            color: var(--white);
+            padding: 10px 16px;
+            border-radius: 10px 10px 0 0;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .lesson-block-title .hebrew-part {
+            font-family: 'Arial Hebrew', 'David', serif;
+            direction: rtl;
+            font-size: 1.05rem;
+        }
+
+        .lesson-scroll {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            max-height: 190px;
+            overflow-y: auto;
+            padding: 6px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .lesson-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .lesson-row:last-child { border-bottom: none; }
+
+        .lesson-cell {
+            flex: 1 1 140px;
+            min-width: 100px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .lesson-cell.hebrew {
+            font-family: 'Arial Hebrew', 'David', serif;
+            direction: rtl;
+            text-align: right;
+            font-size: 1rem;
+            color: var(--primary-blue-dark);
+        }
+
+        .lesson-cell.trans {
+            flex: 0 1 auto;
+            min-width: 80px;
+            font-style: italic;
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        .lesson-empty {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-light);
+            border-top-color: var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .lesson-title { font-size: 1.15rem; }
+            .lesson-block-title { font-size: 0.85rem; padding: 8px 12px; }
+            .lesson-scroll { max-height: 160px; padding: 4px 12px; }
+            .lesson-cell { font-size: 0.82rem; }
+            .lesson-cell.hebrew { font-size: 0.92rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- PAGE HEADER AVEC DRAPEAUX -->
+            <div class="page-header">
+                <div class="title-zone">
+                    <img src="israel.png" alt="Israël" class="flag-icon">
+                    <h1>MIZOULPAN</h1>
+                    <img src="france.png" alt="France" class="flag-icon">
+                </div>
+                <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
+            </div>
+
+            <!-- RETOUR -->
+            <div class="page-subrow">
+                <a href="#" class="back-button" onclick="goBack(event)">← Retour</a>
+                <p class="page-title-ex">Leçon</p>
+            </div>
+
+            <!-- ÉCRAN 1 : LISTE DES LEÇONS -->
+            <div class="home-screen" id="homeScreen">
+                <div class="loading" id="loadingMsg">
+                    <div class="spinner"></div>
+                    <p>Chargement...</p>
+                </div>
+                <div class="categories-grid" id="categoriesGrid"></div>
+            </div>
+
+            <!-- ÉCRAN 2 : DÉTAIL DE LA LEÇON -->
+            <div class="lesson-screen" id="lessonScreen">
+                <div class="lesson-title" id="lessonTitle"></div>
+
+                <div class="lesson-block">
+                    <div class="lesson-block-title">
+                        <span>Règle</span>
+                        <span class="hebrew-part">שליט</span>
+                    </div>
+                    <div class="lesson-scroll" id="regleContent"></div>
+                </div>
+
+                <div class="lesson-block">
+                    <div class="lesson-block-title">
+                        <span>Leçon</span>
+                        <span class="hebrew-part">לקח</span>
+                    </div>
+                    <div class="lesson-scroll" id="leconContent"></div>
+                </div>
+
+                <div class="lesson-block">
+                    <div class="lesson-block-title">
+                        <span>Exemple</span>
+                        <span class="hebrew-part">דוגמה</span>
+                    </div>
+                    <div class="lesson-scroll" id="exempleContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CATEGORY_ICON_DEFAULT = '📘';
+        let allLessons = {};
+        let sheetOrder = [];
+
+        // ════ NAVIGATION RETOUR ════
+        function goBack(event) {
+            event.preventDefault();
+            const lessonScreen = document.getElementById('lessonScreen');
+            const homeScreen = document.getElementById('homeScreen');
+
+            if (lessonScreen.classList.contains('active')) {
+                // Page 2 → retour à la page 1 (liste des leçons)
+                lessonScreen.classList.remove('active');
+                homeScreen.classList.remove('hidden');
+            } else {
+                // Page 1 → retour à l'accueil
+                window.location.href = 'accueil.html';
+            }
+        }
+
+        // ════ CHARGEMENT DU FICHIER EXCEL ════
+        async function loadLecons() {
+            try {
+                const response = await fetch('leçon.xlsx');
+                const buffer = await response.arrayBuffer();
+                const workbook = XLSX.read(buffer, { type: 'array' });
+
+                sheetOrder = workbook.SheetNames;
+
+                workbook.SheetNames.forEach(sheetName => {
+                    const worksheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '', raw: false });
+
+                    const sections = { regle: [], lecon: [], exemple: [] };
+                    let current = null;
+
+                    rows.forEach(row => {
+                        const marker = String(row[0] || '').trim().toLowerCase();
+
+                        if (marker === 'regle' || marker === 'règle') {
+                            current = 'regle';
+                        } else if (marker === 'lecon' || marker === 'leçon') {
+                            current = 'lecon';
+                        } else if (marker === 'exemple' || marker === 'exemples') {
+                            current = 'exemple';
+                        }
+
+                        if (!current) return;
+
+                        // Colonnes C et suivantes (on ignore A = marqueur, B = nom d'onglet)
+                        const cells = row.slice(2)
+                            .map(c => String(c).trim())
+                            .filter(c => c !== '' && c !== ' ');
+
+                        if (cells.length > 0) {
+                            sections[current].push(cells);
+                        }
+                    });
+
+                    allLessons[sheetName] = sections;
+                });
+
+                document.getElementById('loadingMsg').style.display = 'none';
+                displayCategories();
+            } catch (e) {
+                console.error('Erreur:', e);
+                document.getElementById('loadingMsg').innerHTML =
+                    '<p style="color:red;">❌ Erreur lors du chargement du fichier leçon.xlsx</p>';
+            }
+        }
+
+        // ════ AFFICHER LA LISTE DES LEÇONS (PAGE 1) ════
+        function displayCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = '';
+
+            sheetOrder.forEach(sheetName => {
+                const data = allLessons[sheetName];
+                const count = data.exemple.length;
+
+                const card = document.createElement('div');
+                card.className = 'category-card';
+                card.onclick = () => showLesson(sheetName);
+                card.innerHTML = `
+                    <div class="category-icon">${CATEGORY_ICON_DEFAULT}</div>
+                    <div class="category-name">${sheetName}</div>
+                    <div class="category-count">${count} exemple${count > 1 ? 's' : ''}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ════ AFFICHER UNE LEÇON (PAGE 2) ════
+        function showLesson(sheetName) {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('lessonScreen').classList.add('active');
+            document.getElementById('lessonTitle').textContent = sheetName;
+
+            const data = allLessons[sheetName];
+            renderLines('regleContent', data.regle);
+            renderLines('leconContent', data.lecon);
+            renderLines('exempleContent', data.exemple);
+
+            document.getElementById('lessonScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ════ RENDU GÉNÉRIQUE D'UNE SECTION (lignes de cellules) ════
+        function renderLines(containerId, lines) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (!lines || lines.length === 0) {
+                container.innerHTML = '<div class="lesson-empty">Aucun contenu</div>';
+                return;
+            }
+
+            lines.forEach(cells => {
+                const row = document.createElement('div');
+                row.className = 'lesson-row';
+
+                cells.forEach((value, index) => {
+                    const isHebrew = /[\u0590-\u05FF]/.test(value);
+                    const span = document.createElement('div');
+
+                    if (isHebrew) {
+                        span.className = 'lesson-cell hebrew';
+                    } else if (index >= 2) {
+                        // 3e colonne et plus = souvent transcription phonétique
+                        span.className = 'lesson-cell trans';
+                    } else {
+                        span.className = 'lesson-cell';
+                    }
+
+                    span.textContent = value;
+                    row.appendChild(span);
+                });
+
+                container.appendChild(row);
+            });
+        }
+
+        // ════ INITIALISATION ════
+        window.addEventListener('load', () => {
+            loadLecons();
+        });
+    </script>
+</body>
+</html>
