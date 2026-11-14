@@ -379,7 +379,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
                 card.className = 'category-card';
                 card.onclick = () => showLesson(sheetName);
                 card.innerHTML = `
-                    <div class="category-icon">${CATEGORY_ICON_DEFAULT}</div>
+                    <div class="category-icon">${/^cours/i.test(sheetName) ? '📖' : CATEGORY_ICON_DEFAULT}</div>
                     <div class="category-name">${sheetName}</div>
                     <div class="category-count">${count} exemple${count > 1 ? 's' : ''}</div>
                 `;
