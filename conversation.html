@@ -432,6 +432,18 @@
             .bubble { max-width: 88%; }
         }
     </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#7A5537">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mizoulpan +">
+<script>
+if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !location.port) && location.protocol !== 'capacitor:') {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
 <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
