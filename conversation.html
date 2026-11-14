@@ -6,14 +6,15 @@
     <title>MIZOULPAN - Conversation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="xlsx.full.min.js"></script>
+    <script src="donnees.js"></script>
     <link rel="stylesheet" href="style-global.css">
     <style>
         /* SPÉCIFIQUE À LA CONVERSATION */
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE (identique aux autres pages) */
         .page-header {
             position: relative;
-            background: #dcecf8;
+            background: #F6EBDE;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -81,7 +82,7 @@
 
         .back-button {
             display: inline-block;
-            background: var(--primary-blue, #0038B8);
+            background: var(--primary-blue, #B5583A);
             color: #FFFFFF;
             padding: 12px 24px;
             border: none;
@@ -96,7 +97,7 @@
         }
 
         .back-button:hover {
-            background: var(--primary-blue-dark, #002D7A);
+            background: var(--primary-blue-dark, #6E3A26);
             transform: translateX(-3px);
         }
 
@@ -106,7 +107,7 @@
             gap: 4px;
             background: none;
             border: none;
-            color: var(--primary-blue, #0038B8);
+            color: var(--primary-blue, #B5583A);
             font-weight: 700;
             font-size: 0.95rem;
             font-family: inherit;
@@ -142,7 +143,7 @@
             flex-direction: column;
             gap: 8px;
             padding: 15px 18px;
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
             border-radius: 16px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
@@ -152,7 +153,7 @@
         .level-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
-            background: linear-gradient(135deg, #E1F5FE 0%, #B3E5FC 100%);
+            background: linear-gradient(135deg, #F8F0E7 0%, #EDD9C2 100%);
         }
 
         .level-card-top {
@@ -214,7 +215,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
             border-radius: 16px;
             padding: 14px 18px;
             margin-bottom: 16px;
@@ -233,7 +234,7 @@
 
         .change-level-btn {
             background: white;
-            border: 1px solid #90CAF9;
+            border: 1px solid #D0876C;
             color: var(--primary-blue);
             font-weight: 600;
             font-size: 0.85rem;
@@ -244,7 +245,7 @@
         }
 
         .change-level-btn:hover {
-            background: #E3F2FD;
+            background: #F8F1E8;
         }
 
         .messages {
@@ -269,7 +270,7 @@
 
         .bubble.teacher {
             align-self: flex-start;
-            background: #F0F4F8;
+            background: #F8F4F0;
             color: #1a1a1a;
             border-bottom-left-radius: 4px;
             display: flex;
@@ -317,7 +318,7 @@
             display: flex;
             gap: 4px;
             padding: 14px 16px;
-            background: #F0F4F8;
+            background: #F8F4F0;
             border-radius: 16px;
             border-bottom-left-radius: 4px;
         }
@@ -326,7 +327,7 @@
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #90A4AE;
+            background: #D0876C;
             animation: bounce 1.2s infinite ease-in-out;
         }
 
@@ -375,7 +376,7 @@
 
         .speaker-toggle {
             background: white;
-            border: 1px solid #90CAF9;
+            border: 1px solid #D0876C;
             color: var(--primary-blue);
             font-weight: 600;
             font-size: 0.85rem;
@@ -386,7 +387,7 @@
             margin-right: 8px;
         }
 
-        .speaker-toggle:hover { background: #E3F2FD; }
+        .speaker-toggle:hover { background: #F8F1E8; }
         .speaker-toggle.muted { opacity: 0.5; }
 
         .chat-input-row textarea {
@@ -421,7 +422,7 @@
             flex-shrink: 0;
         }
 
-        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,87,217,0.3); }
+        .send-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(165, 82, 52,0.3); }
         .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         @media (max-width: 480px) {
@@ -445,7 +446,7 @@
                 <img src="logo-mizoulpan.png" alt="MIZOULPAN" class="corner-logo">
             </div>
 
-            <div class="page-subrow"><a href="https://muxoik.github.io/mizoulpan-quiz/accueil.html" class="back-button">← Retour</a><p class="page-title-ex">Conversation</p></div>
+            <div class="page-subrow"><a href="accueil.html" class="back-button">← Retour</a><p class="page-title-ex">Conversation</p></div>
             <p class="page-title-fr">Conversation avec un professeur d'hébreu</p>
             <p class="page-title-heb">שיחה חופשית</p>
 
@@ -562,7 +563,7 @@
 
         async function loadWorkbook() {
             if (workbookCache) return workbookCache;
-            const response = await fetch(`vocabulaire.xlsx?t=${Date.now()}`);
+            const response = await mizData(`vocabulaire.xlsx?t=${Date.now()}`);
             if (!response.ok) throw new Error("Impossible de charger vocabulaire.xlsx");
             const buffer = await response.arrayBuffer();
             workbookCache = XLSX.read(buffer, { type: 'array' });

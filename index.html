@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#0038b8">
+    <meta name="theme-color" content="#B5583A">
     <title>Mizoulpan Quiz</title>
 
     <meta name="description" content="Révisez votre hébreu avec des quiz interactifs par catégories.">
@@ -12,13 +12,14 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇮🇱</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&family=Frank+Ruhl+Libre:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="xlsx.full.min.js"></script>
+    <script src="donnees.js"></script>
     <link rel="stylesheet" href="style-global.css">
     <style>
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
-            background: #dcecf8;
+            background: #F6EBDE;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -33,7 +34,7 @@
         }
 
         .title-zone h1 {
-            color: #0057D9;
+            color: #C46A47;
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -84,7 +85,7 @@
         }
         /* ════ QUIZ SPÉCIFIQUE ════ */
         body {
-            background: #f5f7fa;
+            background: #FAF8F5;
         }
 
         /* TABS */
@@ -132,7 +133,7 @@
             font-weight: 700;
             font-family: inherit;
             background: rgba(255, 255, 255, 0.92);
-            color: #0a1a3a;
+            color: #6E3A26;
             white-space: nowrap;
             transition: all 0.2s;
             border-bottom: 3px solid transparent;
@@ -175,7 +176,7 @@
         .loading-spinner {
             width: 56px;
             height: 56px;
-            border: 5px solid #c5d4f0;
+            border: 5px solid #EFDCC6;
             border-top-color: var(--primary-blue);
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
@@ -250,7 +251,7 @@
         .setup-group {
             flex: 1;
             min-width: 0;
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
             border-radius: 14px;
             padding: 12px;
         }
@@ -280,12 +281,12 @@
             font-family: inherit;
             letter-spacing: 0.5px;
             transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(0, 56, 184, 0.3);
+            box-shadow: 0 4px 16px rgba(181, 88, 58, 0.3);
         }
 
         .start-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(0, 56, 184, 0.4);
+            box-shadow: 0 6px 24px rgba(181, 88, 58, 0.4);
         }
 
         /* QUIZ */
@@ -324,7 +325,7 @@
 
         .prog-wrap {
             height: 5px;
-            background: #c5d4f0;
+            background: #EFDCC6;
             border-radius: 99px;
             margin-bottom: 8px;
             cursor: pointer;
@@ -348,7 +349,7 @@
         }
 
         .q-box {
-            background: linear-gradient(135deg, #B3E5FC 0%, #E1F5FE 100%);
+            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
             border-radius: 14px;
             padding: 18px 16px;
             display: flex;
@@ -722,11 +723,11 @@
     <!-- QUIZZ + RETOUR sur la même ligne -->
 <div id="quiz-topbar" style="display:flex; align-items:center; justify-content:space-between; padding:0 16px; margin:4px 0 16px; min-height:36px;">
         <a href="accueil.html" class="back-button" style="margin-bottom:0;">← Retour</a>
-        <p style="margin:0; font-size: 0.9rem; color: #0057D9; font-weight: 500; white-space:nowrap;">Quizz</p>
+        <p style="margin:0; font-size: 0.9rem; color: #C46A47; font-weight: 500; white-space:nowrap;">Quizz</p>
     </div>
     
 <!-- HEADER PERSONNALISÉ POUR QUIZ (tabs) -->
-<div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,56,184,0.3);">
+<div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(181, 88, 58,0.3);">
     <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">
         <div style="flex: 1; text-align: center;">
             <div style="font-size: 1.2rem; font-weight: 700; color: white; letter-spacing: -0.5px; line-height: 1.1;">Choisissez votre catégorie</div>
@@ -802,7 +803,7 @@
     <div id="result-screen" class="card hidden">
         <div class="trophy-wrap">
             <svg width="110" height="110" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#c5d4f0" stroke-width="7"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#EFDCC6" stroke-width="7"/>
                 <circle id="trophy-ring" cx="50" cy="50" r="45" fill="none"
                     stroke="var(--primary-blue)" stroke-width="7" stroke-linecap="round"
                     transform="rotate(-90 50 50)" stroke-dasharray="283" stroke-dashoffset="283"
@@ -872,7 +873,8 @@
         return result;
     }
 
-    const TAB_ICONS = {verbes:'📚',liaison:'🔗',interrogation:'❓',adjectif:'✨',vocabulaire:'📖',transport:'🚌',classeroom:'🏫',couleur:'🎨',famille:'👨‍👩‍👧',métier:'💼',lieux:'📍',nourriture:'🍎',expression:'💬',chiffres:'🔢',temps:'⏰'};
+    const TAB_ICONS = {verbes:'📚',liaison:'🔗',interrogation:'❓',adjectif:'✨',vocabulaire:'📖',transport:'🚌',classeroom:'🏫',couleur:'🎨',famille:'👨‍👩‍👧',métier:'💼',lieux:'📍',nourriture:'🍎',expression:'💬',chiffres:'🔢',temps:'⏰',passé:'⏪',ordinaux:'🥇',classroom:'🏫',vétement:'👕',corps:'🫀',animaux:'🐾'};
+    const tabIcon = name => /^cours/i.test(name) ? '🗓️' : (TAB_ICONS[name]||'📌');
 
     let allData={}, currentTab=null, direction='fr→he', quizOrder='random';
     let quiz=[], idx=0, score=0, errors=[], answered=false;
@@ -989,7 +991,7 @@
             }catch(e){}
         }
         const monthStamp = new Date().toISOString().slice(0,7);
-        fetch(`vocabulaire.xlsx?m=${monthStamp}`)
+        mizData(`vocabulaire.xlsx?m=${monthStamp}`)
             .then(r=>{ if(!r.ok) throw new Error(`Fichier introuvable`); return r.arrayBuffer(); })
             .then(buf=>{
                 parseAndInit(buf);
@@ -1033,7 +1035,7 @@
             const btn=document.createElement('button');
             btn.className='tab'+(name===currentTab?' active':'');
             btn.dataset.name=name;
-            const icon=TAB_ICONS[name]||'📌';
+            const icon=tabIcon(name);
             const sc=scores[name];
             let badgeClass='badge'+(sc?' has-score':'');
             let badgeText=sc?`${sc.pct}%`:String(allData[name].length);
@@ -1144,10 +1146,10 @@
         buildTabs();
         setActiveTab(currentTab);
         const pct=Math.round((score/quiz.length)*100);
-        const color=pct>=80?'#1a7a3a':pct>=60?'#0038b8':'#b01a1a';
+        const color=pct>=80?'#1a7a3a':pct>=60?'#B5583A':'#b01a1a';
         const emoji=pct>=80?'🎉':pct>=60?'💪':'📚';
         const msg=pct>=80?'Excellent !':pct>=60?'Bon travail !':'Continue à réviser !';
-        const tabEmoji=TAB_ICONS[currentTab]||'🇮🇱';
+        const tabEmoji=/^cours/i.test(currentTab)?'🗓️':(TAB_ICONS[currentTab]||'🇮🇱');
         const fullMsg=`${emoji} ${msg} ${tabEmoji}`;
         const ring=$('trophy-ring');
         ring.style.stroke=color;

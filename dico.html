@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIZOULPAN - Vocabulaire</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="xlsx.full.min.js"></script>
+    <script src="donnees.js"></script>
     <link rel="stylesheet" href="style-global.css">
     <style>
-        /* SPÉCIFIQUE AU DICO */ .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#0057D9;font-weight:500;} @media (max-width:768px){ .categories-grid{grid-template-columns:repeat(3,1fr);gap:8px;} .category-card{padding:8px 4px;} .category-icon{font-size:1.5rem;margin-bottom:4px;} .category-name{font-size:0.68rem;} .category-count{font-size:0.6rem;} }
+        /* SPÉCIFIQUE AU DICO */ .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#C46A47;font-weight:500;} @media (max-width:768px){ .categories-grid{grid-template-columns:repeat(3,1fr);gap:8px;} .category-card{padding:8px 4px;} .category-icon{font-size:1.5rem;margin-bottom:4px;} .category-name{font-size:0.68rem;} .category-count{font-size:0.6rem;} }
         
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
-            background: #dcecf8;
+            background: #F6EBDE;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -27,7 +28,7 @@
         }
 
         .title-zone h1 {
-            color: #0057D9;
+            color: #C46A47;
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -109,7 +110,7 @@
 
         .category-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 4px 15px rgba(0, 56, 184, 0.12);
+            box-shadow: 0 4px 15px rgba(181, 88, 58, 0.12);
             border-color: var(--primary-blue);
         }
 
@@ -408,7 +409,11 @@
             'nourriture': '🍎',
             'expression': '💬',
             'chiffres': '🔢',
-            'temps': '⏰'
+            'temps': '⏰',
+            'passé': '⏪',
+            'ordinaux': '🥇',
+            'corps': '🫀',
+            'animaux': '🐾'
         };
 
         let allData = {};
@@ -436,7 +441,7 @@
 
         async function loadVocabulaire() {
             try {
-                const response = await fetch('vocabulaire.xlsx');
+                const response = await mizData('vocabulaire.xlsx');
                 const buffer = await response.arrayBuffer();
                 const workbook = XLSX.read(buffer, { type: 'array' });
 
@@ -472,7 +477,7 @@
 
             Object.keys(allData).forEach(category => {
                 const count = allData[category].length;
-                const icon = CATEGORY_ICONS[category] || '📌';
+                const icon = /^cours/i.test(category) ? '🗓️' : (CATEGORY_ICONS[category] || '📌');
 
                 const card = document.createElement('div');
                 card.className = 'category-card';

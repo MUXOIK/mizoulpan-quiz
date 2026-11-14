@@ -714,6 +714,91 @@
       "id": 143,
       "he": "החיים בטבע הם חיים בלי ספרים",
       "fr": "La vie dans la nature est une vie sans livres"
+    },
+    {
+      "id": 144,
+      "he": "אני קמתי בשש בבוקר",
+      "fr": "Je me suis levée à 6 h du matin"
+    },
+    {
+      "id": 145,
+      "he": "אני באתי לצרפת",
+      "fr": "Je suis venue en France"
+    },
+    {
+      "id": 146,
+      "he": "אני טסתי לישראל",
+      "fr": "J'ai pris l'avion pour Israël"
+    },
+    {
+      "id": 147,
+      "he": "אני גרתי בנתניה",
+      "fr": "J'ai habité à Netanya"
+    },
+    {
+      "id": 148,
+      "he": "אני שרתי בבית ספר",
+      "fr": "J'ai chanté à l'école"
+    },
+    {
+      "id": 149,
+      "he": "אני נחתי בשבת",
+      "fr": "Je me suis reposée pendant Chabbat"
+    },
+    {
+      "id": 150,
+      "he": "הם לא באו",
+      "fr": "Ils ne sont pas venus"
+    },
+    {
+      "id": 151,
+      "he": "גרתם בחיפה",
+      "fr": "Vous avez habité à Haïfa"
+    },
+    {
+      "id": 152,
+      "he": "קמת כבר?",
+      "fr": "Tu es déjà levée ?"
+    },
+    {
+      "id": 153,
+      "he": "לאן את הולכת?",
+      "fr": "Où vas-tu ?"
+    },
+    {
+      "id": 154,
+      "he": "מי מנצח?",
+      "fr": "Qui gagne ?"
+    },
+    {
+      "id": 155,
+      "he": "את ראשונה, את שנייה",
+      "fr": "Tu es la première, tu es la deuxième"
+    },
+    {
+      "id": 156,
+      "he": "קומה רביעית",
+      "fr": "Quatrième étage"
+    },
+    {
+      "id": 157,
+      "he": "הוא מתפלל",
+      "fr": "Il prie"
+    },
+    {
+      "id": 158,
+      "he": "היא מדברת בטלפון",
+      "fr": "Elle parle au téléphone"
+    },
+    {
+      "id": 159,
+      "he": "הוא שותה קפה",
+      "fr": "Il boit un café"
+    },
+    {
+      "id": 160,
+      "he": "הוא קורא ספר",
+      "fr": "Il lit un livre"
     }
   ],
   "complexe": [
@@ -1181,6 +1266,56 @@
       "id": 93,
       "he": "אולי אנחנו באמת מתחילים להבין ולהרגיש את העולם כמו הפילוסופים הגדולים וכמו בעולם העתיק",
       "fr": "Peut-être commençons-nous vraiment à comprendre et à ressentir le monde comme les grands philosophes et comme dans le monde antique"
+    },
+    {
+      "id": 94,
+      "he": "המשפחה באה לישראל",
+      "fr": "La famille est venue en Israël"
+    },
+    {
+      "id": 95,
+      "he": "אנחנו שרנו במקלחת",
+      "fr": "Nous avons chanté sous la douche"
+    },
+    {
+      "id": 96,
+      "he": "שנה ראשונה בפריז זה קשה",
+      "fr": "La première année à Paris, c'est dur"
+    },
+    {
+      "id": 97,
+      "he": "האיש הראשון קורא ספר",
+      "fr": "Le premier homme lit un livre"
+    },
+    {
+      "id": 98,
+      "he": "האישה החמישית עושה יוגה",
+      "fr": "La cinquième femme fait du yoga"
+    },
+    {
+      "id": 99,
+      "he": "האיש השביעי מדבר עם האיש השמיני",
+      "fr": "Le septième homme parle avec le huitième"
+    },
+    {
+      "id": 100,
+      "he": "ביום כיפור הם צמו",
+      "fr": "À Kippour, ils ont jeûné"
+    },
+    {
+      "id": 101,
+      "he": "קולומבוס הגיע לאמריקה אחרי מסע ארוך בים",
+      "fr": "Colomb est arrivé en Amérique après un long voyage en mer"
+    },
+    {
+      "id": 102,
+      "he": "הוא יושב ושותה קפה",
+      "fr": "Il est assis et boit un café"
+    },
+    {
+      "id": 103,
+      "he": "לשלוח תמונה בווטסאפ",
+      "fr": "Envoyer une photo sur WhatsApp"
     }
   ]
 }
