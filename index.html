@@ -887,7 +887,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
     }
 
     const TAB_ICONS = {verbes:'📚',liaison:'🔗',interrogation:'❓',adjectif:'✨',vocabulaire:'📖',transport:'🚌',classeroom:'🏫',couleur:'🎨',famille:'👨‍👩‍👧',métier:'💼',lieux:'📍',nourriture:'🍎',expression:'💬',chiffres:'🔢',temps:'⏰',passé:'⏪',ordinaux:'🥇',classroom:'🏫',vétement:'👕',corps:'🫀',animaux:'🐾'};
-    const tabIcon = name => /^cours/i.test(name) ? '🗓️' : (TAB_ICONS[name]||'📌');
+    const tabIcon = name => estCours(name) ? '🗓️' : (TAB_ICONS[name]||'📌');
 
     let allData={}, currentTab=null, direction='fr→he', quizOrder='random';
     let quiz=[], idx=0, score=0, errors=[], answered=false;
@@ -976,7 +976,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
     const CACHE_TS_KEY = 'mizoulpan_vocab_ts';
     const CACHE_VER_KEY = 'mizoulpan_vocab_ver';
     const CACHE_DURATION = 60 * 60 * 1000;
-    const APP_VERSION = 'v10.5';
+    const APP_VERSION = 'v10.6';
 
     function parseAndInit(buf){
         const wb=XLSX.read(buf,{type:'array'});
@@ -1052,7 +1052,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
             const sc=scores[name];
             let badgeClass='badge'+(sc?' has-score':'');
             let badgeText=sc?`${sc.pct}%`:String(allData[name].length);
-            btn.innerHTML=`${icon} ${name}<span class="${badgeClass}">${badgeText}</span>`;
+            btn.innerHTML=`${icon} ${nomAffiche(name)}<span class="${badgeClass}">${badgeText}</span>`;
             btn.addEventListener('click',()=>{ currentTab=name; setActiveTab(name); showSetup(); saveLastTab(name); });
             container.appendChild(btn);
         }
@@ -1162,7 +1162,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
         const color=pct>=80?'#1a7a3a':pct>=60?'#7A5537':'#b01a1a';
         const emoji=pct>=80?'🎉':pct>=60?'💪':'📚';
         const msg=pct>=80?'Excellent !':pct>=60?'Bon travail !':'Continue à réviser !';
-        const tabEmoji=/^cours/i.test(currentTab)?'🗓️':(TAB_ICONS[currentTab]||'🇮🇱');
+        const tabEmoji=estCours(currentTab)?'🗓️':(TAB_ICONS[currentTab]||'🇮🇱');
         const fullMsg=`${emoji} ${msg} ${tabEmoji}`;
         const ring=$('trophy-ring');
         ring.style.stroke=color;

@@ -379,8 +379,8 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
                 card.className = 'category-card';
                 card.onclick = () => showLesson(sheetName);
                 card.innerHTML = `
-                    <div class="category-icon">${/^cours/i.test(sheetName) ? '📖' : CATEGORY_ICON_DEFAULT}</div>
-                    <div class="category-name">${sheetName}</div>
+                    <div class="category-icon">${estCours(sheetName) ? '📖' : CATEGORY_ICON_DEFAULT}</div>
+                    <div class="category-name">${nomAffiche(sheetName)}</div>
                     <div class="category-count">${count} exemple${count > 1 ? 's' : ''}</div>
                 `;
                 grid.appendChild(card);
@@ -391,7 +391,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
         function showLesson(sheetName) {
             document.getElementById('homeScreen').classList.add('hidden');
             document.getElementById('lessonScreen').classList.add('active');
-            document.getElementById('lessonTitle').textContent = sheetName;
+            document.getElementById('lessonTitle').textContent = nomAffiche(sheetName);
 
             const data = allLessons[sheetName];
             renderLines('regleContent', data.regle);

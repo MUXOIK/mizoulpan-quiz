@@ -14,3 +14,7 @@
             .catch(function () { return fetch(fichier.split('?')[0], options); });
     };
 })();
+
+// Cours du jour : onglet nommé « JJ-MM-AA » dans les fichiers Excel (le « / » y est interdit), affiché « JJ/MM/AA ».
+window.estCours = function (n) { return /^\d{2}-\d{2}-\d{2}$/.test(n) || /^cours/i.test(n); };
+window.nomAffiche = function (n) { return String(n).replace(/^(\d{2})-(\d{2})-(\d{2})$/, '$1/$2/$3'); };

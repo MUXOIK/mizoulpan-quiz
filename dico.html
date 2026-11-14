@@ -363,7 +363,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
             <div class="page-subrow">
 
             <!-- RETOUR - COMPACT - INTELLIGENT -->
-            <a href="#" class="back-button" onclick="goBack(event)">← Retour</a><p class="page-title-ex">Vocabulaire</p></div>
+            <div style="display:flex;gap:8px;align-items:center;"><a href="#" class="back-button" onclick="goBack(event)">← Retour</a><a href="#" class="back-button" id="btnExporter" onclick="exporterVocabulaire(event)" title="Télécharger tout le vocabulaire en fichier Excel">⬇ Exporter</a></div><p class="page-title-ex">Vocabulaire</p></div>
 
             <!-- ÉCRAN D'ACCUEIL : CATÉGORIES -->
             <div class="home-screen" id="homeScreen">
@@ -434,6 +434,48 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
         let filteredData = [];
 
         // ════ CHARGEMENT EXCEL (INCHANGÉ) ════
+        // ════ EXPORTER : tout le vocabulaire (le fichier Excel complet, tous les onglets) ════
+        async function exporterVocabulaire(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnExporter');
+            const d = new Date();
+            const date = [d.getDate(), d.getMonth() + 1, d.getFullYear() % 100].map(n => String(n).padStart(2, '0')).join('-');
+            const nom = `Mizoulpan-vocabulaire-${date}.xlsx`;
+            const texte = btn.textContent;
+            btn.textContent = '⏳ …';
+            try {
+                const blob = await mizData('vocabulaire.xlsx?t=' + Date.now(), { cache: 'no-store' }).then(r => {
+                    if (!r.ok) throw new Error('fichier introuvable');
+                    return r.blob();
+                });
+                // Ordinateur (Chrome, Edge) : fenêtre « Enregistrer sous », ouverte sur le Bureau
+                if (window.showSaveFilePicker) {
+                    try {
+                        const h = await window.showSaveFilePicker({
+                            suggestedName: nom, startIn: 'desktop',
+                            types: [{ description: 'Fichier Excel', accept: { 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'] } }]
+                        });
+                        const w = await h.createWritable(); await w.write(blob); await w.close();
+                        btn.textContent = '✅ Exporté';
+                        setTimeout(() => btn.textContent = texte, 2500);
+                        return;
+                    } catch (err) {
+                        if (err.name === 'AbortError') { btn.textContent = texte; return; }
+                    }
+                }
+                // Téléphone et autres navigateurs : téléchargement classique (dossier Téléchargements)
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = nom;
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 10000);
+                btn.textContent = '✅ Exporté';
+            } catch (err) {
+                btn.textContent = '⚠️ Réessayer';
+            }
+            setTimeout(() => btn.textContent = texte, 2500);
+        }
+
         function goBack(event) {
             event.preventDefault();
             const dictScreen = document.getElementById("dictScreen");
@@ -490,14 +532,14 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
 
             Object.keys(allData).forEach(category => {
                 const count = allData[category].length;
-                const icon = /^cours/i.test(category) ? '🗓️' : (CATEGORY_ICONS[category] || '📌');
+                const icon = estCours(category) ? '🗓️' : (CATEGORY_ICONS[category] || '📌');
 
                 const card = document.createElement('div');
                 card.className = 'category-card';
                 card.onclick = () => showCategory(category);
                 card.innerHTML = `
                     <div class="category-icon">${icon}</div>
-                    <div class="category-name">${category}</div>
+                    <div class="category-name">${nomAffiche(category)}</div>
                     <div class="category-count">${count} mots</div>
                 `;
                 grid.appendChild(card);
@@ -511,7 +553,7 @@ if ('serviceWorker' in navigator && !(location.hostname === 'localhost' && !loca
 
             document.getElementById('homeScreen').classList.add('hidden');
             document.getElementById('dictScreen').classList.add('active');
-            document.getElementById('dictTitle').textContent = category.toUpperCase();
+            document.getElementById('dictTitle').textContent = nomAffiche(category).toUpperCase();
             document.getElementById('searchInput').value = '';
             document.getElementById('searchResults').textContent = '';
 
