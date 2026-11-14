@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#B5583A">
+    <meta name="theme-color" content="#7A5537">
     <title>Mizoulpan Quiz</title>
 
     <meta name="description" content="Révisez votre hébreu avec des quiz interactifs par catégories.">
@@ -19,7 +19,7 @@
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
-            background: #F6EBDE;
+            background: #F2EAE0;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -34,7 +34,7 @@
         }
 
         .title-zone h1 {
-            color: #C46A47;
+            color: #9C7652;
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -133,7 +133,7 @@
             font-weight: 700;
             font-family: inherit;
             background: rgba(255, 255, 255, 0.92);
-            color: #6E3A26;
+            color: #4A3324;
             white-space: nowrap;
             transition: all 0.2s;
             border-bottom: 3px solid transparent;
@@ -176,7 +176,7 @@
         .loading-spinner {
             width: 56px;
             height: 56px;
-            border: 5px solid #EFDCC6;
+            border: 5px solid #E8DCCB;
             border-top-color: var(--primary-blue);
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
@@ -251,7 +251,7 @@
         .setup-group {
             flex: 1;
             min-width: 0;
-            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
+            background: linear-gradient(135deg, #EADFD0 0%, #F5EFE6 100%);
             border-radius: 14px;
             padding: 12px;
         }
@@ -281,12 +281,12 @@
             font-family: inherit;
             letter-spacing: 0.5px;
             transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(181, 88, 58, 0.3);
+            box-shadow: 0 4px 16px rgba(122, 85, 55, 0.3);
         }
 
         .start-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(181, 88, 58, 0.4);
+            box-shadow: 0 6px 24px rgba(122, 85, 55, 0.4);
         }
 
         /* QUIZ */
@@ -325,7 +325,7 @@
 
         .prog-wrap {
             height: 5px;
-            background: #EFDCC6;
+            background: #E8DCCB;
             border-radius: 99px;
             margin-bottom: 8px;
             cursor: pointer;
@@ -349,7 +349,7 @@
         }
 
         .q-box {
-            background: linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);
+            background: linear-gradient(135deg, #EADFD0 0%, #F5EFE6 100%);
             border-radius: 14px;
             padding: 18px 16px;
             display: flex;
@@ -698,6 +698,7 @@
         }
 
     </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -723,11 +724,11 @@
     <!-- QUIZZ + RETOUR sur la même ligne -->
 <div id="quiz-topbar" style="display:flex; align-items:center; justify-content:space-between; padding:0 16px; margin:4px 0 16px; min-height:36px;">
         <a href="accueil.html" class="back-button" style="margin-bottom:0;">← Retour</a>
-        <p style="margin:0; font-size: 0.9rem; color: #C46A47; font-weight: 500; white-space:nowrap;">Quizz</p>
+        <p style="margin:0; font-size: 0.9rem; color: #9C7652; font-weight: 500; white-space:nowrap;">Quizz</p>
     </div>
     
 <!-- HEADER PERSONNALISÉ POUR QUIZ (tabs) -->
-<div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(181, 88, 58,0.3);">
+<div id="header" style="background: var(--primary-blue); padding: 0 16px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(122, 85, 55,0.3);">
     <div class="header-top" style="display: flex; align-items: center; gap: 12px; padding: 14px 0 10px; border-bottom: 1px solid rgba(255,255,255,0.15);">
         <div style="flex: 1; text-align: center;">
             <div style="font-size: 1.2rem; font-weight: 700; color: white; letter-spacing: -0.5px; line-height: 1.1;">Choisissez votre catégorie</div>
@@ -803,7 +804,7 @@
     <div id="result-screen" class="card hidden">
         <div class="trophy-wrap">
             <svg width="110" height="110" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#EFDCC6" stroke-width="7"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#E8DCCB" stroke-width="7"/>
                 <circle id="trophy-ring" cx="50" cy="50" r="45" fill="none"
                     stroke="var(--primary-blue)" stroke-width="7" stroke-linecap="round"
                     transform="rotate(-90 50 50)" stroke-dasharray="283" stroke-dashoffset="283"
@@ -963,7 +964,7 @@
     const CACHE_TS_KEY = 'mizoulpan_vocab_ts';
     const CACHE_VER_KEY = 'mizoulpan_vocab_ver';
     const CACHE_DURATION = 60 * 60 * 1000;
-    const APP_VERSION = 'v10.1';
+    const APP_VERSION = 'v10.2';
 
     function parseAndInit(buf){
         const wb=XLSX.read(buf,{type:'array'});
@@ -1146,7 +1147,7 @@
         buildTabs();
         setActiveTab(currentTab);
         const pct=Math.round((score/quiz.length)*100);
-        const color=pct>=80?'#1a7a3a':pct>=60?'#B5583A':'#b01a1a';
+        const color=pct>=80?'#1a7a3a':pct>=60?'#7A5537':'#b01a1a';
         const emoji=pct>=80?'🎉':pct>=60?'💪':'📚';
         const msg=pct>=80?'Excellent !':pct>=60?'Bon travail !':'Continue à réviser !';
         const tabEmoji=/^cours/i.test(currentTab)?'🗓️':(TAB_ICONS[currentTab]||'🇮🇱');

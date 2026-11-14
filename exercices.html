@@ -7,11 +7,11 @@
     <script src="xlsx.full.min.js"></script>
     <script src="donnees.js"></script>
     <link rel="stylesheet" href="style-global.css">
-    <style> .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#C46A47;font-weight:500;}
+    <style> .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;} .page-subrow .back-button{margin-bottom:0;} .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#9C7652;font-weight:500;}
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
-            background: #F6EBDE;
+            background: #F2EAE0;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -26,7 +26,7 @@
         }
 
         .title-zone h1 {
-            color: #C46A47;
+            color: #9C7652;
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -137,12 +137,12 @@
             cursor: pointer;
             font-family: inherit;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(181, 88, 58, 0.2);
+            box-shadow: 0 4px 12px rgba(122, 85, 55, 0.2);
         }
 
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(181, 88, 58, 0.3);
+            box-shadow: 0 6px 16px rgba(122, 85, 55, 0.3);
         }
 
         /* SETUP & EXERCISE SCREENS */
@@ -181,7 +181,7 @@
             transition: width 0.4s ease;
         }
 
-        .question{font-size:1.8rem;text-align:center;background:linear-gradient(135deg, #EDD9C2 0%, #F8F0E7 100%);padding:12px;border-radius:10px;margin:10px 0;direction:rtl;font-family:'Arial Hebrew','David',serif;font-weight:600;min-height:30px;display:flex;align-items:center;justify-content:center;}
+        .question{font-size:1.8rem;text-align:center;background:linear-gradient(135deg, #EADFD0 0%, #F5EFE6 100%);padding:12px;border-radius:10px;margin:10px 0;direction:rtl;font-family:'Arial Hebrew','David',serif;font-weight:600;min-height:30px;display:flex;align-items:center;justify-content:center;}
 
         .audio-buttons{display:flex;gap:10px;justify-content:center;margin:8px 0;} .audio-btn{background:none;border:none;font-size:2.5rem;cursor:pointer;padding:4px;transition:transform 0.2s ease;}
 
@@ -341,6 +341,7 @@
             }
         }
     </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <div class="container">

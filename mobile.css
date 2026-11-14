@@ -1,0 +1,97 @@
+/* ════════════════════════════════════════════════════════════════
+   MIZOULPAN – tenir sur un écran de téléphone (Samsung : 360 à 412 px de large)
+   Chargé en dernier dans chaque page : ces règles passent avant les autres.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Jamais de glissement de côté */
+html, body { overflow-x: hidden; max-width: 100%; }
+/* Samsung Internet et Chrome : 100vh compte la barre d'adresse cachée ; 100dvh non */
+body { min-height: 100dvh !important; }
+
+@media (max-width: 480px) {
+    body { padding: 8px !important; }
+    .container { padding: 0 !important; }
+    .card { padding: 12px !important; border-radius: 16px !important; margin-bottom: 8px !important; }
+
+    /* En-tête MIZOULPAN plus bas */
+    .page-header {
+        min-height: 0 !important;
+        padding: 10px 12px !important;
+        margin-bottom: 8px !important;
+        border-radius: 16px !important;
+    }
+    .page-header h1, .title-zone h1 { font-size: 1.55rem !important; line-height: 1.1 !important; }
+    .page-header .flag-icon, .title-zone .flag-icon { width: 28px !important; height: auto !important; }
+    .title-zone { gap: 8px !important; }
+    .corner-logo, .page-header .logo-mizoulpan { width: 30px !important; top: -8px !important; right: -8px !important; }
+
+    /* Ligne « Retour / titre de la page » */
+    .page-subrow { margin: 2px 0 8px !important; }
+    .back-button { padding: 6px 12px !important; font-size: 0.85rem !important; }
+
+    /* Accueil : cartes des rubriques */
+    .button-card { padding: 9px 12px !important; margin-bottom: 7px !important; }
+    .button-card .icon-image { width: 40px !important; height: 40px !important; }
+
+    /* Vocabulaire et Leçon : grille des catégories sur 4 colonnes */
+    .categories-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+    }
+    .category-card { padding: 6px 2px !important; min-width: 0 !important; }
+    .category-icon { font-size: 1.3rem !important; margin-bottom: 2px !important; }
+    .category-name { font-size: 0.64rem !important; overflow-wrap: anywhere; line-height: 1.15 !important; }
+    .category-count { font-size: 0.56rem !important; }
+
+    /* Vocabulaire : la liste de mots occupe le reste de l'écran, sans glisser de côté */
+    /* les onglets à beaucoup de colonnes (verbes, adjectifs) glissent de côté DANS le tableau seulement */
+    .table-wrapper { max-height: calc(100dvh - 270px) !important; overflow-x: auto !important; }
+    .table-wrapper table { min-width: 100% !important; width: max-content !important; table-layout: auto !important; }
+    .table-wrapper th, .table-wrapper td { white-space: nowrap !important; padding: 6px 8px !important; }
+    .dict-header { margin-bottom: 6px !important; gap: 6px !important; }
+    .dict-title { font-size: 1.1rem !important; }
+    .search-box { padding: 8px 10px !important; }
+}
+
+/* Petits écrans en hauteur (barre d'adresse visible) */
+@media (max-width: 480px) and (max-height: 700px) {
+    .page-header h1, .title-zone h1 { font-size: 1.4rem !important; }
+    .button-card { padding: 7px 10px !important; }
+}
+
+/* Traduction : tout sur un écran */
+@media (max-width: 480px) {
+    .traduction-container .header-row { margin-bottom: 6px !important; }
+    .direction-bar { margin: 6px 0 !important; gap: 8px !important; }
+    .lang-btn { padding: 6px 16px !important; font-size: 0.9rem !important; }
+    .swap-btn { width: 34px !important; height: 34px !important; font-size: 1.1rem !important; }
+    .auto-toggle { margin: 4px 0 !important; }
+    .status-bar { font-size: 0.8rem !important; min-height: 0 !important; margin-bottom: 6px !important; }
+    .panels { gap: 8px !important; margin-bottom: 8px !important; grid-template-columns: 1fr !important; }
+    .panel { padding: 10px 12px !important; min-height: 0 !important; border-radius: 14px !important; }
+    .panel-label { margin-bottom: 4px !important; font-size: 0.75rem !important; }
+    .panel-textarea, .panel-result { min-height: 2.8em !important; max-height: 2.8em !important; }
+    .transliteration { margin-top: 2px !important; font-size: 0.8rem !important; }
+    .panel-actions { margin-top: 6px !important; gap: 6px !important; }
+    .action-btn { padding: 4px 10px !important; font-size: 0.8rem !important; }
+    .translate-btn { padding: 10px 20px !important; margin-bottom: 8px !important; font-size: 1rem !important; }
+    .camera-section { padding: 10px 12px !important; margin-bottom: 8px !important; border-radius: 14px !important; }
+    .camera-title { margin-bottom: 6px !important; font-size: 0.9rem !important; }
+    .camera-help { display: none !important; }
+    .camera-controls { flex-wrap: nowrap !important; margin-bottom: 4px !important; gap: 6px !important; }
+    .action-btn.large { flex: 1 !important; justify-content: center !important; padding: 7px 8px !important; font-size: 0.8rem !important; }
+}
+
+/* Leçon : une seule partie ouverte à la fois (Règle, Leçon ou Exemple), qui prend le reste de l'écran */
+.lesson-block-title { cursor: pointer; user-select: none; }
+.lesson-block-title::after { content: '▾'; margin-left: 8px; transition: transform 0.2s; }
+.lesson-block.ferme .lesson-block-title::after { transform: rotate(-90deg); }
+.lesson-block.ferme .lesson-scroll { display: none !important; }
+.lesson-block.ferme .lesson-block-title { border-radius: 10px !important; }
+.lesson-block.ouvert .lesson-scroll { max-height: calc(100dvh - 380px) !important; min-height: 150px; }
+@media (max-width: 480px) {
+    .lesson-block { margin-bottom: 8px !important; }
+    .lesson-title { margin: 4px 0 8px !important; font-size: 1.1rem !important; }
+    .lesson-block.ouvert .lesson-scroll { max-height: calc(100dvh - 330px) !important; }
+}

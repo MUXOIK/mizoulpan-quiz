@@ -11,12 +11,12 @@
         /* SPÉCIFIQUE À LA LEÇON */
         .page-subrow{display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px;}
         .page-subrow .back-button{margin-bottom:0;}
-        .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#C46A47;font-weight:500;}
+        .page-subrow .page-title-ex{margin:0;font-size:0.9rem;color:#9C7652;font-weight:500;}
 
         /* PAGE HEADER - DRAPEAUX + TITRE + BULLE */
         .page-header {
             position: relative;
-            background: #F6EBDE;
+            background: #F2EAE0;
             border-radius: 28px;
             padding: 40px;
             margin-bottom: 12px;
@@ -31,7 +31,7 @@
         }
 
         .title-zone h1 {
-            color: #C46A47;
+            color: #9C7652;
             font-size: clamp(2rem, 6vw, 4.5rem);
             font-weight: 900;
             margin: 0;
@@ -92,7 +92,7 @@
 
         .category-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 4px 15px rgba(181, 88, 58, 0.12);
+            box-shadow: 0 4px 15px rgba(122, 85, 55, 0.12);
             border-color: var(--primary-blue);
         }
 
@@ -221,6 +221,7 @@
             .lesson-cell.hebrew { font-size: 0.92rem; }
         }
     </style>
+<link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <div class="container">
@@ -257,7 +258,7 @@
                 <div class="lesson-block">
                     <div class="lesson-block-title">
                         <span>Règle</span>
-                        <span class="hebrew-part">שליט</span>
+                        <span class="hebrew-part">כלל</span>
                     </div>
                     <div class="lesson-scroll" id="regleContent"></div>
                 </div>
@@ -265,7 +266,7 @@
                 <div class="lesson-block">
                     <div class="lesson-block-title">
                         <span>Leçon</span>
-                        <span class="hebrew-part">לקח</span>
+                        <span class="hebrew-part">שיעור</span>
                     </div>
                     <div class="lesson-scroll" id="leconContent"></div>
                 </div>
@@ -384,9 +385,21 @@
             renderLines('regleContent', data.regle);
             renderLines('leconContent', data.lecon);
             renderLines('exempleContent', data.exemple);
+            ouvrirPartie(0);
 
             document.getElementById('lessonScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+
+        // ════ UNE SEULE PARTIE OUVERTE À LA FOIS (tient sur l'écran du téléphone) ════
+        function ouvrirPartie(index) {
+            document.querySelectorAll('#lessonScreen .lesson-block').forEach((bloc, i) => {
+                bloc.classList.toggle('ouvert', i === index);
+                bloc.classList.toggle('ferme', i !== index);
+            });
+        }
+        document.querySelectorAll('#lessonScreen .lesson-block-title').forEach((titre, i) => {
+            titre.addEventListener('click', () => ouvrirPartie(i));
+        });
 
         // ════ RENDU GÉNÉRIQUE D'UNE SECTION (lignes de cellules) ════
         function renderLines(containerId, lines) {
