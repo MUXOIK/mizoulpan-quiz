@@ -1438,11 +1438,6 @@
       "fr": "Les Juifs vivent dans de petits villages dans les montagnes, près du désert"
     },
     {
-      "id": 113,
-      "he": "הם מתפללים בגעז ומדברים אמהרית",
-      "fr": "Ils prient en guèze et parlent amharique"
-    },
-    {
       "id": 114,
       "he": "החלום שלי לטייל בארגנטינה עם חברים",
       "fr": "Mon rêve, c'est de voyager en Argentine avec des amis"
@@ -1451,6 +1446,16 @@
       "id": 115,
       "he": "בשבוע השני מטיילים בהרים",
       "fr": "La deuxième semaine, on se promène dans les montagnes"
+    },
+    {
+      "id": 116,
+      "he": "הם מדברים בשפה שמית – אמהרית ומתפללים בשפה העתיקה – געז",
+      "fr": "Ils parlent une langue sémitique, l'amharique, et prient dans la langue ancienne, le guèze"
+    },
+    {
+      "id": 117,
+      "he": "אין הרבה יהודים בערים הגדולות",
+      "fr": "Il n'y a pas beaucoup de Juifs dans les grandes villes"
     }
   ]
 }

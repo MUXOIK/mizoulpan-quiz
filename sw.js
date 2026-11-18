@@ -1,6 +1,6 @@
 // Mizoulpan + : permet d'installer l'appli et de l'ouvrir sans internet.
 // Toujours la version en ligne d'abord (nouveaux cours) ; la copie gardée seulement hors ligne.
-const CACHE = 'mizoulpan-plus-v5';
+const CACHE = 'mizoulpan-plus-v6';
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => e.waitUntil(
   caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
