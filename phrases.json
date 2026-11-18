@@ -799,6 +799,81 @@
       "id": 160,
       "he": "הוא קורא ספר",
       "fr": "Il lit un livre"
+    },
+    {
+      "id": 161,
+      "he": "מי בא לישראל?",
+      "fr": "Qui est venu en Israël ?"
+    },
+    {
+      "id": 162,
+      "he": "לאן הוא בא?",
+      "fr": "Où est-il venu ?"
+    },
+    {
+      "id": 163,
+      "he": "מאיפה הילדה?",
+      "fr": "D'où vient la fille ?"
+    },
+    {
+      "id": 164,
+      "he": "עם מי הוא מדבר?",
+      "fr": "Avec qui parle-t-il ?"
+    },
+    {
+      "id": 165,
+      "he": "בני כמה הם?",
+      "fr": "Quel âge ont-ils ?"
+    },
+    {
+      "id": 166,
+      "he": "איפה מדונה שרה?",
+      "fr": "Où Madonna a-t-elle chanté ?"
+    },
+    {
+      "id": 167,
+      "he": "הם נחו ביום שבת",
+      "fr": "Ils se sont reposés samedi"
+    },
+    {
+      "id": 168,
+      "he": "גם השנה טסתי",
+      "fr": "Cette année aussi, j'ai pris l'avion"
+    },
+    {
+      "id": 169,
+      "he": "רבין רצה שלום",
+      "fr": "Rabin a voulu la paix"
+    },
+    {
+      "id": 170,
+      "he": "הם עובדים בחקלאות",
+      "fr": "Ils travaillent dans l'agriculture"
+    },
+    {
+      "id": 171,
+      "he": "לפי המסורת",
+      "fr": "Selon la tradition"
+    },
+    {
+      "id": 172,
+      "he": "אני מבקרת בפריז",
+      "fr": "Je visite Paris"
+    },
+    {
+      "id": 173,
+      "he": "לילה טוב, חלומות טובים",
+      "fr": "Bonne nuit, beaux rêves"
+    },
+    {
+      "id": 174,
+      "he": "ביום הראשון רואים חברים",
+      "fr": "Le premier jour, on voit des amis"
+    },
+    {
+      "id": 175,
+      "he": "האיש השלישי עושה מדיטציה",
+      "fr": "Le troisième homme fait de la méditation"
     }
   ],
   "complexe": [
@@ -1316,6 +1391,66 @@
       "id": 103,
       "he": "לשלוח תמונה בווטסאפ",
       "fr": "Envoyer une photo sur WhatsApp"
+    },
+    {
+      "id": 104,
+      "he": "הקיסר וילהלם השני בא לעיר העתיקה בירושלים",
+      "fr": "L'empereur Guillaume II est venu dans la vieille ville de Jérusalem"
+    },
+    {
+      "id": 105,
+      "he": "ילדה מארגנטינה גרה שלוש שנים בג'ונגל",
+      "fr": "Une fille d'Argentine a habité trois ans dans la jungle"
+    },
+    {
+      "id": 106,
+      "he": "צ'רצ'יל טס לפריז לדבר עם דה גול",
+      "fr": "Churchill a pris l'avion pour Paris pour parler avec de Gaulle"
+    },
+    {
+      "id": 107,
+      "he": "שני ילדים בני עשר רצו השבוע במרתון תל אביב",
+      "fr": "Deux enfants de dix ans ont couru cette semaine au marathon de Tel-Aviv"
+    },
+    {
+      "id": 108,
+      "he": "סאדאת בא לישראל בנובמבר 1977 כי הוא רצה שלום",
+      "fr": "Sadate est venu en Israël en novembre 1977 parce qu'il voulait la paix"
+    },
+    {
+      "id": 109,
+      "he": "פסיכולוגים מכל העולם באו לקונגרס בירושלים",
+      "fr": "Des psychologues du monde entier sont venus à un congrès à Jérusalem"
+    },
+    {
+      "id": 110,
+      "he": "לפי המסורת, מלכת שבא היא האישה של שלמה המלך",
+      "fr": "Selon la tradition, la reine de Saba est la femme du roi Salomon"
+    },
+    {
+      "id": 111,
+      "he": "התיירים הראשונים מאירופה באו לבקר את יהודי אתיופיה לפני מאתיים שנה",
+      "fr": "Les premiers touristes d'Europe sont venus rendre visite aux Juifs d'Éthiopie il y a 200 ans"
+    },
+    {
+      "id": 112,
+      "he": "היהודים גרים בכפרים קטנים בהרים, ליד המדבר",
+      "fr": "Les Juifs vivent dans de petits villages dans les montagnes, près du désert"
+    },
+    {
+      "id": 113,
+      "he": "הם מתפללים בגעז ומדברים אמהרית",
+      "fr": "Ils prient en guèze et parlent amharique"
+    },
+    {
+      "id": 114,
+      "he": "החלום שלי לטייל בארגנטינה עם חברים",
+      "fr": "Mon rêve, c'est de voyager en Argentine avec des amis"
+    },
+    {
+      "id": 115,
+      "he": "בשבוע השני מטיילים בהרים",
+      "fr": "La deuxième semaine, on se promène dans les montagnes"
     }
   ]
 }
