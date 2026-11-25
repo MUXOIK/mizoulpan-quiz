@@ -874,6 +874,76 @@
       "id": 175,
       "he": "האיש השלישי עושה מדיטציה",
       "fr": "Le troisième homme fait de la méditation"
+    },
+    {
+      "id": 176,
+      "he": "אתם גרים בפריז?",
+      "fr": "Vous habitez à Paris ?"
+    },
+    {
+      "id": 177,
+      "he": "אני שותה והיא שותה",
+      "fr": "Je bois et elle boit"
+    },
+    {
+      "id": 178,
+      "he": "להפסיק לעבוד",
+      "fr": "Arrêter de travailler"
+    },
+    {
+      "id": 179,
+      "he": "אני רוצה להצליח בחיים",
+      "fr": "Je veux réussir dans la vie"
+    },
+    {
+      "id": 180,
+      "he": "אני מתלבשת חם",
+      "fr": "Je m'habille chaudement"
+    },
+    {
+      "id": 181,
+      "he": "הם מתחתנים",
+      "fr": "Ils se marient"
+    },
+    {
+      "id": 182,
+      "he": "היא מתרגשת",
+      "fr": "Elle est émue"
+    },
+    {
+      "id": 183,
+      "he": "מזל טוב!",
+      "fr": "Félicitations !"
+    },
+    {
+      "id": 184,
+      "he": "הכלב שומר על הבית",
+      "fr": "Le chien garde la maison"
+    },
+    {
+      "id": 185,
+      "he": "כל שבת אני נחה",
+      "fr": "Chaque chabbat, je me repose"
+    },
+    {
+      "id": 186,
+      "he": "איזו עוגה נהדרת!",
+      "fr": "Quel gâteau formidable !"
+    },
+    {
+      "id": 187,
+      "he": "אני גרה קרוב למרכז העיר",
+      "fr": "J'habite près du centre-ville"
+    },
+    {
+      "id": 188,
+      "he": "זה נורא מאוחר",
+      "fr": "C'est terriblement tard"
+    },
+    {
+      "id": 189,
+      "he": "לפעמים כן, לפעמים לא",
+      "fr": "Parfois oui, parfois non"
     }
   ],
   "complexe": [
@@ -1456,6 +1526,76 @@
       "id": 117,
       "he": "אין הרבה יהודים בערים הגדולות",
       "fr": "Il n'y a pas beaucoup de Juifs dans les grandes villes"
+    },
+    {
+      "id": 118,
+      "he": "אנחנו מתחילים ללמוד בשבע וחצי",
+      "fr": "Nous commençons à étudier à sept heures et demie"
+    },
+    {
+      "id": 119,
+      "he": "הוא רוצה להתחיל חיים חדשים בישראל",
+      "fr": "Il veut commencer une nouvelle vie en Israël"
+    },
+    {
+      "id": 120,
+      "he": "הוא רוצה מאוד להצליח בעבודה החדשה",
+      "fr": "Il veut vraiment réussir dans son nouveau travail"
+    },
+    {
+      "id": 121,
+      "he": "הישראלים כבר רוצים להזמין את בוריס למסיבות",
+      "fr": "Les Israéliens veulent déjà inviter Boris aux fêtes"
+    },
+    {
+      "id": 122,
+      "he": "הוא מתחיל להרגיש כמו בבית",
+      "fr": "Il commence à se sentir comme chez lui"
+    },
+    {
+      "id": 123,
+      "he": "אחרי שנה הוא כבר יודע להסביר לישראלים את הפוליטיקה בישראל",
+      "fr": "Après un an, il sait déjà expliquer la politique israélienne aux Israéliens"
+    },
+    {
+      "id": 124,
+      "he": "הילדים של בוריס רוצים להפסיק לדבר רוסית",
+      "fr": "Les enfants de Boris veulent arrêter de parler russe"
+    },
+    {
+      "id": 125,
+      "he": "עכשיו מאוד קר בפריז, אני מתלבשת חם",
+      "fr": "Il fait très froid à Paris, je m'habille chaudement"
+    },
+    {
+      "id": 126,
+      "he": "מתרגשים ביום הולדת, בחג, בחתונה",
+      "fr": "On est ému à un anniversaire, à une fête, à un mariage"
+    },
+    {
+      "id": 127,
+      "he": "אנחנו גרים בעיר אבל אנחנו רוצים לגור בכפר",
+      "fr": "Nous habitons en ville mais nous voulons habiter à la campagne"
+    },
+    {
+      "id": 128,
+      "he": "הוא גר בשכונה נחמדה ליד מרכז העיר",
+      "fr": "Il habite dans un quartier sympa près du centre-ville"
+    },
+    {
+      "id": 129,
+      "he": "העוגה מצוינת וטעימה, אבל היא לא בריאה",
+      "fr": "Le gâteau est excellent et délicieux, mais il n'est pas sain"
+    },
+    {
+      "id": 130,
+      "he": "ביום כיפור אנחנו לא אוכלים, אנחנו צמים",
+      "fr": "À Yom Kippour, nous ne mangeons pas, nous jeûnons"
+    },
+    {
+      "id": 131,
+      "he": "אני מבקרת את המשפחה שלי בירושלים",
+      "fr": "Je rends visite à ma famille à Jérusalem"
     }
   ]
 }
